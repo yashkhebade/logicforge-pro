@@ -4,238 +4,294 @@
 <meta charset="UTF-8">
 <title>LogicForge Pro</title>
 <style>
-/* ─────────────────────── RESET & VARS ─────────────────────── */
+/* ── RESET ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg0:#0e1013; --bg1:#141720; --bg2:#1a1e28; --bg3:#20253a; --bg4:#272d42; --bgh:#2e3549;
-  --b1:#252a38; --b2:#303850; --b3:#404c6a;
-  --t1:#ced2e0; --t2:#8590ac; --t3:#4e5870;
-  --acc:#3dba6e; --acr:#e04848; --aca:#e0a030; --acb:#4a9edc;
-  --hi:#e04848; --lo:#253550;
-  --fmono: ui-monospace,SFMono-Regular,Menlo,monospace;
-  --fsans: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --bg0:#0c0e12;--bg1:#12151e;--bg2:#171b26;--bg3:#1e2336;--bg4:#252b40;--bgh:#2b3148;
+  --b1:#22273a;--b2:#2e3550;--b3:#3d4868;
+  --t1:#d0d4e2;--t2:#848ea8;--t3:#4a5470;
+  --acc:#3dba6e;--acr:#e04848;--aca:#e0a030;--acb:#4a9ede;
+  --hi:#e04848;--lo:#1e3050;
+  --fmono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  --fsans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
 }
-html,body{width:100%;height:100%;overflow:hidden;background:var(--bg0)}
-body{font-family:var(--fsans);font-size:13px;color:var(--t1);
-     display:flex;flex-direction:column;user-select:none;-webkit-user-select:none}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg0);font-family:var(--fsans);color:var(--t1);font-size:13px;user-select:none}
 
-/* ─────────────────────── TOPBAR ─────────────────────── */
-#topbar{
-  height:40px;background:var(--bg1);border-bottom:1px solid var(--b1);
-  display:flex;align-items:center;padding:0 12px;gap:6px;
-  flex-shrink:0;z-index:200;
+/* ══ LOGIN PAGE ══════════════════════════════════════════════════ */
+#pg-login{
+  position:fixed;inset:0;background:var(--bg0);
+  display:flex;align-items:center;justify-content:center;z-index:1000;
 }
-.logo{font-weight:800;font-size:15px;letter-spacing:2.5px;color:var(--acc);
-      text-transform:uppercase;margin-right:4px}
-.logo em{color:var(--t3);font-weight:400;font-style:normal}
-.tbsep{width:1px;height:18px;background:var(--b1);margin:0 2px}
+.login-card{
+  background:var(--bg1);border:1px solid var(--b2);border-radius:12px;
+  padding:40px 44px;width:380px;text-align:center;
+  box-shadow:0 24px 80px rgba(0,0,0,.7);
+}
+.login-logo{font-weight:800;font-size:24px;letter-spacing:3px;color:var(--acc);
+             text-transform:uppercase;margin-bottom:6px}
+.login-tagline{font-size:12px;color:var(--t3);margin-bottom:32px;letter-spacing:.5px}
+.g-btn{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  width:100%;padding:12px 20px;border-radius:6px;cursor:pointer;
+  background:#fff;border:1px solid #ddd;color:#333;font-size:14px;font-weight:500;
+  font-family:var(--fsans);transition:box-shadow .15s,background .15s;
+}
+.g-btn:hover{background:#f8f8f8;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.g-btn svg{flex-shrink:0}
+.login-divider{display:flex;align-items:center;gap:10px;margin:20px 0;color:var(--t3);font-size:11px}
+.login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:var(--b1)}
+.login-input{
+  width:100%;padding:10px 14px;background:var(--bg0);border:1px solid var(--b1);
+  border-radius:6px;color:var(--t1);font-size:13px;font-family:var(--fsans);
+  outline:none;transition:border-color .15s;margin-bottom:10px;
+}
+.login-input:focus{border-color:var(--b2)}
+.login-input::placeholder{color:var(--t3)}
+.login-sub-btn{
+  width:100%;padding:10px;border-radius:6px;cursor:pointer;
+  background:#182c20;border:1px solid var(--acc);color:var(--acc);
+  font-size:13px;font-weight:600;font-family:var(--fsans);transition:background .15s;
+}
+.login-sub-btn:hover{background:#1e3828}
+.login-err{color:var(--acr);font-size:11.5px;margin-top:6px;min-height:16px}
+.login-footer{margin-top:24px;font-size:11px;color:var(--t3);line-height:1.6}
+
+/* ══ PROJECTS PAGE ═══════════════════════════════════════════════ */
+#pg-projects{position:fixed;inset:0;background:var(--bg0);display:none;flex-direction:column;z-index:900}
+.proj-topbar{
+  height:52px;background:var(--bg1);border-bottom:1px solid var(--b1);
+  display:flex;align-items:center;padding:0 24px;gap:16px;
+}
+.proj-logo{font-weight:800;font-size:16px;letter-spacing:2px;color:var(--acc);text-transform:uppercase}
+.proj-user{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:12px;color:var(--t2)}
+.proj-avatar{width:30px;height:30px;border-radius:50%;background:var(--b2);
+              display:flex;align-items:center;justify-content:center;
+              font-weight:700;font-size:13px;color:var(--acc)}
+.proj-logout{background:none;border:1px solid var(--b1);color:var(--t3);
+              font-size:11px;padding:3px 9px;border-radius:3px;cursor:pointer;
+              font-family:var(--fsans);transition:all .12s}
+.proj-logout:hover{border-color:var(--acr);color:var(--acr)}
+.proj-body{flex:1;overflow-y:auto;padding:32px 24px;max-width:900px;margin:0 auto;width:100%}
+.proj-section-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;
+                     color:var(--t3);margin-bottom:14px}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:36px}
+.proj-card{
+  background:var(--bg1);border:1px solid var(--b1);border-radius:8px;
+  padding:20px;cursor:pointer;transition:all .15s;
+}
+.proj-card:hover{border-color:var(--b2);background:var(--bg2);transform:translateY(-2px)}
+.proj-card.new-card{border-style:dashed;color:var(--t3);
+                     display:flex;align-items:center;justify-content:center;
+                     gap:8px;font-size:13px;min-height:90px}
+.proj-card.new-card:hover{border-color:var(--acc);color:var(--acc)}
+.proj-card-name{font-weight:600;font-size:14px;margin-bottom:6px}
+.proj-card-meta{font-size:11px;color:var(--t3);line-height:1.6}
+.proj-card-badge{
+  display:inline-block;background:var(--bg3);border:1px solid var(--b2);
+  border-radius:3px;font-size:9px;padding:1px 6px;color:var(--t2);
+  margin-top:6px;font-family:var(--fmono);
+}
+.proj-card-badge.shared{border-color:var(--acb);color:var(--acb)}
+.proj-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px}
+.proj-action-btn{
+  display:flex;align-items:center;gap:7px;padding:9px 16px;
+  background:var(--bg1);border:1px solid var(--b1);border-radius:5px;
+  cursor:pointer;font-size:12px;color:var(--t2);transition:all .12s;
+  font-family:var(--fsans);
+}
+.proj-action-btn:hover{background:var(--bgh);color:var(--t1);border-color:var(--b2)}
+.import-input-hidden{display:none}
+
+/* ══ EDITOR ══════════════════════════════════════════════════════ */
+#pg-editor{position:fixed;inset:0;display:none;flex-direction:column;z-index:800}
+#ed-topbar{
+  height:40px;background:var(--bg1);border-bottom:1px solid var(--b1);
+  display:flex;align-items:center;padding:0 10px;gap:5px;flex-shrink:0;z-index:200;
+}
+.ed-logo{font-weight:800;font-size:13px;letter-spacing:2px;color:var(--acc);
+          text-transform:uppercase;margin-right:4px;cursor:pointer}
+.ed-project-name{
+  font-size:12px;color:var(--t2);max-width:140px;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;cursor:pointer;
+}
+.ed-project-name:hover{color:var(--t1)}
+.tsep{width:1px;height:16px;background:var(--b1);margin:0 2px}
 .tbtn{
-  background:transparent;border:1px solid var(--b1);color:var(--t2);
-  font-family:var(--fsans);font-size:11.5px;padding:4px 9px;
-  border-radius:3px;cursor:pointer;transition:all .12s;white-space:nowrap;
+  background:none;border:1px solid var(--b1);color:var(--t2);
+  font-size:11px;padding:3px 8px;border-radius:3px;cursor:pointer;
+  transition:all .1s;white-space:nowrap;font-family:var(--fsans);
 }
 .tbtn:hover{background:var(--bgh);color:var(--t1);border-color:var(--b2)}
+.tbtn.act{background:#182c20;border-color:var(--acc);color:var(--acc)}
 .tbtn.danger:hover{border-color:var(--acr);color:var(--acr)}
-.tbtn.confirm{border-color:var(--acr)!important;color:var(--acr)!important;animation:pulse .6s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.tright{margin-left:auto;display:flex;align-items:center;gap:10px}
+.tbtn.confirm-btn{border-color:var(--acr)!important;color:var(--acr)!important}
+.tright{margin-left:auto;display:flex;align-items:center;gap:8px}
 .livdot{width:6px;height:6px;border-radius:50%;background:var(--acc);
-        box-shadow:0 0 6px var(--acc);animation:blink 2s infinite}
+         box-shadow:0 0 5px var(--acc);animation:blink 2s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
-#zoom-label{font-family:var(--fmono);font-size:10px;color:var(--t3);min-width:38px;text-align:right}
+#zoom-lbl{font-family:var(--fmono);font-size:10px;color:var(--t3)}
 
-/* ─────────────────────── LAYOUT ─────────────────────── */
-#app{flex:1;display:flex;overflow:hidden;min-height:0}
+#ed-body{flex:1;display:flex;overflow:hidden;min-height:0}
 
-/* ─────────────────────── SIDEBAR ─────────────────────── */
+/* ── Sidebar ── */
 #sidebar{
-  width:196px;background:var(--bg1);border-right:1px solid var(--b1);
+  width:192px;background:var(--bg1);border-right:1px solid var(--b1);
   display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;
-  transition:width .18s ease;
+  transition:width .16s ease;
 }
-#sidebar.collapsed{width:0}
-#sb-search{padding:7px 8px;border-bottom:1px solid var(--b1);flex-shrink:0}
-#sb-search input{
+#sidebar.off{width:0}
+#sb-srch{padding:7px 8px;border-bottom:1px solid var(--b1);flex-shrink:0}
+#sb-srch input{
   width:100%;background:var(--bg0);border:1px solid var(--b1);border-radius:3px;
   color:var(--t1);font-size:11.5px;padding:5px 8px;outline:none;font-family:var(--fsans);
 }
-#sb-search input::placeholder{color:var(--t3)}
-#sb-search input:focus{border-color:var(--b2)}
-#sb-scroll{flex:1;overflow-y:auto;overflow-x:hidden}
-#sb-scroll::-webkit-scrollbar{width:4px}
-#sb-scroll::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
-
-.cat-header{
-  display:flex;align-items:center;padding:7px 9px 5px;
+#sb-srch input::placeholder{color:var(--t3)}
+#sb-srch input:focus{border-color:var(--b2)}
+#sb-list{flex:1;overflow-y:auto;overflow-x:hidden}
+#sb-list::-webkit-scrollbar{width:4px}
+#sb-list::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
+.ch{
+  display:flex;align-items:center;padding:6px 9px 5px;
   font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--t3);
   cursor:pointer;border-top:1px solid var(--b1);gap:5px;transition:color .1s;
 }
-.cat-header:first-child{border-top:none}
-.cat-header:hover{color:var(--t2)}
-.cat-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.cat-arrow{margin-left:auto;font-size:8px;transition:transform .15s}
-.cat-header.open .cat-arrow{transform:rotate(90deg)}
-.cat-body{display:none}
-.cat-body.open{display:block}
-
-.lib-item{
-  display:flex;align-items:center;padding:5px 10px 5px 12px;
-  cursor:pointer;font-size:12px;color:var(--t2);
-  transition:background .08s,color .08s;
-  border-left:2px solid transparent;position:relative;
+.ch:first-child{border-top:none}
+.ch:hover{color:var(--t2)}
+.cdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.carr{margin-left:auto;font-size:8px;transition:transform .14s}
+.ch.open .carr{transform:rotate(90deg)}
+.cb{display:none}
+.cb.open{display:block}
+.sbi{
+  display:flex;align-items:center;padding:5px 10px 5px 12px;cursor:pointer;
+  font-size:12px;color:var(--t2);transition:background .08s,color .08s;
+  border-left:2px solid transparent;
 }
-.lib-item:hover{background:var(--bgh);color:var(--t1)}
-.lib-item.placing{background:#182c1e;color:var(--acc);border-left-color:var(--acc)}
-.lib-item-icon{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-right:5px}
-.lib-item-pins{font-family:var(--fmono);font-size:9px;color:var(--t3);margin-left:auto}
-
-.cust-btn{
+.sbi:hover{background:var(--bgh);color:var(--t1)}
+.sbi.placing{background:#18281e;color:var(--acc);border-left-color:var(--acc)}
+.sbi-ic{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-right:5px}
+.sbi-pins{font-family:var(--fmono);font-size:9px;color:var(--t3);margin-left:auto}
+.cust-add{
   display:flex;align-items:center;justify-content:center;gap:5px;
-  margin:5px 9px;padding:6px;border:1px dashed var(--b2);border-radius:3px;
+  margin:5px 8px;padding:6px;border:1px dashed var(--b2);border-radius:3px;
   cursor:pointer;font-size:11.5px;color:var(--t3);transition:all .12s;
 }
-.cust-btn:hover{border-color:var(--acc);color:var(--acc);background:#182c1e}
+.cust-add:hover{border-color:var(--acc);color:var(--acc);background:#18281e}
 
-/* ─────────────────────── CANVAS ─────────────────────── */
-#canvas-area{
-  flex:1;position:relative;overflow:hidden;
-  background:var(--bg2);min-width:0;
-}
-#canvas-area.mode-place{cursor:crosshair}
-#canvas-area.mode-pan{cursor:grab}
-#canvas-area.mode-pan.active{cursor:grabbing}
-#canvas-area.mode-wire{cursor:cell}
-#grid-canvas{position:absolute;inset:0;pointer-events:none;z-index:0}
+/* ── Canvas ── */
+#cvwrap{flex:1;position:relative;overflow:hidden;background:var(--bg2);min-width:0}
+#cvwrap.pc{cursor:crosshair}
+#cvwrap.pan{cursor:grab}
+#cvwrap.pan.dragging{cursor:grabbing}
+#cvwrap.wi{cursor:cell}
+#grid-cv{position:absolute;inset:0;pointer-events:none;z-index:0}
 #wire-svg{position:absolute;inset:0;z-index:1;overflow:visible;pointer-events:none}
-#gate-container{position:absolute;inset:0;z-index:2}
-#sel-rect{
-  position:absolute;border:1px dashed var(--aca);
-  background:rgba(224,160,48,.04);pointer-events:none;z-index:10;display:none;
-}
+#gate-lyr{position:absolute;inset:0;z-index:2;pointer-events:none}
+#sel-box{position:absolute;border:1px dashed var(--aca);background:rgba(224,160,48,.04);pointer-events:none;z-index:10;display:none}
 
-/* ─────────────────────── GATES ─────────────────────── */
-.gate{
-  position:absolute;border-radius:4px;cursor:move;
-  pointer-events:all;overflow:visible;
-}
-.gate.sel{z-index:30}
-.gate.ms{z-index:20}
-
-.gate-shell{
+/* ── Gates ── */
+.gate{position:absolute;border-radius:4px;cursor:move;pointer-events:all;overflow:visible}
+.gbody{
   width:100%;height:100%;border-radius:4px;
-  display:flex;align-items:center;justify-content:center;
-  flex-direction:column;position:relative;overflow:visible;
-  transition:filter .1s;
-  /* border set per type below */
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  position:relative;overflow:visible;transition:filter .1s;
 }
-.gate:hover .gate-shell{filter:brightness(1.12)}
-
-/* Selection outlines */
-.gate.sel  .gate-shell{outline:2px solid var(--aca);outline-offset:3px}
-.gate.ms   .gate-shell{outline:1px solid var(--acb);outline-offset:2px}
-.gate.fault .gate-shell{outline:2px solid var(--acr)!important;outline-offset:2px}
-
-/* Gate label typography */
-.gate-label{
-  font-family:var(--fmono);font-size:11px;font-weight:700;
-  letter-spacing:1px;text-transform:uppercase;text-align:center;
-  pointer-events:none;line-height:1.2;
+.gate:hover .gbody{filter:brightness(1.1)}
+.gate.sel .gbody{outline:2px solid var(--aca);outline-offset:3px}
+.gate.msel .gbody{outline:1px solid var(--acb);outline-offset:2px}
+.gate.fault .gbody{outline:2px solid var(--acr)!important;outline-offset:2px}
+.glbl{
+  font-family:var(--fmono);font-weight:700;letter-spacing:.8px;
+  text-transform:uppercase;text-align:center;pointer-events:none;line-height:1.15;
 }
-.gate-sub{font-size:8px;font-weight:500;opacity:.6;letter-spacing:.5px;margin-top:1px}
-.gate-val{font-family:var(--fmono);font-size:18px;font-weight:700}
-.gate-qval{font-family:var(--fmono);font-size:12px;font-weight:700;margin-top:2px}
+.gsub{font-weight:500;opacity:.6;letter-spacing:.4px;margin-top:1px;text-align:center;pointer-events:none}
+.gval{font-family:var(--fmono);font-weight:700;pointer-events:none}
+.gqval{font-family:var(--fmono);font-weight:700;pointer-events:none}
 
-/* Gate colors — bg / border / text */
-.gt-input  .gate-shell{background:#162616;border:1.5px solid #3a6a3a;color:#58a858}
-.gt-output .gate-shell{background:#261616;border:1.5px solid #6a3a3a;color:#a85858}
-.gt-clock  .gate-shell{background:#161e36;border:1.5px solid #385090;color:#5890c0}
-.gt-const0 .gate-shell{background:#1c2028;border:1.5px solid #383c4a;color:#7a8090}
-.gt-const1 .gate-shell{background:#26200a;border:1.5px solid #685010;color:#c0a030}
-.gt-buffer .gate-shell{background:#162430;border:1.5px solid #384e60;color:#5888a0}
-.gt-and    .gate-shell{background:#162448;border:1.5px solid #385090;color:#4890d8}
-.gt-or     .gate-shell{background:#162a1e;border:1.5px solid #386042;color:#48aa68}
-.gt-not    .gate-shell{background:#36161a;border:1.5px solid #882838;color:#e04858}
-.gt-nand   .gate-shell{background:#261636;border:1.5px solid #683898;color:#9860cc}
-.gt-nor    .gate-shell{background:#361636;border:1.5px solid #883888;color:#c86098}
-.gt-xor    .gate-shell{background:#32182c;border:1.5px solid #823868;color:#d25898}
-.gt-xnor   .gate-shell{background:#2e1818;border:1.5px solid #784038;color:#c06860}
-.gt-ha     .gate-shell,.gt-fa .gate-shell,.gt-add4 .gate-shell{background:#2e2206;border:1.5px solid #785610;color:#e09626}
-.gt-mux2   .gate-shell,.gt-mux4 .gate-shell{background:#161e3e;border:1.5px solid #384898;color:#5878c8}
-.gt-dmux2  .gate-shell,.gt-dmux4 .gate-shell{background:#1e1638;border:1.5px solid #503898;color:#7860c8}
-.gt-enc4   .gate-shell,.gt-dec2 .gate-shell{background:#162838;border:1.5px solid #386078;color:#58a0b8}
-.gt-sr     .gate-shell,.gt-dlatch .gate-shell{background:#2a1e06;border:1.5px solid #745806;color:#c09428}
-.gt-dff    .gate-shell,.gt-jkff .gate-shell,.gt-tff .gate-shell{background:#261806;border:1.5px solid #684606;color:#a07018}
-.gt-custom .gate-shell{background:#162a20;border:1.5px solid #386848;color:#50a878}
+/* Gate type styles */
+.ti  .gbody{background:#162616;border:1.5px solid #3a6a3a;color:#58a858}
+.to  .gbody{background:#261616;border:1.5px solid #6a3a3a;color:#a85858}
+.tck .gbody{background:#161e36;border:1.5px solid #385090;color:#5890c0}
+.tc0 .gbody{background:#1c2028;border:1.5px solid #383c4a;color:#7a8090}
+.tc1 .gbody{background:#26200a;border:1.5px solid #685010;color:#c0a030}
+.tbf .gbody{background:#162430;border:1.5px solid #384e60;color:#5888a0}
+.tan .gbody{background:#162448;border:1.5px solid #385090;color:#4890d8}
+.tor .gbody{background:#162a1e;border:1.5px solid #386042;color:#48aa68}
+.tno .gbody{background:#36161a;border:1.5px solid #882838;color:#e04858}
+.tna .gbody{background:#261636;border:1.5px solid #683898;color:#9860cc}
+.tnr .gbody{background:#361636;border:1.5px solid #883888;color:#c86098}
+.txo .gbody{background:#32182c;border:1.5px solid #823868;color:#d25898}
+.txn .gbody{background:#2e1818;border:1.5px solid #784038;color:#c06860}
+.tah .gbody,.taf .gbody,.taa .gbody{background:#2e2206;border:1.5px solid #785610;color:#e09626}
+.tm2 .gbody,.tm4 .gbody{background:#161e3e;border:1.5px solid #384898;color:#5878c8}
+.td2 .gbody,.td4 .gbody{background:#1e1638;border:1.5px solid #503898;color:#7860c8}
+.te4 .gbody,.tdc .gbody{background:#162838;border:1.5px solid #386078;color:#58a0b8}
+.tsr .gbody,.tdl .gbody{background:#2a1e06;border:1.5px solid #745806;color:#c09428}
+.tdf .gbody,.tjk .gbody,.ttf .gbody{background:#261806;border:1.5px solid #684606;color:#a07018}
+.tcu .gbody{background:#162a20;border:1.5px solid #386848;color:#50a878}
 
 /* Pins */
 .pin{
   position:absolute;width:10px;height:10px;border-radius:50%;
   background:var(--bg0);border:1.5px solid var(--b2);
-  cursor:crosshair;z-index:20;pointer-events:all;
+  cursor:crosshair;pointer-events:all;
   transition:transform .1s,border-color .1s,background .1s,box-shadow .1s;
 }
-.pin:hover{transform:scale(1.6);border-color:var(--aca);z-index:21}
-.pin.sig-hi{background:var(--hi);border-color:#f06060;box-shadow:0 0 5px var(--hi)}
-.pin.sig-lo{background:var(--lo);border-color:#304860}
-.pin.wiring{border-color:var(--aca)!important;background:var(--aca)!important;
-             box-shadow:0 0 8px var(--aca);transform:scale(1.3)}
-.pin-label{
-  position:absolute;font-family:var(--fmono);font-size:8px;
-  color:var(--t3);pointer-events:none;white-space:nowrap;z-index:5;
+.pin:hover{transform:scale(1.6);border-color:var(--aca);z-index:50}
+.pin.hi{background:var(--hi);border-color:#f06060;box-shadow:0 0 5px var(--hi)}
+.pin.lo{background:var(--lo);border-color:#304860}
+.pin.wiring{
+  border-color:var(--aca)!important;background:var(--aca)!important;
+  box-shadow:0 0 8px var(--aca);transform:scale(1.3);
+}
+.plbl{
+  position:absolute;font-family:var(--fmono);
+  color:var(--t3);pointer-events:none;white-space:nowrap;line-height:1;
 }
 
-/* Clock wave */
-.clk-wave{display:flex;align-items:flex-end;gap:1px;height:14px;margin-top:3px}
-.clk-seg{width:6px;border-radius:1px 1px 0 0;transition:height .06s,background .06s}
-.clk-seg.hi{height:13px;background:var(--acb)}
-.clk-seg.lo{height:5px;background:#253548}
-.clk-freq-lbl{font-family:var(--fmono);font-size:8px;color:var(--t3);margin-top:2px}
+/* Clock */
+.cwv{display:flex;align-items:flex-end;gap:1px;height:14px;margin-top:3px}
+.cs{width:6px;border-radius:1px 1px 0 0;transition:height .06s,background .06s}
+.cs.hi{height:13px;background:var(--acb)}
+.cs.lo{height:5px;background:#253548}
 
-/* ─────────────────────── WIRES ─────────────────────── */
-.wire-vis{fill:none;stroke-linecap:round;stroke-linejoin:round}
-.wire-hi{stroke:var(--hi);stroke-width:2.5;filter:drop-shadow(0 0 3px rgba(224,72,72,.4))}
-.wire-lo{stroke:var(--lo);stroke-width:2}
-.wire-preview{
-  stroke:var(--aca);stroke-width:1.5;fill:none;
-  stroke-dasharray:5 4;opacity:.85;
-  stroke-linecap:round;
-}
+/* ── Wires ── */
+.wvis{fill:none;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.w-hi{stroke:var(--hi);stroke-width:2.5;filter:drop-shadow(0 0 3px rgba(224,72,72,.4))}
+.w-lo{stroke:var(--lo);stroke-width:2}
+.w-prev{stroke:var(--aca);stroke-width:1.5;fill:none;stroke-dasharray:5 4;opacity:.85;stroke-linecap:round}
+.w-hit{fill:none;stroke:transparent;stroke-width:12;pointer-events:stroke;cursor:pointer}
 
-/* ─────────────────────── PROPS PANEL ─────────────────────── */
-#props-panel{
-  width:198px;background:var(--bg1);border-left:1px solid var(--b1);
+/* ── Props panel ── */
+#rp{
+  width:195px;background:var(--bg1);border-left:1px solid var(--b1);
   display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;
-  transition:width .18s ease;
+  transition:width .16s ease;
 }
-#props-panel.collapsed{width:0}
-#props-header{
-  padding:9px 12px;border-bottom:1px solid var(--b1);
-  font-size:10px;letter-spacing:2px;text-transform:uppercase;
-  color:var(--t3);flex-shrink:0;
-}
-#props-body{flex:1;overflow-y:auto;padding:10px 12px;font-size:12px}
-#props-body::-webkit-scrollbar{width:4px}
-#props-body::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
-.prow{display:flex;align-items:center;gap:6px;margin-bottom:7px}
-.pkey{color:var(--t3);font-size:10px;font-family:var(--fmono);min-width:52px}
-.pval{color:var(--t1);font-size:11.5px}
+#rp.off{width:0}
+#rph{padding:8px 11px;border-bottom:1px solid var(--b1);
+      font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--t3);flex-shrink:0}
+#rpb{flex:1;overflow-y:auto;padding:10px 11px;font-size:12px}
+#rpb::-webkit-scrollbar{width:4px}
+#rpb::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
+.pr{display:flex;align-items:center;gap:6px;margin-bottom:7px}
+.pk{color:var(--t3);font-size:10px;font-family:var(--fmono);min-width:48px}
+.pv{color:var(--t1);font-size:11.5px}
 .psep{height:1px;background:var(--b1);margin:8px 0}
-.plabel{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);
-         margin:7px 0 5px}
+.ph{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin:7px 0 5px}
 .pinrow{display:flex;align-items:center;gap:5px;margin-bottom:4px;font-size:11px}
 .pindot{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--b2);flex-shrink:0}
 .pindot.hi{background:var(--hi);border-color:#e06060;box-shadow:0 0 4px var(--hi)}
 .pindot.lo{background:var(--lo);border-color:#304860}
-.pin-name{color:var(--t2);flex:1}
-.pin-sig{font-family:var(--fmono);color:var(--t3)}
-.qdisplay{
-  font-family:var(--fmono);font-size:22px;font-weight:700;text-align:center;
-  padding:9px;border-radius:4px;background:var(--bg0);margin:5px 0;
-  letter-spacing:2px;
+.pname{color:var(--t2);flex:1}
+.psig{font-family:var(--fmono);color:var(--t3)}
+.qdsp{
+  font-family:var(--fmono);font-size:20px;font-weight:700;text-align:center;
+  padding:8px;border-radius:4px;background:var(--bg0);margin:5px 0;letter-spacing:2px;
 }
-.qdisplay.hi{color:var(--hi);text-shadow:0 0 10px var(--hi)}
-.qdisplay.lo{color:var(--lo)}
-.qdisplay.fault{color:var(--aca)}
+.qdsp.hi{color:var(--hi);text-shadow:0 0 8px var(--hi)}
+.qdsp.lo{color:var(--lo)}
+.qdsp.iv{color:var(--aca)}
 .pbtn{
   display:block;width:100%;padding:6px 8px;margin-top:5px;
   background:var(--bg3);border:1px solid var(--b2);border-radius:3px;
@@ -243,335 +299,407 @@ body{font-family:var(--fsans);font-size:13px;color:var(--t1);
   transition:all .1s;font-family:var(--fsans);
 }
 .pbtn:hover{background:var(--bgh);color:var(--t1)}
-.pbtn.danger:hover{border-color:var(--acr);color:var(--acr)}
-.freq-row{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}
-.freq-btn{
-  flex:1;min-width:36px;padding:3px 2px;font-size:10.5px;
+.pbtn.rd:hover{border-color:var(--acr);color:var(--acr)}
+.fqr{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}
+.fqb{
+  flex:1;min-width:34px;padding:3px 2px;font-size:10px;
   background:var(--bg3);border:1px solid var(--b1);border-radius:3px;
-  cursor:pointer;color:var(--t3);text-align:center;
-  transition:all .1s;font-family:var(--fsans);
+  cursor:pointer;color:var(--t3);text-align:center;transition:all .1s;font-family:var(--fsans);
 }
-.freq-btn:hover{border-color:var(--acb);color:var(--acb)}
-.freq-btn.active{border-color:var(--acb);background:#182840;color:var(--acb)}
+.fqb:hover{border-color:var(--acb);color:var(--acb)}
+.fqb.on{border-color:var(--acb);background:#182840;color:var(--acb)}
 
-/* ─────────────────────── STATUS BAR ─────────────────────── */
-#statusbar{
-  height:23px;background:var(--bg0);border-top:1px solid var(--b1);
-  display:flex;align-items:center;padding:0 12px;gap:16px;
-  font-family:var(--fmono);font-size:10px;color:var(--t3);
-  flex-shrink:0;z-index:200;
+/* ── Statusbar ── */
+#stbar{
+  height:22px;background:var(--bg0);border-top:1px solid var(--b1);
+  display:flex;align-items:center;padding:0 10px;gap:14px;
+  font-family:var(--fmono);font-size:10px;color:var(--t3);flex-shrink:0;z-index:200;
 }
-.skey{color:#282f40}.sval{color:var(--t2)}
-#status-msg{margin-left:auto}
-.msg-ok{color:var(--acc)}.msg-err{color:var(--acr)}.msg-warn{color:var(--aca)}
+.sk{color:#28304a}.sv{color:var(--t2)}
+#stmsg{margin-left:auto}.s-ok{color:var(--acc)}.s-er{color:var(--acr)}.s-wa{color:var(--aca)}
 
-/* ─────────────────────── CONTEXT MENU ─────────────────────── */
-#ctx-menu{
+/* ── Context menu ── */
+#cmenu{
   position:fixed;background:var(--bg1);border:1px solid var(--b2);
-  border-radius:4px;padding:3px 0;z-index:999;
-  box-shadow:0 8px 28px rgba(0,0,0,.75);min-width:164px;display:none;
+  border-radius:4px;padding:3px 0;z-index:9000;
+  box-shadow:0 8px 28px rgba(0,0,0,.75);min-width:162px;display:none;
 }
-.ctx-item{
-  padding:7px 14px;font-size:12.5px;color:var(--t2);cursor:pointer;
-  transition:background .08s,color .08s;display:flex;align-items:center;gap:8px;
-}
-.ctx-item:hover{background:var(--bgh);color:var(--t1)}
-.ctx-item.danger:hover{color:var(--acr)}
-.ctx-sep{height:1px;background:var(--b1);margin:3px 0}
+.cmi{padding:6px 13px;font-size:12.5px;color:var(--t2);cursor:pointer;
+      transition:background .08s;display:flex;align-items:center;gap:7px}
+.cmi:hover{background:var(--bgh);color:var(--t1)}
+.cmi.rd:hover{color:var(--acr)}
+.cmsep{height:1px;background:var(--b1);margin:3px 0}
 
-/* ─────────────────────── TOOLTIP ─────────────────────── */
-#tooltip{
+/* ── Tooltip ── */
+#tip{
   position:fixed;background:var(--bg0);border:1px solid var(--b2);
   border-radius:3px;padding:5px 9px;font-family:var(--fmono);font-size:11px;
   color:var(--t1);pointer-events:none;z-index:9999;display:none;
   max-width:240px;line-height:1.65;white-space:pre-line;
 }
 
-/* ─────────────────────── MODALS ─────────────────────── */
-.modal-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.78);
-  z-index:500;display:none;align-items:center;justify-content:center;
-}
-.modal-overlay.open{display:flex}
-.modal-box{
+/* ── Modals ── */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:5000;
+     display:none;align-items:center;justify-content:center}
+.ov.open{display:flex}
+.mbox{
   background:var(--bg1);border:1px solid var(--b2);border-radius:7px;
-  padding:24px 26px;max-width:580px;width:92%;
+  padding:22px 24px;max-width:580px;width:92%;
   box-shadow:0 20px 60px rgba(0,0,0,.85);
   display:flex;flex-direction:column;max-height:88vh;
 }
-.modal-box.wide{max-width:680px}
-.modal-title{
-  font-size:18px;font-weight:700;letter-spacing:1px;color:var(--acc);
-  margin-bottom:16px;display:flex;align-items:center;gap:8px;
-}
-.modal-title small{font-size:10px;color:var(--t3);font-weight:400;letter-spacing:.5px;margin-top:2px}
-.modal-scroll{overflow-y:auto;flex:1;padding-right:4px}
-.modal-scroll::-webkit-scrollbar{width:4px}
-.modal-scroll::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
-.mrow{display:flex;align-items:center;gap:8px;margin-bottom:11px}
-.mrow label{font-size:11px;color:var(--t3);min-width:96px;font-family:var(--fmono)}
-.minput{
-  flex:1;background:var(--bg0);border:1px solid var(--b1);border-radius:3px;
-  color:var(--t1);font-size:13px;padding:6px 9px;outline:none;font-family:var(--fsans);
-}
-.minput:focus{border-color:var(--b2)}
-.mselect{
-  flex:1;background:var(--bg0);border:1px solid var(--b1);border-radius:3px;
-  color:var(--t1);font-size:13px;padding:6px 9px;outline:none;
-  font-family:var(--fsans);appearance:none;
-}
-.modal-footer{display:flex;gap:8px;margin-top:16px;justify-content:flex-end}
-.mbtn{
-  padding:8px 20px;border-radius:4px;font-size:13.5px;font-weight:600;
-  cursor:pointer;transition:all .12s;letter-spacing:.5px;font-family:var(--fsans);
-}
-.mbtn.primary{background:#1a2e20;border:1px solid var(--acc);color:var(--acc)}
-.mbtn.primary:hover{background:#1e3826}
-.mbtn.secondary{background:var(--bg3);border:1px solid var(--b2);color:var(--t2)}
-.mbtn.secondary:hover{background:var(--bgh);color:var(--t1)}
+.mbox.wide{max-width:700px}
+.mh{font-size:17px;font-weight:700;color:var(--acc);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.mh small{font-size:10px;color:var(--t3);font-weight:400}
+.msc{overflow-y:auto;flex:1;padding-right:2px}
+.msc::-webkit-scrollbar{width:4px}
+.msc::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
+.mr{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.mr label{font-size:11px;color:var(--t3);min-width:92px;font-family:var(--fmono)}
+.mi{flex:1;background:var(--bg0);border:1px solid var(--b1);border-radius:3px;
+     color:var(--t1);font-size:13px;padding:6px 9px;outline:none;font-family:var(--fsans)}
+.mi:focus{border-color:var(--b2)}
+.msel{flex:1;background:var(--bg0);border:1px solid var(--b1);border-radius:3px;
+       color:var(--t1);font-size:13px;padding:6px 9px;outline:none;font-family:var(--fsans);appearance:none}
+.mft{display:flex;gap:7px;margin-top:14px;justify-content:flex-end}
+.mbtn{padding:7px 18px;border-radius:3px;font-size:13px;font-weight:600;cursor:pointer;
+       transition:all .1s;font-family:var(--fsans)}
+.mbtn.pr{background:#182c20;border:1px solid var(--acc);color:var(--acc)}
+.mbtn.pr:hover{background:#1e3428}
+.mbtn.sc{background:var(--bg3);border:1px solid var(--b2);color:var(--t2)}
+.mbtn.sc:hover{background:var(--bgh);color:var(--t1)}
 
 /* Truth table */
-.tt-wrap{overflow:auto;max-height:290px;border:1px solid var(--b1);border-radius:4px;margin:8px 0}
-table.tt{border-collapse:collapse;width:100%;font-family:var(--fmono);font-size:12px}
-.tt th{background:var(--bg0);padding:7px 10px;color:var(--t2);
-        border-bottom:1px solid var(--b2);text-align:center;
-        position:sticky;top:0;z-index:5}
-.tt td{padding:5px 8px;text-align:center;border-bottom:1px solid var(--b1)}
+.ttw{overflow:auto;max-height:280px;border:1px solid var(--b1);border-radius:3px;margin:8px 0}
+table.tt{border-collapse:collapse;width:100%;font-family:var(--fmono);font-size:11.5px}
+.tt th{background:var(--bg0);padding:6px 10px;color:var(--t2);border-bottom:1px solid var(--b2);text-align:center;position:sticky;top:0;z-index:5}
+.tt td{padding:4px 8px;text-align:center;border-bottom:1px solid var(--b1)}
 .tt tr:last-child td{border-bottom:none}
 .tt tr:hover td{background:var(--bgh)}
-.tt-cell{
-  width:30px;height:26px;background:var(--bg3);border:1px solid var(--b1);
-  border-radius:3px;color:var(--t3);cursor:pointer;
-  display:inline-flex;align-items:center;justify-content:center;
-  transition:all .1s;font-size:13px;
-}
-.tt-cell.v1{background:#361818;border-color:#a03030;color:var(--hi)}
-.pin-name-inputs{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
-.pni{
-  width:64px;background:var(--bg0);border:1px solid var(--b1);border-radius:3px;
-  color:var(--t1);font-family:var(--fmono);font-size:11px;
-  padding:3px 5px;outline:none;text-align:center;
-}
-/* Custom gate list */
-.cg-row{display:flex;align-items:center;gap:6px;padding:7px 0;
-         border-bottom:1px solid var(--b1);font-size:12px}
-.cg-del{width:20px;height:20px;background:none;border:none;cursor:pointer;
-         color:var(--t3);border-radius:2px;display:flex;align-items:center;
-         justify-content:center;margin-left:auto;font-size:14px;
-         transition:color .1s,background .1s;}
-.cg-del:hover{background:#2a1818;color:var(--acr)}
+.ttc{width:28px;height:24px;background:var(--bg3);border:1px solid var(--b1);border-radius:2px;
+      color:var(--t3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+      transition:all .1s;font-size:12px}
+.ttc.v1{background:#361818;border-color:#a03030;color:var(--hi)}
+.pnw{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.pni{width:62px;background:var(--bg0);border:1px solid var(--b1);border-radius:3px;
+      color:var(--t1);font-family:var(--fmono);font-size:11px;padding:3px 5px;outline:none;text-align:center}
 
-/* Help */
-.help-row{display:flex;gap:10px;margin-bottom:8px;font-size:12.5px}
-.help-key{
-  font-family:var(--fmono);background:var(--bg0);border:1px solid var(--b2);
-  border-radius:3px;padding:2px 8px;color:var(--aca);flex-shrink:0;
-  font-size:10.5px;align-self:center;min-width:100px;text-align:center;
+/* Verilog modal */
+.vtabs{display:flex;gap:2px;margin-bottom:12px}
+.vtab{padding:5px 14px;border-radius:3px;border:1px solid var(--b1);
+       cursor:pointer;font-size:12px;color:var(--t2);transition:all .1s;font-family:var(--fsans)}
+.vtab.on{border-color:var(--acb);color:var(--acb);background:#182840}
+.vcode{
+  background:var(--bg0);border:1px solid var(--b1);border-radius:4px;
+  padding:14px;font-family:var(--fmono);font-size:11.5px;color:#a0d8a0;
+  overflow:auto;max-height:340px;white-space:pre;line-height:1.6;
+  margin-bottom:10px;
 }
-.help-val{color:var(--t2);line-height:1.55}
+.vimport-area{
+  background:var(--bg0);border:1px dashed var(--b2);border-radius:4px;
+  padding:30px;text-align:center;cursor:pointer;transition:all .12s;
+  color:var(--t3);font-size:13px;
+}
+.vimport-area:hover,.vimport-area.drag-over{border-color:var(--acb);color:var(--acb);background:#182840}
+.vimport-area.drag-over{border-style:solid}
+
+/* Share modal */
+.share-code{
+  font-family:var(--fmono);font-size:12px;background:var(--bg0);
+  border:1px solid var(--b1);border-radius:3px;padding:10px 12px;
+  color:var(--acc);word-break:break-all;cursor:pointer;
+  transition:background .1s;
+}
+.share-code:hover{background:var(--bg3)}
+
+/* Custom gates manage */
+.cgl{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid var(--b1);font-size:12px}
+.cgdel{background:none;border:none;cursor:pointer;color:var(--t3);font-size:14px;margin-left:auto;padding:2px 4px;border-radius:2px}
+.cgdel:hover{background:#2a1818;color:var(--acr)}
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
-<div id="topbar">
-  <div class="logo">Logic<em>Forge</em> <em style="font-size:9px;letter-spacing:1px">PRO</em></div>
-  <div class="tbsep"></div>
-  <button class="tbtn" id="btn-sb" title="Toggle component library">◧ Library</button>
-  <button class="tbtn" id="btn-props" title="Toggle properties panel">◨ Props</button>
-  <div class="tbsep"></div>
-  <button class="tbtn" id="btn-package" title="Package selected gates as custom subcircuit">⊞ Package</button>
-  <button class="tbtn danger" id="btn-clear" title="Clear canvas (click once to arm, again to clear)">⊘ Clear</button>
-  <div class="tbsep"></div>
-  <button class="tbtn" id="btn-zi" title="Zoom in">＋</button>
-  <button class="tbtn" id="btn-zo" title="Zoom out">－</button>
-  <button class="tbtn" id="btn-fit" title="Fit all gates in view">⊡ Fit</button>
-  <button class="tbtn" id="btn-help" title="Keyboard shortcuts">? Help</button>
-  <div class="tright">
-    <span id="zoom-label">100%</span>
-    <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--t3)">
-      <div class="livdot"></div>LIVE SIM
-    </div>
+<!-- ═══════════ LOGIN PAGE ═══════════ -->
+<div id="pg-login">
+  <div class="login-card">
+    <div class="login-logo">LogicForge</div>
+    <div class="login-tagline">Professional Digital Circuit Simulator</div>
+    <button class="g-btn" id="g-btn">
+      <svg width="18" height="18" viewBox="0 0 48 48">
+        <path fill="#4285F4" d="M47.5 24.6c0-1.6-.1-3.1-.4-4.6H24v8.7h13.2c-.6 3-2.4 5.6-5 7.3v6h8c4.8-4.4 7.3-11 7.3-17.4z"/>
+        <path fill="#34A853" d="M24 48c6.5 0 12-2.1 16-5.8l-8-6c-2.1 1.4-4.8 2.2-8 2.2-6.1 0-11.3-4.1-13.2-9.7H2.6v6.2C6.6 42.6 14.7 48 24 48z"/>
+        <path fill="#FBBC05" d="M10.8 28.7c-.5-1.4-.7-2.9-.7-4.7s.2-3.3.7-4.7v-6.2H2.6C.9 16.5 0 20.1 0 24s.9 7.5 2.6 10.9l8.2-6.2z"/>
+        <path fill="#EA4335" d="M24 9.6c3.4 0 6.5 1.2 8.9 3.5l6.7-6.7C35.9 2.5 30.4 0 24 0 14.7 0 6.6 5.4 2.6 13.1l8.2 6.2C12.7 13.7 17.9 9.6 24 9.6z"/>
+      </svg>
+      Sign in with Google
+    </button>
+    <div class="login-divider">or sign in with Gmail</div>
+    <input class="login-input" id="login-email" type="email" placeholder="your@gmail.com" autocomplete="email">
+    <input class="login-input" id="login-name" type="text" placeholder="Display name" autocomplete="name">
+    <button class="login-sub-btn" id="login-btn">Sign In / Register</button>
+    <div class="login-err" id="login-err"></div>
+    <div class="login-footer">Your data is stored locally in this browser.<br>Share projects with others via project export codes.</div>
   </div>
 </div>
 
-<!-- APP BODY -->
-<div id="app">
-
-  <!-- SIDEBAR -->
-  <div id="sidebar">
-    <div id="sb-search"><input id="sb-input" placeholder="Search components…" autocomplete="off" spellcheck="false"></div>
-    <div id="sb-scroll"></div>
-  </div>
-
-  <!-- CANVAS -->
-  <div id="canvas-area">
-    <canvas id="grid-canvas"></canvas>
-    <svg id="wire-svg" xmlns="http://www.w3.org/2000/svg"></svg>
-    <div id="sel-rect"></div>
-    <div id="gate-container"></div>
-  </div>
-
-  <!-- PROPS -->
-  <div id="props-panel">
-    <div id="props-header">Properties</div>
-    <div id="props-body">
-      <p style="color:var(--t3);font-size:11.5px;margin-top:6px;line-height:1.6">
-        Select a gate to inspect its properties and pin states.
-      </p>
+<!-- ═══════════ PROJECTS PAGE ═══════════ -->
+<div id="pg-projects">
+  <div class="proj-topbar">
+    <div class="proj-logo">LogicForge <span style="font-size:10px;color:var(--t3);font-weight:400;letter-spacing:1px">PRO</span></div>
+    <div class="proj-user">
+      <span id="pu-email" style="color:var(--t3)"></span>
+      <div class="proj-avatar" id="pu-avatar">?</div>
+      <button class="proj-logout" id="btn-logout">Sign out</button>
     </div>
   </div>
-
+  <div class="proj-body">
+    <div class="proj-section-title">Quick Actions</div>
+    <div class="proj-actions">
+      <button class="proj-action-btn" id="pa-import-v"><span>📥</span>Import .v File</button>
+      <button class="proj-action-btn" id="pa-import-proj"><span>📂</span>Import Project</button>
+      <button class="proj-action-btn" id="pa-join"><span>🔗</span>Join Shared Project</button>
+      <input type="file" class="import-input-hidden" id="import-v-file" accept=".v">
+      <input type="file" class="import-input-hidden" id="import-proj-file" accept=".json">
+    </div>
+    <div class="proj-section-title">My Projects</div>
+    <div class="proj-grid" id="proj-grid"></div>
+  </div>
 </div>
 
-<!-- STATUSBAR -->
-<div id="statusbar">
-  <span class="skey">Gates</span><span class="sval" id="sb-gates">0</span>
-  <span class="skey">Wires</span><span class="sval" id="sb-wires">0</span>
-  <span class="skey">Sel</span><span class="sval" id="sb-sel">—</span>
-  <span class="skey">XY</span><span class="sval" id="sb-xy">—</span>
-  <span id="status-msg" class="msg-ok">Ready — click a component in the library, then click the canvas to place it</span>
+<!-- ═══════════ EDITOR PAGE ═══════════ -->
+<div id="pg-editor">
+  <div id="ed-topbar">
+    <div class="ed-logo" id="ed-back" title="Back to projects">◀ LF</div>
+    <div class="tsep"></div>
+    <div class="ed-project-name" id="ed-proj-name" title="Click to rename">Untitled</div>
+    <div class="tsep"></div>
+    <button class="tbtn" id="btn-sb">◧ Library</button>
+    <button class="tbtn" id="btn-rp">◨ Props</button>
+    <div class="tsep"></div>
+    <button class="tbtn" id="btn-pkg">⊞ Package</button>
+    <button class="tbtn danger" id="btn-clr">⊘ Clear</button>
+    <div class="tsep"></div>
+    <button class="tbtn" id="btn-zi">＋</button>
+    <button class="tbtn" id="btn-zo">－</button>
+    <button class="tbtn" id="btn-fit">⊡ Fit</button>
+    <div class="tsep"></div>
+    <button class="tbtn" style="color:var(--acb);border-color:var(--b2)" id="btn-verilog">⟨/⟩ Verilog</button>
+    <button class="tbtn" id="btn-share">⬡ Share</button>
+    <button class="tbtn" id="btn-hlp">? Help</button>
+    <div class="tright">
+      <span id="zoom-lbl" style="font-family:var(--fmono);font-size:10px;color:var(--t3)">100%</span>
+      <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--t3)">
+        <div class="livdot"></div>LIVE
+      </div>
+    </div>
+  </div>
+  <div id="ed-body">
+    <div id="sidebar">
+      <div id="sb-srch"><input id="sb-in" placeholder="Search…" autocomplete="off" spellcheck="false"></div>
+      <div id="sb-list"></div>
+    </div>
+    <div id="cvwrap">
+      <canvas id="grid-cv"></canvas>
+      <svg id="wire-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div id="sel-box"></div>
+      <div id="gate-lyr"></div>
+    </div>
+    <div id="rp">
+      <div id="rph">Properties</div>
+      <div id="rpb"><p style="color:var(--t3);font-size:11.5px;margin-top:6px">Select a gate</p></div>
+    </div>
+  </div>
+  <div id="stbar">
+    <span class="sk">Gates</span><span class="sv" id="st-g">0</span>
+    <span class="sk">Wires</span><span class="sv" id="st-w">0</span>
+    <span class="sk">Sel</span><span class="sv" id="st-s">—</span>
+    <span class="sk">XY</span><span class="sv" id="st-c">—</span>
+    <span id="stmsg" class="s-ok">Ready — select a component from the library and click canvas to place</span>
+  </div>
 </div>
 
 <!-- CONTEXT MENU -->
-<div id="ctx-menu">
-  <div class="ctx-item" id="ctx-del">🗑 Delete</div>
-  <div class="ctx-item" id="ctx-dup">⧉ Duplicate</div>
-  <div class="ctx-sep"></div>
-  <div class="ctx-item" id="ctx-reset">↺ Reset State</div>
-  <div class="ctx-sep"></div>
-  <div class="ctx-item" id="ctx-pkg">⊞ Package as Subcircuit…</div>
+<div id="cmenu">
+  <div class="cmi" id="cm-del">🗑 Delete</div>
+  <div class="cmi" id="cm-dup">⧉ Duplicate</div>
+  <div class="cmsep"></div>
+  <div class="cmi" id="cm-rst">↺ Reset State</div>
+  <div class="cmsep"></div>
+  <div class="cmi" id="cm-pkg">⊞ Package as Subcircuit</div>
 </div>
 
 <!-- TOOLTIP -->
-<div id="tooltip"></div>
+<div id="tip"></div>
 
-<!-- MODAL: Custom Gate Wizard -->
-<div class="modal-overlay" id="modal-custom">
-  <div class="modal-box wide">
-    <div class="modal-title">⊕ Create Custom Gate <small id="cg-step-lbl">Step 1 of 2</small></div>
-    <div class="modal-scroll" id="cg-content"></div>
-    <div class="modal-footer">
-      <button class="mbtn secondary" id="cg-cancel">Cancel</button>
-      <button class="mbtn secondary" id="cg-back" style="display:none">← Back</button>
-      <button class="mbtn primary" id="cg-next">Next →</button>
+<!-- MODAL: Custom Gate -->
+<div class="ov" id="ov-cg">
+  <div class="mbox wide">
+    <div class="mh">⊕ Custom Gate <small id="cg-sl">Step 1 of 2</small></div>
+    <div class="msc" id="cg-body"></div>
+    <div class="mft">
+      <button class="mbtn sc" id="cg-x">Cancel</button>
+      <button class="mbtn sc" id="cg-bk" style="display:none">← Back</button>
+      <button class="mbtn pr" id="cg-nx">Next →</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL: Manage Custom Gates -->
-<div class="modal-overlay" id="modal-manage">
-  <div class="modal-box">
-    <div class="modal-title">⊞ Custom Gate Library</div>
-    <div class="modal-scroll" id="manage-content"></div>
-    <div class="modal-footer"><button class="mbtn secondary" id="manage-close">Close</button></div>
+<!-- MODAL: Manage Custom -->
+<div class="ov" id="ov-mg">
+  <div class="mbox">
+    <div class="mh">⊞ Custom Gate Library</div>
+    <div class="msc" id="mg-body"></div>
+    <div class="mft"><button class="mbtn sc" id="mg-cl">Close</button></div>
+  </div>
+</div>
+
+<!-- MODAL: Verilog -->
+<div class="ov" id="ov-verilog">
+  <div class="mbox wide">
+    <div class="mh">⟨/⟩ Verilog RTL</div>
+    <div class="msc">
+      <div class="vtabs">
+        <div class="vtab on" id="vt-struct" data-mode="structural">Structural</div>
+        <div class="vtab" id="vt-behav" data-mode="behavioral">Behavioral</div>
+        <div class="vtab" id="vt-import">Import .v</div>
+      </div>
+      <div id="v-export-area">
+        <div class="vcode" id="vcode"></div>
+      </div>
+      <div id="v-import-area" style="display:none">
+        <div class="vimport-area" id="v-drop-zone">
+          <div style="font-size:24px;margin-bottom:10px">📄</div>
+          <div>Drop a <strong>.v</strong> file here or click to browse</div>
+          <div style="font-size:11px;margin-top:6px;color:var(--t3)">Supports: assign statements, basic gate instantiations</div>
+        </div>
+        <input type="file" id="v-file-in" accept=".v" style="display:none">
+        <div id="v-parse-result" style="margin-top:8px;font-size:11.5px;color:var(--t3)"></div>
+      </div>
+    </div>
+    <div class="mft">
+      <button class="mbtn sc" id="v-close">Close</button>
+      <button class="mbtn pr" id="v-dl" style="display:flex;align-items:center;gap:6px">⬇ Download .v</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Share -->
+<div class="ov" id="ov-share">
+  <div class="mbox">
+    <div class="mh">⬡ Share Project</div>
+    <div class="msc">
+      <p style="font-size:12px;color:var(--t3);margin-bottom:12px;line-height:1.6">
+        Share this code with collaborators. They can join via the Projects page → "Join Shared Project".
+      </p>
+      <div class="ph">Share Code</div>
+      <div class="share-code" id="share-code" title="Click to copy" onclick="copyShareCode()"></div>
+      <div style="font-size:11px;color:var(--t3);margin-top:6px" id="share-copied"></div>
+      <div class="psep"></div>
+      <p style="font-size:12px;color:var(--t3);line-height:1.6">
+        Or export the project as a JSON file to send directly:
+      </p>
+    </div>
+    <div class="mft">
+      <button class="mbtn sc" id="share-close">Close</button>
+      <button class="mbtn sc" id="share-export">⬇ Export JSON</button>
+    </div>
   </div>
 </div>
 
 <!-- MODAL: Help -->
-<div class="modal-overlay" id="modal-help">
-  <div class="modal-box">
-    <div class="modal-title">⌨ Keyboard Shortcuts & Usage</div>
-    <div class="modal-scroll">
-      <div class="help-row"><span class="help-key">Click sidebar</span><span class="help-val">Select component type to place</span></div>
-      <div class="help-row"><span class="help-key">Click canvas</span><span class="help-val">Place selected component at cursor</span></div>
-      <div class="help-row"><span class="help-key">Drag gate</span><span class="help-val">Move gate to a new position</span></div>
-      <div class="help-row"><span class="help-key">Click INPUT</span><span class="help-val">Toggle between 0 and 1</span></div>
-      <div class="help-row"><span class="help-key">Click output pin</span><span class="help-val">Start drawing a wire</span></div>
-      <div class="help-row"><span class="help-key">Click input pin</span><span class="help-val">Complete the wire connection</span></div>
-      <div class="help-row"><span class="help-key">Click wire</span><span class="help-val">Delete that wire</span></div>
-      <div class="help-row"><span class="help-key">Shift + click gate</span><span class="help-val">Add to multi-selection</span></div>
-      <div class="help-row"><span class="help-key">Drag empty canvas</span><span class="help-val">Rubber-band select multiple gates</span></div>
-      <div class="help-row"><span class="help-key">⊞ Package button</span><span class="help-val">Save selection as reusable custom gate (needs ≥1 input + ≥1 output)</span></div>
-      <div class="help-row"><span class="help-key">Esc</span><span class="help-val">Cancel wire / stop placing / deselect all</span></div>
-      <div class="help-row"><span class="help-key">Del / Backspace</span><span class="help-val">Delete selected gate(s)</span></div>
-      <div class="help-row"><span class="help-key">Scroll wheel</span><span class="help-val">Zoom in / out at cursor position</span></div>
-      <div class="help-row"><span class="help-key">Middle-drag / Alt-drag</span><span class="help-val">Pan the canvas</span></div>
-      <div class="help-row"><span class="help-key">Double-click clock</span><span class="help-val">Set oscillation frequency</span></div>
-      <div style="margin-top:12px;padding:10px;background:var(--bg0);border-radius:4px;
-                  font-family:var(--fmono);font-size:10.5px;color:var(--t3);line-height:1.85">
-        <b style="color:var(--t2)">SR LATCH</b> — S=R=1 is INVALID (red outline)<br>
-        <b style="color:var(--t2)">D LATCH</b> — When E=1, Q follows D (transparent)<br>
-        <b style="color:var(--t2)">D/JK/T FF</b> — Triggered on CLK ↑ rising edge<br>
-        <b style="color:var(--t2)">MUX 2:1</b> — S=0→Y=A,  S=1→Y=B<br>
-        <b style="color:var(--t2)">MUX 4:1</b> — S1S0 selects D0-D3<br>
-        <b style="color:var(--t2)">DMUX 1:4</b> — S1S0 routes IN to Y0-Y3<br>
-        <b style="color:var(--t2)">4-BIT ADDER</b> — A3-A0, B3-B0, Cin → S3-S0, Cout
+<div class="ov" id="ov-hlp">
+  <div class="mbox">
+    <div class="mh">⌨ Help & Shortcuts</div>
+    <div class="msc">
+      <div style="display:grid;grid-template-columns:110px 1fr;gap:7px 10px;font-size:12px">
+        <span style="font-family:var(--fmono);color:var(--aca)">Click sidebar</span><span style="color:var(--t2)">Select component to place</span>
+        <span style="font-family:var(--fmono);color:var(--aca)">Click canvas</span><span style="color:var(--t2)">Place component</span>
+        <span style="font-family:var(--fmono);color:var(--aca)">Drag gate</span><span style="color:var(--t2)">Move it</span>
+        <span style="font-family:var(--fmono);color:var(--aca)">Click INPUT</span><span style="color:var(--t2)">Toggle 0 ↔ 1</span>
+        <span style="font-family:var(--fmono);color:var(--aca)">Click out pin</span><span style="color:var(--t2)">Start drawing wire</span>
+        <span style="font-family:var(--fmono);color:var(--aca)">Click in pin</span><span style="color:var(--t2)">Connect wire</span>
+        <span style="font-family:var(--fmono);color:var(--aca)">Click wire</span><span style="color:var(--t2)">Delete wire</span>
+        <span style="font-family:var(--fmono);color:var(--aca)">Shift+click</span><span style="color:var(--t2)">Multi-select</span>
+        <span style="font-family:var(--fmono);color:var(--aca)">Drag canvas</span><span style="color:var(--t2)">Rubber-band select</span>
+        <span style="font-family:var(--fmono);color:var(--aca)">Scroll</span><span style="color:var(--t2)">Zoom in/out</span>
+        <span style="font-family:var(--fmono);color:var(--aca)">Middle-drag</span><span style="color:var(--t2)">Pan canvas</span>
+        <span style="font-family:var(--fmono);color:var(--aca)">Esc</span><span style="color:var(--t2)">Cancel / deselect</span>
+        <span style="font-family:var(--fmono);color:var(--aca)">Del/Backspace</span><span style="color:var(--t2)">Delete selected</span>
+        <span style="font-family:var(--fmono);color:var(--aca)">Dbl-click CLK</span><span style="color:var(--t2)">Set frequency in Props</span>
+        <span style="font-family:var(--fmono);color:var(--aca)">⊞ Package</span><span style="color:var(--t2)">Save selection as custom gate (needs ≥1 INPUT + ≥1 OUTPUT)</span>
+      </div>
+      <div style="margin-top:12px;padding:9px;background:var(--bg0);border-radius:3px;font-family:var(--fmono);font-size:10.5px;color:var(--t3);line-height:1.85">
+        SR: S=R=1 is INVALID (red outline) · D-Latch: E=1 transparent<br>
+        D/JK/T FF: trigger on CLK ↑ · MUX 2:1: S=0→A S=1→B<br>
+        4BIT ADDER: A3-A0, B3-B0, Cin → S3-S0, Cout
       </div>
     </div>
-    <div class="modal-footer"><button class="mbtn primary" id="help-close">Close</button></div>
+    <div class="mft"><button class="mbtn pr" id="hlp-cl">Close</button></div>
   </div>
 </div>
 
 <script>
-// ════════════════════════════════════════════════════════════
-// 1. GATE DEFINITIONS
-// ════════════════════════════════════════════════════════════
-const CATEGORIES = [
-  { id:'io',    label:'I / O',       color:'#3dba6e',
-    types:['input','output','clock','const0','const1'] },
-  { id:'gates', label:'Logic Gates', color:'#4890d8',
-    types:['buffer','and','or','not','nand','nor','xor','xnor'] },
-  { id:'arith', label:'Arithmetic',  color:'#e09626',
-    types:['ha','fa','add4'] },
-  { id:'plex',  label:'Plexers',     color:'#7860c8',
-    types:['mux2','mux4','dmux2','dmux4','enc4','dec2'] },
-  { id:'seq',   label:'Sequential',  color:'#c09428',
-    types:['sr','dlatch','dff','jkff','tff'] },
-  { id:'custom',label:'Custom Gates',color:'#50a878',
-    types:[] },
+// ═══════════════════════════════════════════════════════
+// GATE DEFINITIONS
+// ═══════════════════════════════════════════════════════
+const CATS = [
+  {id:'io',    lbl:'I / O',       col:'#3dba6e', types:['input','output','clock','const0','const1']},
+  {id:'gates', lbl:'Logic Gates', col:'#4890d8', types:['buffer','and','or','not','nand','nor','xor','xnor']},
+  {id:'arith', lbl:'Arithmetic',  col:'#e09626', types:['ha','fa','add4']},
+  {id:'plex',  lbl:'Plexers',     col:'#7860c8', types:['mux2','mux4','dmux2','dmux4','enc4','dec2']},
+  {id:'seq',   lbl:'Sequential',  col:'#c09428', types:['sr','dlatch','dff','jkff','tff']},
+  {id:'custom',lbl:'Custom Gates',col:'#50a878', types:[]},
 ];
 
-// w, h = natural size in pixels; nc = input count; np = output count
-const DEFS = {
-  input:  { lbl:'IN',    w:52, h:40,  nc:0, np:1, tip:'Toggle Input\nClick the gate body to switch 0 ↔ 1' },
-  output: { lbl:'OUT',   w:58, h:40,  nc:1, np:0, tip:'Output Probe\nDisplays the incoming signal' },
-  clock:  { lbl:'CLK',   w:64, h:54,  nc:0, np:1, tip:'Clock Oscillator\nDouble-click to change frequency' },
-  const0: { lbl:'0',     w:40, h:34,  nc:0, np:1, tip:'Constant LOW (0)' },
-  const1: { lbl:'1',     w:40, h:34,  nc:0, np:1, tip:'Constant HIGH (1)' },
-  buffer: { lbl:'BUF',   w:56, h:38,  nc:1, np:1, tip:'Buffer\nPasses signal unchanged' },
-  and:    { lbl:'AND',   w:66, h:44,  nc:2, np:1, tip:'AND Gate\nHIGH only when ALL inputs are HIGH' },
-  or:     { lbl:'OR',    w:60, h:44,  nc:2, np:1, tip:'OR Gate\nHIGH when ANY input is HIGH' },
-  not:    { lbl:'NOT',   w:56, h:38,  nc:1, np:1, tip:'NOT Gate\nInverts the input signal' },
-  nand:   { lbl:'NAND',  w:70, h:44,  nc:2, np:1, tip:'NAND Gate\nNOT AND — universal gate' },
-  nor:    { lbl:'NOR',   w:64, h:44,  nc:2, np:1, tip:'NOR Gate\nNOT OR' },
-  xor:    { lbl:'XOR',   w:60, h:44,  nc:2, np:1, tip:'XOR Gate\nHIGH when inputs are DIFFERENT' },
-  xnor:   { lbl:'XNOR',  w:70, h:44,  nc:2, np:1, tip:'XNOR Gate\nHIGH when inputs MATCH' },
-  ha:     { lbl:'HA',    w:66, h:54,  nc:2, np:2, tip:'Half Adder\nInputs: A, B\nOutputs: Sum, Carry', sub:'HALF ADD' },
-  fa:     { lbl:'FA',    w:66, h:62,  nc:3, np:2, tip:'Full Adder\nInputs: A, B, Cin\nOutputs: Sum, Cout', sub:'FULL ADD' },
-  add4:   { lbl:'4BIT',  w:80, h:122, nc:9, np:5, tip:'4-Bit Adder\nInputs: A3-A0, B3-B0, Cin\nOutputs: S3-S0, Cout', sub:'ADDER' },
-  mux2:   { lbl:'MUX',   w:66, h:60,  nc:3, np:1, tip:'2:1 Multiplexer\nInputs: A, B, S\nOutput: Y\nS=0 → Y=A,  S=1 → Y=B', sub:'2:1' },
-  mux4:   { lbl:'MUX',   w:66, h:92,  nc:6, np:1, tip:'4:1 Multiplexer\nInputs: D0,D1,D2,D3, S0,S1\nOutput: Y', sub:'4:1' },
-  dmux2:  { lbl:'DMUX',  w:66, h:60,  nc:2, np:2, tip:'1:2 Demultiplexer\nInputs: IN, S\nOutputs: Y0, Y1', sub:'1:2' },
-  dmux4:  { lbl:'DMUX',  w:66, h:92,  nc:3, np:4, tip:'1:4 Demultiplexer\nInputs: IN, S0, S1\nOutputs: Y0, Y1, Y2, Y3', sub:'1:4' },
-  enc4:   { lbl:'ENC',   w:66, h:74,  nc:4, np:2, tip:'4:2 Priority Encoder\nInputs: I0,I1,I2,I3\nOutputs: A0, A1', sub:'4:2' },
-  dec2:   { lbl:'DEC',   w:66, h:74,  nc:2, np:4, tip:'2:4 Decoder\nInputs: A0, A1\nOutputs: Y0,Y1,Y2,Y3', sub:'2:4' },
-  sr:     { lbl:'SR',    w:72, h:66,  nc:2, np:2, tip:'SR Latch\nInputs: S, R\nOutputs: Q, Q̄\nWARNING: S=R=1 is INVALID!', sub:'LATCH' },
-  dlatch: { lbl:'D',     w:72, h:66,  nc:2, np:2, tip:'D Latch\nInputs: D, E (enable)\nOutputs: Q, Q̄\nTransparent when E=1', sub:'LATCH' },
-  dff:    { lbl:'D-FF',  w:76, h:82,  nc:3, np:2, tip:'D Flip-Flop\nInputs: D, CLK, RST\nOutputs: Q, Q̄\nCaptures D on CLK ↑' },
-  jkff:   { lbl:'JK-FF', w:76, h:82,  nc:3, np:2, tip:'JK Flip-Flop\nInputs: J, K, CLK\nOutputs: Q, Q̄\n00=hold  01=reset  10=set  11=toggle' },
-  tff:    { lbl:'T-FF',  w:72, h:66,  nc:2, np:2, tip:'T Flip-Flop\nInputs: T, CLK\nOutputs: Q, Q̄\nToggles Q on CLK ↑ when T=1' },
+const DEF = {
+  input: {lbl:'IN',   w:52, h:40,  nc:0,np:1,cls:'ti',  tip:'Toggle Input\nClick body to switch 0↔1'},
+  output:{lbl:'OUT',  w:58, h:40,  nc:1,np:0,cls:'to',  tip:'Output Probe — shows signal'},
+  clock: {lbl:'CLK',  w:64, h:54,  nc:0,np:1,cls:'tck', tip:'Clock oscillator\nDouble-click → set freq in Props'},
+  const0:{lbl:'0',    w:40, h:34,  nc:0,np:1,cls:'tc0', tip:'Constant LOW (0)'},
+  const1:{lbl:'1',    w:40, h:34,  nc:0,np:1,cls:'tc1', tip:'Constant HIGH (1)'},
+  buffer:{lbl:'BUF',  w:56, h:38,  nc:1,np:1,cls:'tbf', tip:'Buffer — passes signal'},
+  and:   {lbl:'AND',  w:66, h:44,  nc:2,np:1,cls:'tan', tip:'AND — all inputs HIGH'},
+  or:    {lbl:'OR',   w:60, h:44,  nc:2,np:1,cls:'tor', tip:'OR — any input HIGH'},
+  not:   {lbl:'NOT',  w:56, h:38,  nc:1,np:1,cls:'tno', tip:'NOT — inverts input'},
+  nand:  {lbl:'NAND', w:70, h:44,  nc:2,np:1,cls:'tna', tip:'NAND — NOT AND (universal)'},
+  nor:   {lbl:'NOR',  w:64, h:44,  nc:2,np:1,cls:'tnr', tip:'NOR — NOT OR'},
+  xor:   {lbl:'XOR',  w:60, h:44,  nc:2,np:1,cls:'txo', tip:'XOR — inputs differ'},
+  xnor:  {lbl:'XNOR', w:70, h:44,  nc:2,np:1,cls:'txn', tip:'XNOR — inputs match'},
+  ha:    {lbl:'HA',   w:66, h:54,  nc:2,np:2,cls:'tah', tip:'Half Adder\nA,B → Sum,Carry',sub:'HALF ADD'},
+  fa:    {lbl:'FA',   w:66, h:62,  nc:3,np:2,cls:'taf', tip:'Full Adder\nA,B,Cin → Sum,Cout',sub:'FULL ADD'},
+  add4:  {lbl:'4BIT', w:80, h:122, nc:9,np:5,cls:'taa', tip:'4-Bit Adder\nA3-A0,B3-B0,Cin→S3-S0,Cout',sub:'ADDER'},
+  mux2:  {lbl:'MUX',  w:66, h:60,  nc:3,np:1,cls:'tm2', tip:'2:1 MUX\nA,B,S→Y  S=0→A  S=1→B',sub:'2:1'},
+  mux4:  {lbl:'MUX',  w:66, h:92,  nc:6,np:1,cls:'tm4', tip:'4:1 MUX\nD0-D3,S0,S1→Y',sub:'4:1'},
+  dmux2: {lbl:'DMUX', w:66, h:60,  nc:2,np:2,cls:'td2', tip:'1:2 DEMUX\nIN,S→Y0,Y1',sub:'1:2'},
+  dmux4: {lbl:'DMUX', w:66, h:92,  nc:3,np:4,cls:'td4', tip:'1:4 DEMUX\nIN,S0,S1→Y0-Y3',sub:'1:4'},
+  enc4:  {lbl:'ENC',  w:66, h:74,  nc:4,np:2,cls:'te4', tip:'4:2 Priority Encoder\nI0-I3→A0,A1',sub:'4:2'},
+  dec2:  {lbl:'DEC',  w:66, h:74,  nc:2,np:4,cls:'tdc', tip:'2:4 Decoder\nA0,A1→Y0-Y3',sub:'2:4'},
+  sr:    {lbl:'SR',   w:72, h:66,  nc:2,np:2,cls:'tsr', tip:'SR Latch\nS,R→Q,Q̄  S=R=1 INVALID!',sub:'LATCH'},
+  dlatch:{lbl:'D',    w:72, h:66,  nc:2,np:2,cls:'tdl', tip:'D Latch\nD,E→Q,Q̄  Transparent E=1',sub:'LATCH'},
+  dff:   {lbl:'D-FF', w:76, h:82,  nc:3,np:2,cls:'tdf', tip:'D Flip-Flop\nD,CLK,RST→Q,Q̄  Captures D on CLK↑'},
+  jkff:  {lbl:'JK-FF',w:76, h:82,  nc:3,np:2,cls:'tjk', tip:'JK Flip-Flop\nJ,K,CLK→Q,Q̄\n00=hold 01=reset 10=set 11=toggle'},
+  tff:   {lbl:'T-FF', w:72, h:66,  nc:2,np:2,cls:'ttf', tip:'T Flip-Flop\nT,CLK→Q,Q̄  Toggles on CLK↑ T=1'},
 };
 
-// Pin labels (optional, shown inside gate body near pins)
-const PIN_LABELS = {
-  ha:     { i:['A','B'],       o:['Σ','Co'] },
-  fa:     { i:['A','B','Ci'],  o:['Σ','Co'] },
-  add4:   { i:['A3','A2','A1','A0','B3','B2','B1','B0','Ci'], o:['S3','S2','S1','S0','Co'] },
-  mux2:   { i:['A','B','S'],   o:['Y'] },
-  mux4:   { i:['D0','D1','D2','D3','S0','S1'], o:['Y'] },
-  dmux2:  { i:['IN','S'],      o:['Y0','Y1'] },
-  dmux4:  { i:['IN','S0','S1'],o:['Y0','Y1','Y2','Y3'] },
-  enc4:   { i:['I0','I1','I2','I3'], o:['A0','A1'] },
-  dec2:   { i:['A0','A1'],     o:['Y0','Y1','Y2','Y3'] },
-  sr:     { i:['S','R'],       o:['Q','Q̄'] },
-  dlatch: { i:['D','E'],       o:['Q','Q̄'] },
-  dff:    { i:['D','▶','R'],   o:['Q','Q̄'] },
-  jkff:   { i:['J','K','▶'],   o:['Q','Q̄'] },
-  tff:    { i:['T','▶'],       o:['Q','Q̄'] },
+const PLBL = {
+  ha:    {i:['A','B'],o:['Σ','Co']},
+  fa:    {i:['A','B','Ci'],o:['Σ','Co']},
+  add4:  {i:['A3','A2','A1','A0','B3','B2','B1','B0','Ci'],o:['S3','S2','S1','S0','Co']},
+  mux2:  {i:['A','B','S'],o:['Y']},
+  mux4:  {i:['D0','D1','D2','D3','S0','S1'],o:['Y']},
+  dmux2: {i:['IN','S'],o:['Y0','Y1']},
+  dmux4: {i:['IN','S0','S1'],o:['Y0','Y1','Y2','Y3']},
+  enc4:  {i:['I0','I1','I2','I3'],o:['A0','A1']},
+  dec2:  {i:['A0','A1'],o:['Y0','Y1','Y2','Y3']},
+  sr:    {i:['S','R'],o:['Q','Q̄']},
+  dlatch:{i:['D','E'],o:['Q','Q̄']},
+  dff:   {i:['D','▶','R'],o:['Q','Q̄']},
+  jkff:  {i:['J','K','▶'],o:['Q','Q̄']},
+  tff:   {i:['T','▶'],o:['Q','Q̄']},
 };
 
-const GATE_COLORS = {
+const GCOL={
   input:'#58a858',output:'#a85858',clock:'#5890c0',const0:'#7a8090',const1:'#c0a030',
   buffer:'#5888a0',and:'#4890d8',or:'#48aa68',not:'#e04858',nand:'#9860cc',
   nor:'#c86098',xor:'#d25898',xnor:'#c06860',
@@ -581,1586 +709,1617 @@ const GATE_COLORS = {
   sr:'#c09428',dlatch:'#c09428',dff:'#a07018',jkff:'#a07018',tff:'#a07018',
 };
 
-// ════════════════════════════════════════════════════════════
-// 2. STATE
-// ════════════════════════════════════════════════════════════
-const STATE = {
-  gates:   [],          // { id, type, cn, x, y, value, q, prevClk, freq, fault }
-  wires:   [],          // { id, fg, fp, tg, tp, sig }
-  sel:     null,        // selected gate id (single)
-  msel:    new Set(),   // multi-selected gate ids
-  placing: null,        // type string being placed
-  wiring:  null,        // { gateId, pinIdx, isOut }
-  wprev:   null,        // { x1,y1,x2,y2 } wire preview coords
-  zoom:    1,
-  panX:    0,
-  panY:    0,
-  nextId:  1,
-  custom:  {},          // name → custom gate definition
-  propsDirty: false,
-  clearArmed: false,
+// ═══════════════════════════════════════════════════════
+// AUTH & USERS
+// ═══════════════════════════════════════════════════════
+let CU = null; // current user { email, name }
+
+function authLoad() {
+  try { CU = JSON.parse(localStorage.getItem('lgf_session') || 'null'); } catch(e){ CU = null; }
+}
+function authSave() {
+  localStorage.setItem('lgf_session', CU ? JSON.stringify(CU) : 'null');
+}
+function getUserData(email) {
+  try { return JSON.parse(localStorage.getItem('lgf_user_' + email) || '{}'); } catch(e){ return {}; }
+}
+function setUserData(email, data) {
+  localStorage.setItem('lgf_user_' + email, JSON.stringify(data));
+}
+function registerUser(email, name) {
+  const existing = getUserData(email);
+  if (!existing.projects) {
+    setUserData(email, { name, projects: {} });
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// PROJECT MANAGEMENT
+// ═══════════════════════════════════════════════════════
+let PROJ = null; // { id, name, data:{gates,wires,custom} }
+
+function getProjects() {
+  const ud = getUserData(CU.email);
+  return ud.projects || {};
+}
+function saveProject(id, name, data) {
+  const ud = getUserData(CU.email);
+  if (!ud.projects) ud.projects = {};
+  ud.projects[id] = { id, name, data, updatedAt: Date.now(), owner: CU.email };
+  setUserData(CU.email, ud);
+}
+function deleteProject(id) {
+  const ud = getUserData(CU.email);
+  delete ud.projects[id];
+  setUserData(CU.email, ud);
+}
+function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+// Shared projects stored in global namespace
+function shareProject(id, data) {
+  const code = 'lgf_shared_' + id;
+  localStorage.setItem(code, JSON.stringify({ id, name: PROJ.name, data, sharedBy: CU.email, sharedAt: Date.now() }));
+  return id;
+}
+function joinSharedProject(code) {
+  const key = code.startsWith('lgf_shared_') ? code : 'lgf_shared_' + code;
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch(e) { return null; }
+}
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+const S = {
+  gates:[], wires:[], sel:null, msel:new Set(),
+  placing:null, wfrom:null, wprev:null,
+  zoom:1, panX:50, panY:40, nid:1,
+  custom:{},  // name → custom gate def
+  dirty:false, pdirty:false,
 };
 
-// ════════════════════════════════════════════════════════════
-// 3. DOM REFS
-// ════════════════════════════════════════════════════════════
-const canvasArea  = document.getElementById('canvas-area');
-const gridCanvas  = document.getElementById('grid-canvas');
-const wireSvg     = document.getElementById('wire-svg');
-const gateContainer = document.getElementById('gate-container');
-const selRect     = document.getElementById('sel-rect');
-const ctxMenu     = document.getElementById('ctx-menu');
-const tooltipEl   = document.getElementById('tooltip');
-let ctxGateId     = null;
+// ═══════════════════════════════════════════════════════
+// UTIL
+// ═══════════════════════════════════════════════════════
+const cvwrap = document.getElementById('cvwrap');
+const gridCv = document.getElementById('grid-cv');
+const wireSvg = document.getElementById('wire-svg');
+const gateLyr = document.getElementById('gate-lyr');
+const selBox  = document.getElementById('sel-box');
+const tipEl   = document.getElementById('tip');
+const cmenu   = document.getElementById('cmenu');
+let cmGid = null;
 
-// ════════════════════════════════════════════════════════════
-// 4. UTILITY
-// ════════════════════════════════════════════════════════════
-function w2s(wx, wy) {
-  return { x: wx * STATE.zoom + STATE.panX, y: wy * STATE.zoom + STATE.panY };
-}
-function s2w(sx, sy) {
-  return { x: (sx - STATE.panX) / STATE.zoom, y: (sy - STATE.panY) / STATE.zoom };
-}
-function snap(v) { return Math.round(v / 20) * 20; }
+function w2s(wx,wy){return{x:wx*S.zoom+S.panX,y:wy*S.zoom+S.panY}}
+function s2w(sx,sy){return{x:(sx-S.panX)/S.zoom,y:(sy-S.panY)/S.zoom}}
+function snap(v){return Math.round(v/20)*20}
 
-function getDef(gate) {
-  if (gate.type === 'custom') {
-    const c = STATE.custom[gate.cn];
-    return c ? c._def : DEFS.buffer;
+function gdef(gate){
+  if(gate.type==='custom'){
+    const c=S.custom[gate.cn];
+    return c?c._def:DEF.buffer;
   }
-  return DEFS[gate.type] || DEFS.buffer;
+  return DEF[gate.type]||DEF.buffer;
 }
-function getPinLabels(gate) {
-  if (gate.type === 'custom') {
-    const c = STATE.custom[gate.cn];
-    return c ? { i: c.ins, o: c.outs } : { i: [], o: [] };
-  }
-  return PIN_LABELS[gate.type] || { i: [], o: [] };
+function gplbl(gate){
+  if(gate.type==='custom'){const c=S.custom[gate.cn];return c?{i:c.ins,o:c.outs}:{i:[],o:[]};}
+  return PLBL[gate.type]||{i:[],o:[]};
 }
 
-// Screen position of a pin center
-function pinScreenXY(gate, isOut, pinIdx) {
-  const def = getDef(gate);
-  const count = isOut ? def.np : def.nc;
-  if (pinIdx < 0 || pinIdx >= count) return null;
-  const py = def.h * (pinIdx + 1) / (count + 1);
-  const px = isOut ? def.w : 0;
-  const s = w2s(gate.x + px, gate.y + py);
-  return { x: s.x, y: s.y };
+// Pin screen position — uses percentage-based layout
+function pxy(gate,isOut,idx){
+  const d=gdef(gate);
+  const count=isOut?d.np:d.nc;
+  if(idx<0||idx>=count)return null;
+  const pct=(idx+1)/(count+1);
+  const wx=gate.x+(isOut?d.w:0);
+  const wy=gate.y+d.h*pct;
+  const s=w2s(wx,wy);
+  return{x:s.x,y:s.y};
 }
 
-// ════════════════════════════════════════════════════════════
-// 5. GRID
-// ════════════════════════════════════════════════════════════
-const GRID = 20;
-function drawGrid() {
-  const W = canvasArea.clientWidth, H = canvasArea.clientHeight;
-  if (!W || !H) return;
-  gridCanvas.width = W; gridCanvas.height = H;
-  wireSvg.setAttribute('width', W); wireSvg.setAttribute('height', H);
-  const ctx = gridCanvas.getContext('2d');
-  ctx.clearRect(0, 0, W, H);
-  const step = GRID * STATE.zoom;
-  const ox = ((STATE.panX % step) + step) % step;
-  const oy = ((STATE.panY % step) + step) % step;
-  ctx.strokeStyle = '#1c2030'; ctx.lineWidth = 0.6;
-  for (let x = ox; x < W; x += step) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
-  for (let y = oy; y < H; y += step) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+// ═══════════════════════════════════════════════════════
+// GRID
+// ═══════════════════════════════════════════════════════
+function drawGrid(){
+  const W=cvwrap.clientWidth,H=cvwrap.clientHeight;
+  if(!W||!H)return;
+  gridCv.width=W;gridCv.height=H;
+  wireSvg.setAttribute('width',W);wireSvg.setAttribute('height',H);
+  const c=gridCv.getContext('2d');
+  c.clearRect(0,0,W,H);
+  const step=20*S.zoom;
+  const ox=((S.panX%step)+step)%step;
+  const oy=((S.panY%step)+step)%step;
+  c.strokeStyle='#1c2030';c.lineWidth=.6;
+  for(let x=ox;x<W;x+=step){c.beginPath();c.moveTo(x,0);c.lineTo(x,H);c.stroke();}
+  for(let y=oy;y<H;y+=step){c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke();}
 }
 
-// ════════════════════════════════════════════════════════════
-// 6. GATE ELEMENT CREATION
-// ════════════════════════════════════════════════════════════
-function createGateEl(gate) {
-  const def = getDef(gate);
-  const typeClass = gate.type === 'custom' ? 'gt-custom' : 'gt-' + gate.type;
+// ═══════════════════════════════════════════════════════
+// GATE ELEMENT — no CSS transform, real pixel sizing
+// ═══════════════════════════════════════════════════════
+function mkGateEl(gate){
+  const d=gdef(gate);
+  const typeCls=gate.type==='custom'?'tcu':d.cls||'tbf';
 
-  const el = document.createElement('div');
-  el.className = 'gate ' + typeClass;
-  el.dataset.gid = gate.id;
+  const el=document.createElement('div');
+  el.className='gate '+typeCls;
+  el.dataset.gid=gate.id;
 
-  const shell = document.createElement('div');
-  shell.className = 'gate-shell';
+  const body=document.createElement('div');
+  body.className='gbody';
 
-  // ── Body content
-  const content = document.createElement('div');
-  content.style.cssText = 'text-align:center;pointer-events:none;z-index:1;position:relative';
+  // Content label (centered)
+  const cnt=document.createElement('div');
+  cnt.style.cssText='text-align:center;pointer-events:none;position:relative;z-index:1;width:100%';
 
-  if (gate.type === 'input') {
-    content.innerHTML = `<div class="gate-val" id="gv-${gate.id}">0</div>`;
-  } else if (gate.type === 'output') {
-    content.innerHTML = `<div style="font-size:8px;color:var(--t3);letter-spacing:1px">OUTPUT</div>
-                         <div class="gate-val" id="gv-${gate.id}" style="font-size:16px">?</div>`;
-  } else if (gate.type === 'clock') {
-    content.innerHTML = `<div class="gate-label" style="font-size:10px">CLK</div>
-      <div class="clk-wave" id="clkwave-${gate.id}">
-        <div class="clk-seg lo"></div><div class="clk-seg hi"></div>
-        <div class="clk-seg lo"></div><div class="clk-seg hi"></div>
+  if(gate.type==='input'){
+    cnt.innerHTML=`<div class="gval" id="gv${gate.id}">0</div>`;
+  }else if(gate.type==='output'){
+    cnt.innerHTML=`<div style="font-size:.65em;color:var(--t3);letter-spacing:1px">OUT</div><div class="gval" id="gv${gate.id}">?</div>`;
+  }else if(gate.type==='clock'){
+    cnt.innerHTML=`<div class="glbl" style="font-size:.75em">CLK</div>
+      <div class="cwv" id="cwv${gate.id}">
+        <div class="cs lo"></div><div class="cs hi"></div>
+        <div class="cs lo"></div><div class="cs hi"></div>
       </div>
-      <div class="clk-freq-lbl" id="clkfreq-${gate.id}">${gate.freq || 1}Hz</div>`;
-  } else if (['sr','dlatch','dff','jkff','tff'].includes(gate.type)) {
-    content.innerHTML = `<div class="gate-label">${def.lbl}</div>
-      <div class="gate-sub">${def.sub || ''}</div>
-      <div class="gate-qval" id="gv-${gate.id}">Q=0</div>`;
-  } else {
-    content.innerHTML = `<div class="gate-label">${def.lbl}</div>
-      ${def.sub ? `<div class="gate-sub">${def.sub}</div>` : ''}`;
+      <div style="font-size:.6em;color:var(--t3);margin-top:2px" id="cfl${gate.id}">${gate.freq||1}Hz</div>`;
+  }else if(['sr','dlatch','dff','jkff','tff'].includes(gate.type)){
+    cnt.innerHTML=`<div class="glbl">${d.lbl}</div>
+      <div class="gsub" id="gsub${gate.id}">${d.sub||''}</div>
+      <div class="gqval" id="gv${gate.id}">Q=0</div>`;
+  }else{
+    cnt.innerHTML=`<div class="glbl">${d.lbl}</div>${d.sub?`<div class="gsub">${d.sub}</div>`:''}`;
   }
-  shell.appendChild(content);
+  body.appendChild(cnt);
 
-  // ── Pin elements + labels
-  const plbls = getPinLabels(gate);
-
-  for (let i = 0; i < def.nc; i++) {
-    const py = def.h * (i + 1) / (def.nc + 1);
-    const pin = document.createElement('div');
-    pin.className = 'pin';
-    pin.style.cssText = `left:-5px;top:${py - 5}px`;
-    pin.dataset.gid = gate.id; pin.dataset.dir = 'in'; pin.dataset.idx = i;
-    shell.appendChild(pin);
-    if ((plbls.i || [])[i]) {
-      const lbl = document.createElement('div');
-      lbl.className = 'pin-label';
-      lbl.textContent = plbls.i[i];
-      lbl.style.cssText = `left:8px;top:${py - 9}px`;
-      shell.appendChild(lbl);
+  // Pins — positioned as % of height (no px values here; recomputed in posGate)
+  const pl=gplbl(gate);
+  for(let i=0;i<d.nc;i++){
+    const pin=document.createElement('div');
+    pin.className='pin';
+    pin.dataset.gid=gate.id;pin.dataset.dir='in';pin.dataset.idx=i;
+    body.appendChild(pin);
+    if((pl.i||[])[i]){
+      const lb=document.createElement('div');
+      lb.className='plbl';
+      lb.dataset.side='in';lb.dataset.idx=i;
+      lb.textContent=pl.i[i];
+      body.appendChild(lb);
     }
   }
-  for (let i = 0; i < def.np; i++) {
-    const py = def.h * (i + 1) / (def.np + 1);
-    const pin = document.createElement('div');
-    pin.className = 'pin';
-    pin.style.cssText = `right:-5px;left:auto;top:${py - 5}px`;
-    pin.dataset.gid = gate.id; pin.dataset.dir = 'out'; pin.dataset.idx = i;
-    shell.appendChild(pin);
-    if ((plbls.o || [])[i]) {
-      const lbl = document.createElement('div');
-      lbl.className = 'pin-label';
-      lbl.textContent = plbls.o[i];
-      lbl.style.cssText = `right:8px;left:auto;top:${py - 9}px`;
-      shell.appendChild(lbl);
+  for(let i=0;i<d.np;i++){
+    const pin=document.createElement('div');
+    pin.className='pin';
+    pin.dataset.gid=gate.id;pin.dataset.dir='out';pin.dataset.idx=i;
+    body.appendChild(pin);
+    if((pl.o||[])[i]){
+      const lb=document.createElement('div');
+      lb.className='plbl';
+      lb.dataset.side='out';lb.dataset.idx=i;
+      lb.textContent=pl.o[i];
+      body.appendChild(lb);
     }
   }
 
-  el.appendChild(shell);
-  applyGatePosition(gate, el);
+  el.appendChild(body);
+  posGate(gate,el);
   return el;
 }
 
-function applyGatePosition(gate, el) {
-  el = el || gate.el;
-  if (!el) return;
-  const def = getDef(gate);
-  const s = w2s(gate.x, gate.y);
-  el.style.left = s.x + 'px';
-  el.style.top  = s.y + 'px';
-  el.style.width  = (def.w * STATE.zoom) + 'px';
-  el.style.height = (def.h * STATE.zoom) + 'px';
+function posGate(gate,el){
+  el=el||gate.el;if(!el)return;
+  const d=gdef(gate);
+  const s=w2s(gate.x,gate.y);
+  const pw=d.w*S.zoom;
+  const ph=d.h*S.zoom;
 
-  // Scale font and pins inside
-  const fs = Math.max(7, 11 * STATE.zoom);
-  const shell = el.querySelector('.gate-shell');
-  if (shell) shell.style.fontSize = fs + 'px';
+  el.style.left=s.x+'px';
+  el.style.top=s.y+'px';
+  el.style.width=pw+'px';
+  el.style.height=ph+'px';
 
-  // Reposition pins
-  const def2 = getDef(gate);
-  el.querySelectorAll('.pin').forEach(pin => {
-    const isOut = pin.dataset.dir === 'out';
-    const idx = parseInt(pin.dataset.idx);
-    const count = isOut ? def2.np : def2.nc;
-    const py = def2.h * STATE.zoom * (idx + 1) / (count + 1);
-    pin.style.top = (py - 5) + 'px';
-    if (isOut) { pin.style.right = '-5px'; pin.style.left = 'auto'; }
-    else { pin.style.left = '-5px'; pin.style.right = 'auto'; }
+  // Scale font relative to zoom
+  const fs=Math.max(6,Math.round(10.5*S.zoom));
+  el.querySelector('.gbody').style.fontSize=fs+'px';
+
+  // Reposition input pins and labels
+  const inCount=d.nc,outCount=d.np;
+  el.querySelectorAll('.pin[data-dir="in"]').forEach(function(pin){
+    const idx=parseInt(pin.dataset.idx);
+    const pctY=(idx+1)/(inCount+1);
+    pin.style.cssText=`position:absolute;left:-5px;top:${pctY*100}%;margin-top:-5px;width:10px;height:10px;border-radius:50%`;
+  });
+  el.querySelectorAll('.pin[data-dir="out"]').forEach(function(pin){
+    const idx=parseInt(pin.dataset.idx);
+    const pctY=(idx+1)/(outCount+1);
+    pin.style.cssText=`position:absolute;right:-5px;top:${pctY*100}%;margin-top:-5px;width:10px;height:10px;border-radius:50%`;
   });
 
-  // Reposition pin labels
-  el.querySelectorAll('.pin-label').forEach(lbl => {
-    const isOut = lbl.style.right !== '' && lbl.style.right !== 'auto';
-    // rebuild positions dynamically
+  // Reposition labels
+  const lblFs=Math.max(6,Math.round(8*S.zoom));
+  el.querySelectorAll('.plbl[data-side="in"]').forEach(function(lb){
+    const idx=parseInt(lb.dataset.idx);
+    const pctY=(idx+1)/(inCount+1);
+    lb.style.cssText=`position:absolute;font-family:var(--fmono);color:var(--t3);pointer-events:none;white-space:nowrap;font-size:${lblFs}px;left:${Math.max(8,8*S.zoom)}px;top:${pctY*100}%;margin-top:-${lblFs/2+1}px;z-index:5`;
+  });
+  el.querySelectorAll('.plbl[data-side="out"]').forEach(function(lb){
+    const idx=parseInt(lb.dataset.idx);
+    const pctY=(idx+1)/(outCount+1);
+    lb.style.cssText=`position:absolute;font-family:var(--fmono);color:var(--t3);pointer-events:none;white-space:nowrap;font-size:${lblFs}px;right:${Math.max(8,8*S.zoom)}px;top:${pctY*100}%;margin-top:-${lblFs/2+1}px;z-index:5;text-align:right`;
   });
 }
 
-function repositionAll() {
-  STATE.gates.forEach(g => applyGatePosition(g));
-  drawWires();
-}
+function reposAll(){S.gates.forEach(function(g){posGate(g);});drawWires();}
 
-// ════════════════════════════════════════════════════════════
-// 7. PLACE GATE
-// ════════════════════════════════════════════════════════════
-function placeGate(type, wx, wy) {
-  let realType = type, cn = null;
-  if (type.startsWith('custom:')) { realType = 'custom'; cn = type.slice(7); }
-  const def = realType === 'custom' ? (STATE.custom[cn] ? STATE.custom[cn]._def : null) : DEFS[type];
-  if (!def) { showMsg('Unknown type: ' + type, 'err'); return null; }
-
-  const gate = {
-    id: STATE.nextId++,
-    type: realType, cn,
-    x: snap(wx - def.w / 2),
-    y: snap(wy - def.h / 2),
-    value: 0, q: 0, prevClk: 0, freq: 1, fault: false,
+// ═══════════════════════════════════════════════════════
+// PLACE GATE
+// ═══════════════════════════════════════════════════════
+function place(type,wx,wy){
+  let rt=type,cn=null;
+  if(type.startsWith('custom:')){rt='custom';cn=type.slice(7);}
+  const d=rt==='custom'?S.custom[cn]?._def:DEF[rt];
+  if(!d){msg('Unknown: '+type,'er');return null;}
+  const gate={
+    id:S.nid++,type:rt,cn,
+    x:snap(wx-d.w/2),y:snap(wy-d.h/2),
+    value:0,q:0,prevClk:0,freq:1,lastTog:Date.now(),fault:false,
   };
-
-  const el = createGateEl(gate);
-  gate.el = el;
-  gateContainer.appendChild(el);
-  STATE.gates.push(gate);
-  bindGateEvents(gate);
-  simulate();
-  updateStatus();
-  showMsg('Placed ' + def.lbl, 'ok');
+  const el=mkGateEl(gate);
+  gate.el=el;
+  gateLyr.appendChild(el);
+  S.gates.push(gate);
+  bindGate(gate);
+  simulate();stUpd();S.dirty=true;
+  msg('Placed '+d.lbl,'ok');
   return gate;
 }
 
-// ════════════════════════════════════════════════════════════
-// 8. SIMULATION ENGINE
-// ════════════════════════════════════════════════════════════
-function simulate() {
-  const outVals = {};   // gateId → [out0, out1, ...]
-  const computed = new Set();
-
-  // Seed with sources (no inputs)
-  STATE.gates.forEach(g => {
-    if (['input','clock','const0','const1'].includes(g.type)) {
-      outVals[g.id] = computeGateLogic(g, []);
-      computed.add(g.id);
+// ═══════════════════════════════════════════════════════
+// SIMULATION ENGINE
+// ═══════════════════════════════════════════════════════
+function simulate(){
+  const ov={};const done=new Set();
+  // Seed sources
+  S.gates.forEach(function(g){
+    if(['input','clock','const0','const1'].includes(g.type)){
+      ov[g.id]=calcGate(g,[]);done.add(g.id);
     }
   });
-
-  // Iterative propagation
-  const maxIter = STATE.gates.length * 10 + 50;
-  for (let iter = 0; iter < maxIter && computed.size < STATE.gates.length; iter++) {
-    for (const gate of STATE.gates) {
-      if (computed.has(gate.id)) continue;
-      const def = getDef(gate);
-      const ins = [];
-      let ready = true;
-      for (let i = 0; i < def.nc; i++) {
-        const wire = STATE.wires.find(w => w.tg === gate.id && w.tp === i);
-        if (wire) {
-          if (outVals[wire.fg] === undefined) { ready = false; break; }
-          ins.push(outVals[wire.fg][wire.fp] ?? 0);
-        } else {
-          ins.push(0);
-        }
+  // Propagate
+  const max=S.gates.length*10+50;
+  for(let it=0;it<max&&done.size<S.gates.length;it++){
+    for(const gate of S.gates){
+      if(done.has(gate.id))continue;
+      const d=gdef(gate);const ins=[];let ok=true;
+      for(let i=0;i<d.nc;i++){
+        const w=S.wires.find(function(w){return w.tg===gate.id&&w.tp===i;});
+        if(w){if(ov[w.fg]===undefined){ok=false;break;}ins.push(ov[w.fg][w.fp]??0);}
+        else ins.push(0);
       }
-      if (!ready) continue;
-      outVals[gate.id] = computeGateLogic(gate, ins);
-      computed.add(gate.id);
+      if(!ok)continue;
+      ov[gate.id]=calcGate(gate,ins);done.add(gate.id);
     }
   }
-
-  // Update wire signals
-  STATE.wires.forEach(w => {
-    w.sig = (outVals[w.fg] !== undefined) ? (outVals[w.fg][w.fp] ?? 0) : 0;
-  });
-
+  // Wire signals
+  S.wires.forEach(function(w){w.sig=(ov[w.fg]||[])[w.fp]??0;});
   // DOM updates
-  STATE.gates.forEach(g => {
-    // Input display
-    if (g.type === 'input') {
-      const el = document.getElementById('gv-' + g.id);
-      if (el) { el.textContent = g.value; el.style.color = g.value ? 'var(--hi)' : 'var(--lo)'; }
+  S.gates.forEach(function(g){
+    if(g.type==='input'){
+      const e=document.getElementById('gv'+g.id);
+      if(e){e.textContent=g.value;e.style.color=g.value?'var(--hi)':'var(--lo)';}
     }
-    // Output display
-    if (g.type === 'output') {
-      const el = document.getElementById('gv-' + g.id);
-      if (el) {
-        const wire = STATE.wires.find(w => w.tg === g.id && w.tp === 0);
-        const v = wire != null ? wire.sig : '?';
-        el.textContent = v;
-        el.style.color = v === 1 ? 'var(--hi)' : v === 0 ? 'var(--lo)' : 'var(--t3)';
-      }
+    if(g.type==='output'){
+      const e=document.getElementById('gv'+g.id);
+      if(e){const w=S.wires.find(function(w){return w.tg===g.id&&w.tp===0;});
+        const v=w!=null?w.sig:'?';e.textContent=v;
+        e.style.color=v===1?'var(--hi)':v===0?'var(--lo)':'var(--t3)';}
     }
-    // Flip-flop / latch Q display
-    if (['sr','dlatch','dff','jkff','tff'].includes(g.type)) {
-      const el = document.getElementById('gv-' + g.id);
-      if (el) { el.textContent = 'Q=' + (g.q ? 1 : 0); el.style.color = g.q ? 'var(--hi)' : 'var(--lo)'; }
-      if (g.el) g.el.classList.toggle('fault', !!g.fault);
+    if(['sr','dlatch','dff','jkff','tff'].includes(g.type)){
+      const e=document.getElementById('gv'+g.id);
+      if(e){e.textContent='Q='+(g.q?1:0);e.style.color=g.q?'var(--hi)':'var(--lo)';}
+      if(g.el)g.el.classList.toggle('fault',!!g.fault);
     }
-    // Clock wave
-    if (g.type === 'clock') {
-      const wave = document.getElementById('clkwave-' + g.id);
-      if (wave) {
-        wave.querySelectorAll('.clk-seg').forEach((seg, i) => {
-          const isHi = (i % 2) === (g.value ? 0 : 1);
-          seg.className = 'clk-seg ' + (isHi ? 'hi' : 'lo');
-        });
-      }
+    if(g.type==='clock'){
+      const cw=document.getElementById('cwv'+g.id);
+      if(cw)cw.querySelectorAll('.cs').forEach(function(s,i){
+        s.className='cs '+((i%2===(g.value?0:1))?'hi':'lo');
+      });
     }
-    // Pin dot colors
-    if (g.el) {
-      g.el.querySelectorAll('.pin').forEach(pin => {
-        const isOut = pin.dataset.dir === 'out';
-        const idx = parseInt(pin.dataset.idx);
-        let sig = null;
-        if (isOut) {
-          sig = outVals[g.id] ? outVals[g.id][idx] : null;
-        } else {
-          const wire = STATE.wires.find(w => w.tg === g.id && w.tp === idx);
-          if (wire) sig = wire.sig;
-        }
-        pin.classList.remove('sig-hi', 'sig-lo');
-        if (sig === 1) pin.classList.add('sig-hi');
-        else if (sig === 0) pin.classList.add('sig-lo');
+    // Pin colors
+    if(g.el){
+      g.el.querySelectorAll('.pin').forEach(function(pin){
+        const isOut=pin.dataset.dir==='out';
+        const idx=parseInt(pin.dataset.idx);
+        let sig=null;
+        if(isOut)sig=(ov[g.id]||[])[idx];
+        else{const w=S.wires.find(function(w){return w.tg===g.id&&w.tp===idx;});if(w)sig=w.sig;}
+        pin.classList.remove('hi','lo');
+        if(sig===1)pin.classList.add('hi');
+        else if(sig===0)pin.classList.add('lo');
       });
     }
   });
-
   drawWires();
-  STATE.propsDirty = true;
+  S.pdirty=true;
 }
 
-function computeGateLogic(gate, ins) {
-  const t = gate.type;
-  const i = n => (ins[n] !== undefined ? (ins[n] ? 1 : 0) : 0);
-
-  switch (t) {
-    case 'input':  return [gate.value ? 1 : 0];
-    case 'clock':  return [gate.value ? 1 : 0];
-    case 'const0': return [0];
-    case 'const1': return [1];
-    case 'buffer': return [i(0)];
-    case 'and':    return [i(0) & i(1)];
-    case 'or':     return [i(0) | i(1)];
-    case 'not':    return [i(0) ? 0 : 1];
-    case 'nand':   return [(i(0) & i(1)) ? 0 : 1];
-    case 'nor':    return [(i(0) | i(1)) ? 0 : 1];
-    case 'xor':    return [i(0) ^ i(1)];
-    case 'xnor':   return [(i(0) ^ i(1)) ? 0 : 1];
-    case 'output': return [];
-    case 'ha': {
-      const sum = i(0) ^ i(1), carry = i(0) & i(1);
-      return [sum, carry];
+function calcGate(gate,ins){
+  const t=gate.type;
+  const i=function(n){return ins[n]!==undefined?(ins[n]?1:0):0;};
+  switch(t){
+    case 'input': return[gate.value?1:0];
+    case 'clock': return[gate.value?1:0];
+    case 'const0':return[0];
+    case 'const1':return[1];
+    case 'buffer':return[i(0)];
+    case 'and':   return[i(0)&i(1)];
+    case 'or':    return[i(0)|i(1)];
+    case 'not':   return[i(0)?0:1];
+    case 'nand':  return[(i(0)&i(1))?0:1];
+    case 'nor':   return[(i(0)|i(1))?0:1];
+    case 'xor':   return[i(0)^i(1)];
+    case 'xnor':  return[(i(0)^i(1))?0:1];
+    case 'output':return[];
+    case 'ha':{const s=i(0)^i(1),c=i(0)&i(1);return[s,c];}
+    case 'fa':{const s=i(0)^i(1)^i(2),c=(i(0)&i(1))|(i(1)&i(2))|(i(0)&i(2));return[s,c];}
+    case 'add4':{
+      const A=(i(0)<<3)|(i(1)<<2)|(i(2)<<1)|i(3);
+      const B=(i(4)<<3)|(i(5)<<2)|(i(6)<<1)|i(7);
+      const r=A+B+i(8);
+      return[(r>>3)&1,(r>>2)&1,(r>>1)&1,r&1,r>15?1:0];
     }
-    case 'fa': {
-      const s = i(0) ^ i(1) ^ i(2);
-      const c = (i(0) & i(1)) | (i(1) & i(2)) | (i(0) & i(2));
-      return [s, c];
+    case 'mux2':return[i(2)?i(1):i(0)];
+    case 'mux4':{const sel=(i(5)<<1)|i(4);return[i(sel)];}
+    case 'dmux2':return[i(1)?0:i(0),i(1)?i(0):0];
+    case 'dmux4':{const sel=(i(2)<<1)|i(1),o=[0,0,0,0];o[sel]=i(0);return o;}
+    case 'enc4':{if(i(3))return[1,1];if(i(2))return[0,1];if(i(1))return[1,0];return[0,0];}
+    case 'dec2':{const sel=(i(1)<<1)|i(0),o=[0,0,0,0];o[sel]=1;return o;}
+    case 'sr':{
+      if(i(0)&&i(1)){gate.fault=true;return[gate.q?1:0,gate.q?0:1];}
+      gate.fault=false;
+      if(i(0))gate.q=1;else if(i(1))gate.q=0;
+      return[gate.q?1:0,gate.q?0:1];
     }
-    case 'add4': {
-      const A = (i(0)<<3)|(i(1)<<2)|(i(2)<<1)|i(3);
-      const B = (i(4)<<3)|(i(5)<<2)|(i(6)<<1)|i(7);
-      const r = A + B + i(8);
-      return [(r>>3)&1, (r>>2)&1, (r>>1)&1, r&1, r > 15 ? 1 : 0];
+    case 'dlatch':{if(i(1))gate.q=i(0);return[gate.q?1:0,gate.q?0:1];}
+    case 'dff':{
+      const clk=i(1);
+      if(i(2))gate.q=0;else if(clk&&!gate.prevClk)gate.q=i(0);
+      gate.prevClk=clk;return[gate.q?1:0,gate.q?0:1];
     }
-    case 'mux2':  return [i(2) ? i(1) : i(0)];
-    case 'mux4':  { const sel = (i(5)<<1)|i(4); return [i(sel)]; }
-    case 'dmux2': return [i(1) ? 0 : i(0), i(1) ? i(0) : 0];
-    case 'dmux4': {
-      const sel = (i(2)<<1)|i(1);
-      const out = [0,0,0,0]; out[sel] = i(0); return out;
-    }
-    case 'enc4': {
-      if (i(3)) return [1,1]; if (i(2)) return [0,1];
-      if (i(1)) return [1,0]; return [0,0];
-    }
-    case 'dec2': {
-      const sel = (i(1)<<1)|i(0);
-      const out = [0,0,0,0]; out[sel] = 1; return out;
-    }
-    case 'sr': {
-      if (i(0) && i(1)) { gate.fault = true; return [gate.q ? 1 : 0, gate.q ? 0 : 1]; }
-      gate.fault = false;
-      if (i(0)) gate.q = 1; else if (i(1)) gate.q = 0;
-      return [gate.q ? 1 : 0, gate.q ? 0 : 1];
-    }
-    case 'dlatch': {
-      if (i(1)) gate.q = i(0);
-      return [gate.q ? 1 : 0, gate.q ? 0 : 1];
-    }
-    case 'dff': {
-      const clk = i(1), rst = i(2);
-      if (rst) { gate.q = 0; }
-      else if (clk && !gate.prevClk) { gate.q = i(0); }
-      gate.prevClk = clk;
-      return [gate.q ? 1 : 0, gate.q ? 0 : 1];
-    }
-    case 'jkff': {
-      const clk = i(2);
-      if (clk && !gate.prevClk) {
-        if      (i(0) && i(1)) gate.q = gate.q ? 0 : 1;
-        else if (i(0))          gate.q = 1;
-        else if (i(1))          gate.q = 0;
+    case 'jkff':{
+      const clk=i(2);
+      if(clk&&!gate.prevClk){
+        if(i(0)&&i(1))gate.q=gate.q?0:1;
+        else if(i(0))gate.q=1;else if(i(1))gate.q=0;
       }
-      gate.prevClk = clk;
-      return [gate.q ? 1 : 0, gate.q ? 0 : 1];
+      gate.prevClk=clk;return[gate.q?1:0,gate.q?0:1];
     }
-    case 'tff': {
-      const clk = i(1);
-      if (clk && !gate.prevClk && i(0)) gate.q = gate.q ? 0 : 1;
-      gate.prevClk = clk;
-      return [gate.q ? 1 : 0, gate.q ? 0 : 1];
+    case 'tff':{
+      const clk=i(1);
+      if(clk&&!gate.prevClk&&i(0))gate.q=gate.q?0:1;
+      gate.prevClk=clk;return[gate.q?1:0,gate.q?0:1];
     }
-    case 'custom': return computeCustom(gate, ins);
-    default: return [0];
+    case 'custom':return calcCustom(gate,ins);
+    default:return[0];
   }
 }
 
-function computeCustom(gate, inputVals) {
-  const cdef = STATE.custom[gate.cn];
-  if (!cdef) return [0];
-
-  if (cdef.type === 'truth') {
-    const idx = inputVals.reduce((acc, v, i) => acc | ((v ? 1 : 0) << (cdef.ins.length - 1 - i)), 0);
-    const row = cdef.table[idx];
-    return row ? row.slice() : cdef.outs.map(() => 0);
+function calcCustom(gate,iv){
+  const c=S.custom[gate.cn];if(!c)return[0];
+  if(c.type==='truth'){
+    const idx=iv.reduce(function(a,v,i){return a|((v?1:0)<<(c.ins.length-1-i));},0);
+    return(c.table[idx]||c.outs.map(function(){return 0;})).slice();
   }
-
-  if (cdef.type === 'sub') {
-    const lgates = JSON.parse(JSON.stringify(cdef.circuit.gates));
-    const lwires = cdef.circuit.wires;
-    const ov = {};
-    cdef.inputIds.forEach((id, ii) => {
-      const g = lgates.find(g => g.id === id);
-      if (g) { g.value = inputVals[ii] ?? 0; ov[id] = [g.value]; }
+  if(c.type==='sub'){
+    const lg=JSON.parse(JSON.stringify(c.circuit.gates));
+    const lw=c.circuit.wires;const ov={};
+    c.inputIds.forEach(function(id,ii){
+      const g=lg.find(function(g){return g.id===id;});
+      if(g){g.value=iv[ii]??0;ov[id]=[g.value];}
     });
-    const done = new Set(cdef.inputIds);
-    const maxI = lgates.length * 10 + 30;
-    for (let it = 0; it < maxI && done.size < lgates.length; it++) {
-      for (const g of lgates) {
-        if (done.has(g.id)) continue;
-        const d = DEFS[g.type] || DEFS.buffer;
-        const ins = []; let ok = true;
-        for (let pi = 0; pi < d.nc; pi++) {
-          const w = lwires.find(w => w.tg === g.id && w.tp === pi);
-          if (w) {
-            if (!ov[w.fg]) { ok = false; break; }
-            ins.push(ov[w.fg][w.fp] ?? 0);
-          } else ins.push(0);
+    const done=new Set(c.inputIds);
+    for(let it=0;it<lg.length*10+30&&done.size<lg.length;it++){
+      for(const g of lg){
+        if(done.has(g.id))continue;
+        const d=DEF[g.type]||DEF.buffer;
+        const ins=[];let ok=true;
+        for(let pi=0;pi<d.nc;pi++){
+          const w=lw.find(function(w){return w.tg===g.id&&w.tp===pi;});
+          if(w){if(!ov[w.fg]){ok=false;break;}ins.push(ov[w.fg][w.fp]??0);}
+          else ins.push(0);
         }
-        if (!ok) continue;
-        ov[g.id] = computeGateLogic({ ...g }, ins);
-        done.add(g.id);
+        if(!ok)continue;
+        ov[g.id]=calcGate(Object.assign({},g),ins);done.add(g.id);
       }
     }
-    return cdef.outputIds.map(id => (ov[id] || [0])[0]);
+    return c.outputIds.map(function(id){return(ov[id]||[0])[0];});
   }
-  return [0];
+  return[0];
 }
 
-// ════════════════════════════════════════════════════════════
-// 9. WIRE RENDERING
-// ════════════════════════════════════════════════════════════
-function bezierPath(x1, y1, x2, y2) {
-  const mx = x1 + (x2 - x1) * 0.55;
-  return `M${x1} ${y1} C${mx} ${y1} ${mx} ${y2} ${x2} ${y2}`;
+// ═══════════════════════════════════════════════════════
+// WIRE DRAWING
+// ═══════════════════════════════════════════════════════
+function bz(x1,y1,x2,y2){
+  const mx=x1+(x2-x1)*.55;
+  return 'M'+x1+' '+y1+' C'+mx+' '+y1+' '+mx+' '+y2+' '+x2+' '+y2;
 }
 
-function drawWires() {
-  // Clear SVG
-  while (wireSvg.firstChild) wireSvg.removeChild(wireSvg.firstChild);
-
-  STATE.wires.forEach(wire => {
-    const fg = STATE.gates.find(g => g.id === wire.fg);
-    const tg = STATE.gates.find(g => g.id === wire.tg);
-    if (!fg || !tg) return;
-    const fp = pinScreenXY(fg, true,  wire.fp);
-    const tp = pinScreenXY(tg, false, wire.tp);
-    if (!fp || !tp) return;
-
-    const d = bezierPath(fp.x, fp.y, tp.x, tp.y);
-
-    // Invisible wide hitbox for clicking
-    const hitbox = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    hitbox.setAttribute('d', d);
-    hitbox.setAttribute('fill', 'none');
-    hitbox.setAttribute('stroke', 'transparent');
-    hitbox.setAttribute('stroke-width', '12');
-    hitbox.setAttribute('pointer-events', 'stroke');
-    hitbox.style.cursor = 'pointer';
-    // Capture wire id in closure
-    (function(wid) {
-      hitbox.addEventListener('click', function(e) {
+function drawWires(){
+  while(wireSvg.firstChild)wireSvg.removeChild(wireSvg.firstChild);
+  S.wires.forEach(function(w){
+    const fg=S.gates.find(function(g){return g.id===w.fg;});
+    const tg=S.gates.find(function(g){return g.id===w.tg;});
+    if(!fg||!tg)return;
+    const fp=pxy(fg,true,w.fp);const tp=pxy(tg,false,w.tp);
+    if(!fp||!tp)return;
+    const d=bz(fp.x,fp.y,tp.x,tp.y);
+    // Hitbox
+    const hit=document.createElementNS('http://www.w3.org/2000/svg','path');
+    hit.setAttribute('d',d);hit.setAttribute('fill','none');
+    hit.setAttribute('stroke','transparent');hit.setAttribute('stroke-width','12');
+    hit.setAttribute('pointer-events','stroke');hit.style.cursor='pointer';
+    ;(function(wid){
+      hit.addEventListener('click',function(e){
         e.stopPropagation();
-        STATE.wires = STATE.wires.filter(w => w.id !== wid);
-        simulate();
-        updateStatus();
-        showMsg('Wire deleted', 'ok');
+        S.wires=S.wires.filter(function(x){return x.id!==wid;});
+        simulate();stUpd();S.dirty=true;msg('Wire deleted','ok');
       });
-    })(wire.id);
-    wireSvg.appendChild(hitbox);
-
-    // Visible wire
-    const vis = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    vis.setAttribute('d', d);
-    vis.setAttribute('class', 'wire-vis ' + (wire.sig === 1 ? 'wire-hi' : 'wire-lo'));
-    vis.setAttribute('pointer-events', 'none');
+    })(w.id);
+    wireSvg.appendChild(hit);
+    // Visual
+    const vis=document.createElementNS('http://www.w3.org/2000/svg','path');
+    vis.setAttribute('d',d);
+    vis.setAttribute('class','wvis '+(w.sig===1?'w-hi':'w-lo'));
+    vis.setAttribute('pointer-events','none');
     wireSvg.appendChild(vis);
   });
-
-  // Wire preview while drawing
-  if (STATE.wprev) {
-    const prev = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    prev.setAttribute('d', bezierPath(STATE.wprev.x1, STATE.wprev.y1, STATE.wprev.x2, STATE.wprev.y2));
-    prev.setAttribute('class', 'wire-preview');
-    prev.setAttribute('pointer-events', 'none');
-    wireSvg.appendChild(prev);
+  if(S.wprev){
+    const pv=document.createElementNS('http://www.w3.org/2000/svg','path');
+    pv.setAttribute('d',bz(S.wprev.x1,S.wprev.y1,S.wprev.x2,S.wprev.y2));
+    pv.setAttribute('class','w-prev');pv.setAttribute('pointer-events','none');
+    wireSvg.appendChild(pv);
   }
 }
 
-// ════════════════════════════════════════════════════════════
-// 10. GATE EVENTS
-// ════════════════════════════════════════════════════════════
-function bindGateEvents(gate) {
-  const el = gate.el;
-  let dragging = false, moved = false, startX, startY, origX, origY;
+// ═══════════════════════════════════════════════════════
+// GATE EVENTS
+// ═══════════════════════════════════════════════════════
+function bindGate(gate){
+  const el=gate.el;
+  let moved=false,sx,sy,ox,oy;
 
-  // ── Mousedown: drag or shift-select
-  el.addEventListener('mousedown', function(e) {
-    if (e.button !== 0 || e.target.classList.contains('pin')) return;
-    e.preventDefault();
-    e.stopPropagation();
-    hideCtxMenu();
+  el.addEventListener('mousedown',function(e){
+    if(e.button!==0||e.target.classList.contains('pin'))return;
+    e.preventDefault();e.stopPropagation();hideCM();
 
-    // Shift + click = multi-select toggle
-    if (e.shiftKey) {
-      if (STATE.msel.has(gate.id)) {
-        STATE.msel.delete(gate.id);
-        el.classList.remove('ms');
-      } else {
-        STATE.msel.add(gate.id);
-        el.classList.add('ms');
-      }
-      if (STATE.sel !== null) {
-        const prev = STATE.gates.find(g => g.id === STATE.sel);
-        if (prev && prev.el) prev.el.classList.remove('sel');
-        STATE.sel = null;
-      }
-      updateStatus();
-      return;
+    if(e.shiftKey){
+      if(S.msel.has(gate.id)){S.msel.delete(gate.id);el.classList.remove('msel');}
+      else{S.msel.add(gate.id);el.classList.add('msel');}
+      if(S.sel!==null){const g2=S.gates.find(function(g){return g.id===S.sel;});if(g2&&g2.el)g2.el.classList.remove('sel');S.sel=null;}
+      stUpd();return;
     }
 
-    selectGate(gate.id);
-    moved = false;
-    startX = e.clientX; startY = e.clientY;
+    selGate(gate.id);moved=false;sx=e.clientX;sy=e.clientY;
+    const inM=S.msel.size>1&&S.msel.has(gate.id);
+    const origs={};
+    if(inM)S.msel.forEach(function(id){const g2=S.gates.find(function(g){return g.id===id;});if(g2)origs[id]={x:g2.x,y:g2.y};});
+    else{ox=gate.x;oy=gate.y;}
 
-    // Multi-select drag — capture all positions
-    const isInMsel = STATE.msel.size > 1 && STATE.msel.has(gate.id);
-    const origins = {};
-    if (isInMsel) {
-      STATE.msel.forEach(id => {
-        const g = STATE.gates.find(g => g.id === id);
-        if (g) origins[id] = { x: g.x, y: g.y };
-      });
-    } else {
-      origX = gate.x; origY = gate.y;
-    }
-
-    function onMove(ev) {
-      const dx = (ev.clientX - startX) / STATE.zoom;
-      const dy = (ev.clientY - startY) / STATE.zoom;
-      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
-      if (!moved) return;
-      if (isInMsel) {
-        STATE.msel.forEach(id => {
-          const g = STATE.gates.find(g => g.id === id);
-          if (g && origins[id]) {
-            g.x = snap(origins[id].x + dx);
-            g.y = snap(origins[id].y + dy);
-            applyGatePosition(g);
-          }
+    function mm(ev){
+      const dx=(ev.clientX-sx)/S.zoom,dy=(ev.clientY-sy)/S.zoom;
+      if(Math.abs(dx)>2||Math.abs(dy)>2)moved=true;
+      if(!moved)return;
+      if(inM){
+        S.msel.forEach(function(id){
+          const g2=S.gates.find(function(g){return g.id===id;});
+          if(g2&&origs[id]){g2.x=snap(origs[id].x+dx);g2.y=snap(origs[id].y+dy);posGate(g2);}
         });
-      } else {
-        gate.x = snap(origX + dx);
-        gate.y = snap(origY + dy);
-        applyGatePosition(gate);
-      }
-      drawWires();
+      }else{gate.x=snap(ox+dx);gate.y=snap(oy+dy);posGate(gate);}
+      drawWires();S.dirty=true;
     }
-
-    function onUp() {
-      if (!moved && gate.type === 'input') {
-        gate.value = gate.value ? 0 : 1;
-        simulate();
-      }
-      document.removeEventListener('mousemove', onMove);
-      document.removeEventListener('mouseup',   onUp);
+    function mu(){
+      if(!moved&&gate.type==='input'){gate.value=gate.value?0:1;simulate();S.dirty=true;}
+      document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);
     }
-
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup',   onUp);
+    document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);
   });
 
-  // ── Double-click: clock freq shortcut
-  el.addEventListener('dblclick', function(e) {
-    if (gate.type === 'clock') {
-      e.stopPropagation();
-      selectGate(gate.id);
-      showMsg('Set clock frequency in the Properties panel →', 'warn');
-    }
+  el.addEventListener('dblclick',function(e){
+    if(gate.type==='clock'){e.stopPropagation();selGate(gate.id);msg('Set clock frequency in Properties panel →','wa');}
   });
 
-  // ── Right-click: context menu
-  el.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    ctxGateId = gate.id;
-    selectGate(gate.id);
-    ctxMenu.style.display = 'block';
-    ctxMenu.style.left = Math.min(e.clientX, window.innerWidth  - 175) + 'px';
-    ctxMenu.style.top  = Math.min(e.clientY, window.innerHeight - 145) + 'px';
+  el.addEventListener('contextmenu',function(e){
+    e.preventDefault();e.stopPropagation();
+    cmGid=gate.id;selGate(gate.id);
+    cmenu.style.display='block';
+    cmenu.style.left=Math.min(e.clientX,window.innerWidth-175)+'px';
+    cmenu.style.top=Math.min(e.clientY,window.innerHeight-150)+'px';
   });
 
-  // ── Gate body tooltip
-  el.addEventListener('mouseenter', function(e) {
-    if (e.target.classList.contains('pin')) return;
-    tooltipEl.textContent = getDef(gate).tip || getDef(gate).lbl;
-    tooltipEl.style.display = 'block';
+  el.addEventListener('mouseenter',function(e){
+    if(e.target.classList.contains('pin'))return;
+    tipEl.textContent=gdef(gate).tip||gdef(gate).lbl;tipEl.style.display='block';
   });
-  el.addEventListener('mousemove', function(e) {
-    tooltipEl.style.left = (e.clientX + 15) + 'px';
-    tooltipEl.style.top  = (e.clientY - 8) + 'px';
-  });
-  el.addEventListener('mouseleave', function() {
-    tooltipEl.style.display = 'none';
-  });
+  el.addEventListener('mousemove',function(e){tipEl.style.left=(e.clientX+14)+'px';tipEl.style.top=(e.clientY-6)+'px';});
+  el.addEventListener('mouseleave',function(){tipEl.style.display='none';});
 
-  // ── Pin events: wiring + tooltip
-  el.querySelectorAll('.pin').forEach(function(pin) {
-    pin.addEventListener('mousedown', function(e) {
-      e.stopPropagation();
-      e.preventDefault();
-      const isOut = pin.dataset.dir === 'out';
-      const idx   = parseInt(pin.dataset.idx);
+  el.querySelectorAll('.pin').forEach(function(pin){
+    pin.addEventListener('mousedown',function(e){
+      e.stopPropagation();e.preventDefault();
+      const isOut=pin.dataset.dir==='out';const idx=parseInt(pin.dataset.idx);
 
-      if (STATE.wiring) {
-        // ─ Complete the wire
-        if (STATE.wiring.gateId === gate.id) {
-          cancelWiring('Cannot connect a gate to itself');
-          return;
-        }
-        let fromGate, fromPin, toGate, toPin;
-        if (STATE.wiring.isOut && !isOut) {
-          fromGate = STATE.wiring.gateId; fromPin = STATE.wiring.pinIdx;
-          toGate   = gate.id;            toPin   = idx;
-        } else if (!STATE.wiring.isOut && isOut) {
-          fromGate = gate.id;            fromPin = idx;
-          toGate   = STATE.wiring.gateId; toPin  = STATE.wiring.pinIdx;
-        } else {
-          cancelWiring('Connect an OUTPUT pin to an INPUT pin');
-          return;
-        }
-        // Remove existing wire on that input slot
-        STATE.wires = STATE.wires.filter(w => !(w.tg === toGate && w.tp === toPin));
-        STATE.wires.push({ id: STATE.nextId++, fg: fromGate, fp: fromPin, tg: toGate, tp: toPin, sig: 0 });
-        cancelWiring('');
-        simulate();
-        updateStatus();
-        showMsg('Wire connected!', 'ok');
-      } else {
-        // ─ Start wiring
-        STATE.wiring = { gateId: gate.id, pinIdx: idx, isOut };
+      if(S.wfrom){
+        if(S.wfrom.gid===gate.id){cancelWire('Cannot wire to same gate');return;}
+        let fg,fp,tg,tp;
+        if(S.wfrom.isOut&&!isOut){fg=S.wfrom.gid;fp=S.wfrom.pidx;tg=gate.id;tp=idx;}
+        else if(!S.wfrom.isOut&&isOut){fg=gate.id;fp=idx;tg=S.wfrom.gid;tp=S.wfrom.pidx;}
+        else{cancelWire('Connect OUTPUT pin → INPUT pin');return;}
+        S.wires=S.wires.filter(function(w){return!(w.tg===tg&&w.tp===tp);});
+        S.wires.push({id:S.nid++,fg,fp,tg,tp,sig:0});
+        cancelWire('');simulate();stUpd();S.dirty=true;msg('Connected!','ok');
+      }else{
+        S.wfrom={gid:gate.id,pidx:idx,isOut};
         pin.classList.add('wiring');
-        canvasArea.classList.add('mode-wire');
-        showMsg('Wiring… click another pin to connect, Esc to cancel', '');
+        cvwrap.classList.add('wi');
+        msg('Wiring… click another pin or Esc to cancel','');
       }
     });
-
-    pin.addEventListener('mouseenter', function(e) {
-      const isOut = pin.dataset.dir === 'out';
-      const idx   = parseInt(pin.dataset.idx);
-      const pl    = getPinLabels(gate);
-      const name  = isOut ? (pl.o || [])[idx] : (pl.i || [])[idx];
-      if (name) {
-        tooltipEl.textContent = (isOut ? '→ OUT: ' : '← IN: ') + name;
-        tooltipEl.style.display = 'block';
-      }
+    pin.addEventListener('mouseenter',function(e){
+      const isOut=pin.dataset.dir==='out';const idx=parseInt(pin.dataset.idx);
+      const pl=gplbl(gate);const nm=isOut?(pl.o||[])[idx]:(pl.i||[])[idx];
+      if(nm){tipEl.textContent=(isOut?'→ OUT: ':'← IN: ')+nm;tipEl.style.display='block';}
     });
-    pin.addEventListener('mousemove', function(e) {
-      tooltipEl.style.left = (e.clientX + 12) + 'px';
-      tooltipEl.style.top  = (e.clientY - 6)  + 'px';
-    });
-    pin.addEventListener('mouseleave', function() {
-      tooltipEl.style.display = 'none';
-    });
+    pin.addEventListener('mousemove',function(e){tipEl.style.left=(e.clientX+12)+'px';tipEl.style.top=(e.clientY-5)+'px';});
+    pin.addEventListener('mouseleave',function(){tipEl.style.display='none';});
   });
 }
 
-function cancelWiring(msg) {
-  document.querySelectorAll('.pin.wiring').forEach(p => p.classList.remove('wiring'));
-  STATE.wiring = null;
-  STATE.wprev  = null;
-  canvasArea.classList.remove('mode-wire');
-  drawWires();
-  if (msg) showMsg(msg, 'err');
+function cancelWire(m){
+  document.querySelectorAll('.pin.wiring').forEach(function(p){p.classList.remove('wiring');});
+  S.wfrom=null;S.wprev=null;cvwrap.classList.remove('wi');drawWires();
+  if(m)msg(m,'er');
 }
 
-// ════════════════════════════════════════════════════════════
-// 11. SELECTION
-// ════════════════════════════════════════════════════════════
-function selectGate(id) {
-  // Deselect old
-  if (STATE.sel !== null) {
-    const old = STATE.gates.find(g => g.id === STATE.sel);
-    if (old && old.el) old.el.classList.remove('sel');
+// ═══════════════════════════════════════════════════════
+// SELECTION
+// ═══════════════════════════════════════════════════════
+function selGate(id){
+  if(S.sel!==null){const g=S.gates.find(function(g){return g.id===S.sel;});if(g&&g.el)g.el.classList.remove('sel');}
+  S.sel=id;S.msel.clear();S.gates.forEach(function(g){g.el&&g.el.classList.remove('msel');});
+  if(id!==null){const g=S.gates.find(function(g){return g.id===id;});if(g&&g.el)g.el.classList.add('sel');}
+  stUpd();S.pdirty=true;
+}
+function deselAll(){selGate(null);}
+
+function delGate(id){
+  const g=S.gates.find(function(g){return g.id===id;});if(!g)return;
+  S.wires=S.wires.filter(function(w){return w.fg!==id&&w.tg!==id;});
+  if(g.el)g.el.remove();
+  S.gates=S.gates.filter(function(g){return g.id!==id;});
+  if(S.sel===id)selGate(null);
+  simulate();stUpd();S.dirty=true;
+}
+function delSel(){const ids=S.sel!==null?[S.sel]:[...S.msel];ids.forEach(function(id){delGate(id);});}
+function dupGate(id){
+  const g=S.gates.find(function(g){return g.id===id;});if(!g)return;
+  const d=gdef(g);const key=g.type==='custom'?'custom:'+g.cn:g.type;
+  place(key,g.x+d.w+22,g.y);
+}
+
+// ═══════════════════════════════════════════════════════
+// CANVAS EVENTS
+// ═══════════════════════════════════════════════════════
+let panning=false,psx,psy,pox,poy,rbStart=null;
+
+cvwrap.addEventListener('mousedown',function(e){
+  if(e.button===1){
+    panning=true;psx=e.clientX;psy=e.clientY;pox=S.panX;poy=S.panY;
+    cvwrap.classList.add('pan','dragging');e.preventDefault();return;
   }
-  STATE.sel = id;
-  // Clear multi-select
-  STATE.msel.clear();
-  STATE.gates.forEach(g => g.el && g.el.classList.remove('ms'));
-  // Select new
-  if (id !== null) {
-    const g = STATE.gates.find(g => g.id === id);
-    if (g && g.el) g.el.classList.add('sel');
+  if(e.button!==0)return;
+  const onBg=e.target===cvwrap||e.target===gridCv||e.target===gateLyr||e.target===wireSvg||e.target===selBox;
+  if(!onBg)return;
+  if(S.placing){
+    const r=cvwrap.getBoundingClientRect();
+    const w=s2w(e.clientX-r.left,e.clientY-r.top);
+    place(S.placing,w.x,w.y);return;
   }
-  updateStatus();
-  STATE.propsDirty = true;
-}
-
-function deselectAll() {
-  selectGate(null);
-}
-
-function deleteGate(id) {
-  const gate = STATE.gates.find(g => g.id === id);
-  if (!gate) return;
-  STATE.wires = STATE.wires.filter(w => w.fg !== id && w.tg !== id);
-  if (gate.el) gate.el.remove();
-  STATE.gates = STATE.gates.filter(g => g.id !== id);
-  if (STATE.sel === id) selectGate(null);
-  simulate();
-  updateStatus();
-  showMsg('Gate deleted', '');
-}
-
-function deleteSelected() {
-  const ids = STATE.sel !== null ? [STATE.sel] : [...STATE.msel];
-  ids.forEach(id => deleteGate(id));
-}
-
-function duplicateGate(id) {
-  const g = STATE.gates.find(g => g.id === id);
-  if (!g) return;
-  const def = getDef(g);
-  const key = g.type === 'custom' ? 'custom:' + g.cn : g.type;
-  placeGate(key, g.x + def.w + 24, g.y);
-}
-
-// ════════════════════════════════════════════════════════════
-// 12. CANVAS EVENTS
-// ════════════════════════════════════════════════════════════
-let panning = false, panSX, panSY, panOX, panOY;
-let rbStart = null;
-
-canvasArea.addEventListener('mousedown', function(e) {
-  // Middle mouse / Alt+drag = pan
-  if (e.button === 1 || (e.button === 0 && e.altKey)) {
-    panning = true;
-    panSX = e.clientX; panSY = e.clientY;
-    panOX = STATE.panX; panOY = STATE.panY;
-    canvasArea.classList.add('mode-pan', 'active');
-    e.preventDefault();
-    return;
-  }
-  if (e.button !== 0) return;
-
-  // Only handle clicks directly on the background
-  const onBg = (e.target === canvasArea || e.target === gridCanvas ||
-                e.target === gateContainer || e.target === wireSvg || e.target === selRect);
-  if (!onBg) return;
-
-  // Place mode
-  if (STATE.placing) {
-    const rect = canvasArea.getBoundingClientRect();
-    const wp = s2w(e.clientX - rect.left, e.clientY - rect.top);
-    placeGate(STATE.placing, wp.x, wp.y);
-    return;
-  }
-
-  // Cancel wiring
-  if (STATE.wiring) {
-    cancelWiring('Wiring cancelled');
-    return;
-  }
-
-  // Start rubber-band selection
-  const rect = canvasArea.getBoundingClientRect();
-  rbStart = { sx: e.clientX - rect.left, sy: e.clientY - rect.top };
-  selRect.style.display = 'none';
-  deselectAll();
+  if(S.wfrom){cancelWire('Cancelled');return;}
+  const r=cvwrap.getBoundingClientRect();
+  rbStart={sx:e.clientX-r.left,sy:e.clientY-r.top};
+  selBox.style.display='none';deselAll();
 });
 
-canvasArea.addEventListener('mousemove', function(e) {
-  const rect = canvasArea.getBoundingClientRect();
-  const cx = e.clientX - rect.left, cy = e.clientY - rect.top;
-  const wp = s2w(cx, cy);
-  document.getElementById('sb-xy').textContent = Math.round(wp.x) + ',' + Math.round(wp.y);
-
-  // Wire preview
-  if (STATE.wiring) {
-    const fg = STATE.gates.find(g => g.id === STATE.wiring.gateId);
-    if (fg) {
-      const fp = pinScreenXY(fg, STATE.wiring.isOut, STATE.wiring.pinIdx);
-      if (fp) {
-        STATE.wprev = { x1: fp.x, y1: fp.y, x2: cx, y2: cy };
-        drawWires();
-      }
-    }
+cvwrap.addEventListener('mousemove',function(e){
+  const r=cvwrap.getBoundingClientRect();
+  const cx=e.clientX-r.left,cy=e.clientY-r.top;
+  const w=s2w(cx,cy);
+  document.getElementById('st-c').textContent=Math.round(w.x)+','+Math.round(w.y);
+  if(S.wfrom){
+    const fg=S.gates.find(function(g){return g.id===S.wfrom.gid;});
+    if(fg){const fp=pxy(fg,S.wfrom.isOut,S.wfrom.pidx);if(fp){S.wprev={x1:fp.x,y1:fp.y,x2:cx,y2:cy};drawWires();}}
   }
-
-  // Rubber-band box
-  if (rbStart) {
-    const dx = cx - rbStart.sx, dy = cy - rbStart.sy;
-    if (Math.abs(dx) > 6 || Math.abs(dy) > 6) {
-      const bx = Math.min(cx, rbStart.sx), by = Math.min(cy, rbStart.sy);
-      selRect.style.cssText = `display:block;left:${bx}px;top:${by}px;width:${Math.abs(dx)}px;height:${Math.abs(dy)}px`;
+  if(rbStart){
+    const dx=cx-rbStart.sx,dy=cy-rbStart.sy;
+    if(Math.abs(dx)>6||Math.abs(dy)>6){
+      const bx=Math.min(cx,rbStart.sx),by=Math.min(cy,rbStart.sy);
+      selBox.style.cssText='display:block;left:'+bx+'px;top:'+by+'px;width:'+Math.abs(dx)+'px;height:'+Math.abs(dy)+'px';
     }
   }
 });
 
-canvasArea.addEventListener('mouseup', function(e) {
-  if (rbStart) {
-    const rect = canvasArea.getBoundingClientRect();
-    const cx = e.clientX - rect.left, cy = e.clientY - rect.top;
-    const dx = cx - rbStart.sx, dy = cy - rbStart.sy;
-    if (Math.abs(dx) > 6 || Math.abs(dy) > 6) {
-      // Convert rubber-band box to world coords
-      const wx0 = (Math.min(cx, rbStart.sx) - STATE.panX) / STATE.zoom;
-      const wy0 = (Math.min(cy, rbStart.sy) - STATE.panY) / STATE.zoom;
-      const wx1 = (Math.max(cx, rbStart.sx) - STATE.panX) / STATE.zoom;
-      const wy1 = (Math.max(cy, rbStart.sy) - STATE.panY) / STATE.zoom;
-      STATE.gates.forEach(g => {
-        const def = getDef(g);
-        if (g.x < wx1 && g.x + def.w > wx0 && g.y < wy1 && g.y + def.h > wy0) {
-          STATE.msel.add(g.id);
-          if (g.el) g.el.classList.add('ms');
-        }
+cvwrap.addEventListener('mouseup',function(e){
+  if(rbStart){
+    const r=cvwrap.getBoundingClientRect();
+    const cx=e.clientX-r.left,cy=e.clientY-r.top;
+    const dx=cx-rbStart.sx,dy=cy-rbStart.sy;
+    if(Math.abs(dx)>6||Math.abs(dy)>6){
+      const wx0=(Math.min(cx,rbStart.sx)-S.panX)/S.zoom;
+      const wy0=(Math.min(cy,rbStart.sy)-S.panY)/S.zoom;
+      const wx1=(Math.max(cx,rbStart.sx)-S.panX)/S.zoom;
+      const wy1=(Math.max(cy,rbStart.sy)-S.panY)/S.zoom;
+      S.gates.forEach(function(g){
+        const d=gdef(g);
+        if(g.x<wx1&&g.x+d.w>wx0&&g.y<wy1&&g.y+d.h>wy0){S.msel.add(g.id);if(g.el)g.el.classList.add('msel');}
       });
-      if (STATE.msel.size) showMsg(STATE.msel.size + ' gate(s) selected', 'ok');
+      if(S.msel.size)msg(S.msel.size+' selected','ok');
     }
-    rbStart = null;
-    selRect.style.display = 'none';
+    rbStart=null;selBox.style.display='none';
   }
 });
 
-canvasArea.addEventListener('click', function(e) {
-  hideCtxMenu();
-  const onBg = (e.target === canvasArea || e.target === gridCanvas || e.target === gateContainer);
-  if (onBg && !STATE.placing && !STATE.wiring) deselectAll();
+cvwrap.addEventListener('click',function(e){
+  hideCM();
+  const onBg=e.target===cvwrap||e.target===gridCv||e.target===gateLyr;
+  if(onBg&&!S.placing&&!S.wfrom)deselAll();
 });
 
-// Zoom on scroll
-canvasArea.addEventListener('wheel', function(e) {
+cvwrap.addEventListener('wheel',function(e){
   e.preventDefault();
-  const rect = canvasArea.getBoundingClientRect();
-  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
-  const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
-  const newZoom = Math.min(4, Math.max(0.18, STATE.zoom * factor));
-  STATE.panX = mx - (mx - STATE.panX) * (newZoom / STATE.zoom);
-  STATE.panY = my - (my - STATE.panY) * (newZoom / STATE.zoom);
-  STATE.zoom = newZoom;
-  document.getElementById('zoom-label').textContent = Math.round(newZoom * 100) + '%';
-  repositionAll();
-  drawGrid();
-}, { passive: false });
+  const r=cvwrap.getBoundingClientRect();
+  const mx=e.clientX-r.left,my=e.clientY-r.top;
+  const f=e.deltaY<0?1.12:1/1.12;
+  const nz=Math.min(4,Math.max(.18,S.zoom*f));
+  S.panX=mx-(mx-S.panX)*(nz/S.zoom);S.panY=my-(my-S.panY)*(nz/S.zoom);S.zoom=nz;
+  document.getElementById('zoom-lbl').textContent=Math.round(nz*100)+'%';
+  reposAll();drawGrid();
+},{passive:false});
 
-document.addEventListener('mousemove', function(e) {
-  if (!panning) return;
-  STATE.panX = panOX + (e.clientX - panSX);
-  STATE.panY = panOY + (e.clientY - panSY);
-  repositionAll();
-  drawGrid();
+document.addEventListener('mousemove',function(e){
+  if(!panning)return;
+  S.panX=pox+(e.clientX-psx);S.panY=poy+(e.clientY-psy);reposAll();drawGrid();
 });
-document.addEventListener('mouseup', function(e) {
-  if (e.button === 1 || panning) {
-    panning = false;
-    canvasArea.classList.remove('mode-pan', 'active');
+document.addEventListener('mouseup',function(e){
+  if(e.button===1){panning=false;cvwrap.classList.remove('pan','dragging');}
+});
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){cancelWire('');setPlacing(null);deselAll();}
+  if((e.key==='Delete'||e.key==='Backspace')&&!e.target.matches('input,textarea,select')){
+    e.preventDefault();delSel();
   }
 });
 
-// Keyboard shortcuts
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    cancelWiring('');
-    setPlacing(null);
-    deselectAll();
-    armClear(false);
-  }
-  if ((e.key === 'Delete' || e.key === 'Backspace') && !e.target.matches('input,textarea,select')) {
-    e.preventDefault();
-    deleteSelected();
-  }
-});
-
-// ════════════════════════════════════════════════════════════
-// 13. CLOCK ENGINE
-// ════════════════════════════════════════════════════════════
-let tickCount = 0;
-setInterval(function() {
-  tickCount++;
-  let dirty = false;
-  STATE.gates.forEach(function(g) {
-    if (g.type !== 'clock') return;
-    // 100 ticks/second base → half-period in ticks
-    const half = Math.max(1, Math.round(50 / (g.freq || 1)));
-    if (tickCount % half === 0) {
-      g.value = g.value ? 0 : 1;
-      dirty = true;
+// ═══════════════════════════════════════════════════════
+// CLOCK ENGINE — time-based, no tick modulo glitch
+// ═══════════════════════════════════════════════════════
+setInterval(function(){
+  const now=Date.now();let dirty=false;
+  S.gates.forEach(function(g){
+    if(g.type!=='clock')return;
+    const halfMs=500/(g.freq||1);
+    if(!g.lastTog)g.lastTog=now;
+    if(now-g.lastTog>=halfMs){
+      g.value=g.value?0:1;
+      g.lastTog=now;
+      dirty=true;
     }
   });
-  if (dirty) simulate();
-}, 10);
+  if(dirty)simulate();
+},10);
 
-// Lazy props panel update at 15fps
-setInterval(function() {
-  if (STATE.propsDirty) { STATE.propsDirty = false; renderPropsPanel(); }
-}, 66);
+// Lazy props refresh
+setInterval(function(){if(S.pdirty){S.pdirty=false;renderProps();}},66);
+// Auto-save every 10s
+setInterval(function(){if(S.dirty&&PROJ){autoSave();S.dirty=false;}},10000);
 
-// ════════════════════════════════════════════════════════════
-// 14. SIDEBAR
-// ════════════════════════════════════════════════════════════
-function buildSidebar() {
-  const scroll = document.getElementById('sb-scroll');
-  scroll.innerHTML = '';
-
-  CATEGORIES.forEach(function(cat) {
-    const header = document.createElement('div');
-    header.className = 'cat-header';
-    header.dataset.catId = cat.id;
-    header.innerHTML = `<span class="cat-dot" style="background:${cat.color}"></span>${cat.label}<span class="cat-arrow">▶</span>`;
-    scroll.appendChild(header);
-
-    const body = document.createElement('div');
-    body.className = 'cat-body';
-    body.dataset.catId = cat.id;
-    scroll.appendChild(body);
-
-    if (cat.id === 'custom') {
-      refreshCustomCategory(body);
-    } else {
-      cat.types.forEach(function(type) {
-        const def = DEFS[type];
-        if (!def) return;
-        addSidebarItem(type, def.lbl + (def.sub ? ' ' + def.sub : ''), def.nc + ':' + def.np,
-                       GATE_COLORS[type] || '#888', def.tip || def.lbl, body);
+// ═══════════════════════════════════════════════════════
+// SIDEBAR
+// ═══════════════════════════════════════════════════════
+function buildSidebar(){
+  const list=document.getElementById('sb-list');list.innerHTML='';
+  CATS.forEach(function(cat){
+    const h=document.createElement('div');h.className='ch';h.dataset.cid=cat.id;
+    h.innerHTML='<span class="cdot" style="background:'+cat.col+'"></span>'+cat.lbl+'<span class="carr">▶</span>';
+    list.appendChild(h);
+    const b=document.createElement('div');b.className='cb';b.dataset.cid=cat.id;
+    list.appendChild(b);
+    if(cat.id==='custom'){
+      rebuildCustomCat(b);
+    }else{
+      cat.types.forEach(function(type){
+        const d=DEF[type];if(!d)return;
+        addSBI(type,d.lbl+(d.sub?' '+d.sub:''),d.nc+':'+d.np,GCOL[type]||'#888',d.tip||d.lbl,b);
       });
     }
-
-    header.addEventListener('click', function() {
-      header.classList.toggle('open');
-      body.classList.toggle('open');
-    });
+    h.addEventListener('click',function(){h.classList.toggle('open');b.classList.toggle('open');});
   });
-
-  // Default open categories
-  ['io', 'gates', 'seq', 'custom'].forEach(function(id) {
-    const h = document.querySelector('.cat-header[data-cat-id="' + id + '"]');
-    const b = document.querySelector('.cat-body[data-cat-id="' + id + '"]');
-    if (h) h.classList.add('open');
-    if (b) b.classList.add('open');
+  ['io','gates','seq','custom'].forEach(function(id){
+    document.querySelectorAll('.ch[data-cid="'+id+'"],.cb[data-cid="'+id+'"]').forEach(function(el){el.classList.add('open');});
   });
 }
 
-function addSidebarItem(type, label, pins, color, tip, container, prepend) {
-  const item = document.createElement('div');
-  item.className = 'lib-item';
-  item.dataset.type = type;
-  item.title = tip || label;
-  item.innerHTML = `<span class="lib-item-icon" style="background:${color}"></span>${label}<span class="lib-item-pins">${pins}</span>`;
-  item.addEventListener('click', function() { setPlacing(type); });
-  if (prepend && container.firstChild) container.insertBefore(item, container.firstChild);
+function addSBI(type,lbl,pins,col,tip,container,prepend){
+  const item=document.createElement('div');item.className='sbi';item.dataset.type=type;item.title=tip||lbl;
+  item.innerHTML='<span class="sbi-ic" style="background:'+col+'"></span>'+lbl+'<span class="sbi-pins">'+pins+'</span>';
+  item.addEventListener('click',function(){setPlacing(type);});
+  if(prepend&&container.firstChild)container.insertBefore(item,container.firstChild);
   else container.appendChild(item);
 }
 
-function refreshCustomCategory(container) {
-  if (!container) {
-    container = document.querySelector('.cat-body[data-cat-id="custom"]');
-    if (!container) return;
-  }
-  container.innerHTML = '';
-  Object.keys(STATE.custom).forEach(function(name) {
-    const cdef = STATE.custom[name];
-    const type = 'custom:' + name;
-    addSidebarItem(type, name, cdef.ins.length + ':' + cdef.outs.length,
-                   '#50a878', cdef.desc || name, container);
+function rebuildCustomCat(container){
+  if(!container)container=document.querySelector('.cb[data-cid="custom"]');
+  if(!container)return;
+  // Keep only the add/manage buttons at end, rebuild custom items first
+  container.innerHTML='';
+  Object.keys(S.custom).forEach(function(name){
+    const c=S.custom[name];
+    addSBI('custom:'+name,name,c.ins.length+':'+c.outs.length,'#50a878',c.desc||name,container);
   });
-  const newBtn = document.createElement('div');
-  newBtn.className = 'cust-btn';
-  newBtn.innerHTML = '<span>⊕</span>New Custom Gate (Truth Table)';
-  newBtn.addEventListener('click', openCustomModal);
-  container.appendChild(newBtn);
-  const manageBtn = document.createElement('div');
-  manageBtn.className = 'cust-btn';
-  manageBtn.style.marginTop = '3px';
-  manageBtn.innerHTML = '<span>⊞</span>Manage Custom Gates';
-  manageBtn.addEventListener('click', openManageModal);
-  container.appendChild(manageBtn);
+  const nb=document.createElement('div');nb.className='cust-add';nb.innerHTML='<span>⊕</span>New Custom Gate';nb.onclick=openCGModal;container.appendChild(nb);
+  const mb=document.createElement('div');mb.className='cust-add';mb.style.marginTop='2px';mb.innerHTML='<span>⊞</span>Manage Library';mb.onclick=openMgModal;container.appendChild(mb);
 }
 
-function setPlacing(type) {
-  STATE.placing = type;
-  document.querySelectorAll('.lib-item').forEach(function(item) {
-    item.classList.toggle('placing', item.dataset.type === type);
-  });
-  if (type) {
-    canvasArea.classList.add('mode-place');
-    const key = type.startsWith('custom:') ? type : type;
-    const def = type.startsWith('custom:')
-      ? (STATE.custom[type.slice(7)] ? STATE.custom[type.slice(7)]._def : null)
-      : DEFS[type];
-    showMsg('Placing ' + (def ? def.lbl : type) + ' — click canvas to place, Esc to cancel', 'ok');
-  } else {
-    canvasArea.classList.remove('mode-place');
-  }
+function setPlacing(type){
+  S.placing=type;
+  document.querySelectorAll('.sbi').forEach(function(i){i.classList.toggle('placing',i.dataset.type===type);});
+  if(type){
+    cvwrap.classList.add('pc');
+    const d=type.startsWith('custom:')?S.custom[type.slice(7)]?._def:DEF[type];
+    msg('Placing '+(d?d.lbl:type)+' — click canvas, Esc to cancel','ok');
+  }else{cvwrap.classList.remove('pc');}
 }
 
-// Sidebar search
-document.getElementById('sb-input').addEventListener('input', function(e) {
-  const q = e.target.value.toLowerCase();
-  document.querySelectorAll('.lib-item').forEach(function(item) {
-    const match = !q || item.textContent.toLowerCase().includes(q);
-    item.style.display = match ? '' : 'none';
-    if (match && q) {
-      const pb = item.closest('.cat-body');
-      const ph = pb && document.querySelector('.cat-header[data-cat-id="' + pb.dataset.catId + '"]');
-      if (pb) pb.classList.add('open');
-      if (ph) ph.classList.add('open');
-    }
+document.getElementById('sb-in').addEventListener('input',function(e){
+  const q=e.target.value.toLowerCase();
+  document.querySelectorAll('.sbi').forEach(function(item){
+    const m=!q||item.textContent.toLowerCase().includes(q);
+    item.style.display=m?'':'none';
+    if(m&&q){const pb=item.closest('.cb');const ph=pb&&document.querySelector('.ch[data-cid="'+pb.dataset.cid+'"]');if(pb)pb.classList.add('open');if(ph)ph.classList.add('open');}
   });
 });
 
-document.getElementById('btn-sb').addEventListener('click', function() {
-  document.getElementById('sidebar').classList.toggle('collapsed');
-});
-document.getElementById('btn-props').addEventListener('click', function() {
-  document.getElementById('props-panel').classList.toggle('collapsed');
-});
+document.getElementById('btn-sb').addEventListener('click',function(){document.getElementById('sidebar').classList.toggle('off');});
+document.getElementById('btn-rp').addEventListener('click',function(){document.getElementById('rp').classList.toggle('off');});
 
-// ════════════════════════════════════════════════════════════
-// 15. PROPERTIES PANEL
-// ════════════════════════════════════════════════════════════
-function renderPropsPanel() {
-  const body = document.getElementById('props-body');
-
-  if (STATE.msel.size > 1) {
-    body.innerHTML = `
-      <div class="plabel">${STATE.msel.size} gates selected</div>
-      <div style="font-size:11px;color:var(--t3);margin-bottom:8px;line-height:1.6">
-        Shift+click to add/remove gates<br>Drag any selected gate to move all
-      </div>
-      <div class="psep"></div>
-      <button class="pbtn" id="pp-pkg">⊞ Package as Custom Gate</button>
-      <button class="pbtn danger" id="pp-del-all">🗑 Delete All Selected</button>`;
-    document.getElementById('pp-pkg')  && document.getElementById('pp-pkg').addEventListener('click', packageSelection);
-    document.getElementById('pp-del-all') && document.getElementById('pp-del-all').addEventListener('click', deleteSelected);
+// ═══════════════════════════════════════════════════════
+// PROPERTIES PANEL
+// ═══════════════════════════════════════════════════════
+function renderProps(){
+  const body=document.getElementById('rpb');
+  if(S.msel.size>1){
+    body.innerHTML='<div class="ph">'+S.msel.size+' gates selected</div><div style="font-size:11px;color:var(--t3);margin-bottom:8px">Shift+click to add/remove</div><div class="psep"></div><button class="pbtn" id="pp-pkg">⊞ Package as Custom Gate</button><button class="pbtn rd" id="pp-da">🗑 Delete All</button>';
+    document.getElementById('pp-pkg')&&document.getElementById('pp-pkg').addEventListener('click',pkgSel);
+    document.getElementById('pp-da')&&document.getElementById('pp-da').addEventListener('click',delSel);
     return;
   }
-
-  const id = STATE.sel;
-  if (id === null) {
-    body.innerHTML = '<p style="color:var(--t3);font-size:11.5px;margin-top:6px;line-height:1.6">Select a gate to inspect its properties and pin states.</p>';
-    return;
+  const id=S.sel;
+  if(id===null){body.innerHTML='<p style="color:var(--t3);font-size:11.5px;margin-top:6px">Select a gate</p>';return;}
+  const gate=S.gates.find(function(g){return g.id===id;});
+  if(!gate){body.innerHTML='—';return;}
+  const d=gdef(gate),pl=gplbl(gate);
+  let h='';
+  h+='<div class="ph">'+d.lbl+' #'+gate.id+'</div>';
+  h+='<div class="pr"><span class="pk">type</span><span class="pv">'+gate.type+'</span></div>';
+  h+='<div class="pr"><span class="pk">pos</span><span class="pv">'+gate.x+','+gate.y+'</span></div>';
+  h+='<div class="psep"></div>';
+  if(gate.type==='input'){
+    h+='<div class="pr"><span class="pk">value</span><span class="pv" style="color:'+(gate.value?'var(--hi)':'var(--lo)')+';font-family:var(--fmono)">'+gate.value+'</span></div>';
+    h+='<button class="pbtn" id="pp-tog">Toggle 0 ↔ 1</button>';
   }
-
-  const gate = STATE.gates.find(g => g.id === id);
-  if (!gate) { body.innerHTML = '—'; return; }
-
-  const def   = getDef(gate);
-  const plbls = getPinLabels(gate);
-  let html = '';
-
-  html += `<div class="plabel">${def.lbl}${def.sub ? ' · ' + def.sub : ''} #${gate.id}</div>`;
-  html += `<div class="prow"><span class="pkey">type</span><span class="pval">${gate.type}</span></div>`;
-  html += `<div class="prow"><span class="pkey">pos</span><span class="pval">${gate.x}, ${gate.y}</span></div>`;
-  html += '<div class="psep"></div>';
-
-  // Type-specific live controls
-  if (gate.type === 'input') {
-    html += `<div class="prow"><span class="pkey">value</span><span class="pval" style="color:${gate.value ? 'var(--hi)' : 'var(--lo)'};font-family:var(--fmono)">${gate.value}</span></div>`;
-    html += `<button class="pbtn" id="pp-toggle">Toggle  0 ↔ 1</button>`;
+  if(gate.type==='clock'){
+    h+='<div class="pr"><span class="pk">state</span><span class="pv" style="color:'+(gate.value?'var(--hi)':'var(--lo)')+'">'+( gate.value?'HIGH':'LOW')+'</span></div>';
+    h+='<div class="pr"><span class="pk">freq</span><span class="pv" style="font-family:var(--fmono)">'+gate.freq+' Hz</span></div>';
+    h+='<div class="ph" style="margin-top:8px">Frequency</div>';
+    h+='<div class="fqr">'+[0.5,1,2,5,10,20,50].map(function(f){return'<button class="fqb '+(gate.freq==f?'on':'')+'" data-f="'+f+'">'+f+'Hz</button>';}).join('')+'</div>';
   }
-
-  if (gate.type === 'clock') {
-    html += `<div class="prow"><span class="pkey">state</span><span class="pval" style="color:${gate.value ? 'var(--hi)' : 'var(--lo)'};font-family:var(--fmono)">${gate.value ? 'HIGH' : 'LOW'}</span></div>`;
-    html += `<div class="prow"><span class="pkey">freq</span><span class="pval" style="font-family:var(--fmono)">${gate.freq} Hz</span></div>`;
-    html += `<div class="plabel" style="margin-top:8px">Set Frequency</div>`;
-    html += `<div class="freq-row">${[0.5,1,2,5,10,20,50].map(f =>
-      `<button class="freq-btn ${gate.freq == f ? 'active' : ''}" data-f="${f}">${f}Hz</button>`
-    ).join('')}</div>`;
+  if(['sr','dlatch','dff','jkff','tff'].includes(gate.type)){
+    const qv=gate.q?1:0;
+    h+='<div class="qdsp '+(gate.fault?'iv':qv?'hi':'lo')+'">'+(gate.fault?'INVALID':'Q = '+qv)+'</div>';
+    h+='<button class="pbtn" id="pp-rst">↺ Reset (Q=0)</button>';
   }
-
-  if (['sr','dlatch','dff','jkff','tff'].includes(gate.type)) {
-    const qv = gate.q ? 1 : 0;
-    html += `<div class="qdisplay ${gate.fault ? 'fault' : qv ? 'hi' : 'lo'}">${gate.fault ? 'INVALID' : 'Q = ' + qv}</div>`;
-    html += `<button class="pbtn" id="pp-reset">↺ Reset State (Q=0)</button>`;
-  }
-
-  // Pin status
-  const hasInPins  = (plbls.i || []).length > 0;
-  const hasOutPins = (plbls.o || []).length > 0;
-  if (hasInPins || hasOutPins) {
-    html += `<div class="plabel" style="margin-top:8px">Pin Status</div>`;
-    (plbls.i || []).forEach(function(name, i) {
-      const wire = STATE.wires.find(w => w.tg === gate.id && w.tp === i);
-      const sig  = wire != null ? wire.sig : null;
-      html += `<div class="pinrow"><div class="pindot ${sig === 1 ? 'hi' : sig === 0 ? 'lo' : ''}"></div>
-               <span class="pin-name">← ${name}</span>
-               <span class="pin-sig">${sig !== null ? sig : 'nc'}</span></div>`;
+  if((pl.i||[]).length||(pl.o||[]).length){
+    h+='<div class="ph" style="margin-top:8px">Pins</div>';
+    (pl.i||[]).forEach(function(nm,i){
+      const w=S.wires.find(function(w){return w.tg===gate.id&&w.tp===i;});const s=w!=null?w.sig:null;
+      h+='<div class="pinrow"><div class="pindot '+(s===1?'hi':s===0?'lo':'')+'"></div><span class="pname">← '+nm+'</span><span class="psig">'+(s!==null?s:'nc')+'</span></div>';
     });
-    (plbls.o || []).forEach(function(name, i) {
-      const wire = STATE.wires.find(w => w.fg === gate.id && w.fp === i);
-      const sig  = wire != null ? wire.sig : null;
-      html += `<div class="pinrow"><div class="pindot ${sig === 1 ? 'hi' : sig === 0 ? 'lo' : ''}"></div>
-               <span class="pin-name">${name} →</span>
-               <span class="pin-sig">${sig !== null ? sig : 'nc'}</span></div>`;
+    (pl.o||[]).forEach(function(nm,i){
+      const w=S.wires.find(function(w){return w.fg===gate.id&&w.fp===i;});const s=w!=null?w.sig:null;
+      h+='<div class="pinrow"><div class="pindot '+(s===1?'hi':s===0?'lo':'')+'"></div><span class="pname">'+nm+' →</span><span class="psig">'+(s!==null?s:'nc')+'</span></div>';
     });
   }
+  h+='<div class="psep"></div>';
+  h+='<button class="pbtn" id="pp-dup">⧉ Duplicate</button>';
+  h+='<button class="pbtn rd" id="pp-del">🗑 Delete</button>';
+  body.innerHTML=h;
 
-  html += '<div class="psep"></div>';
-  html += `<button class="pbtn" id="pp-dup">⧉ Duplicate</button>`;
-  html += `<button class="pbtn danger" id="pp-del">🗑 Delete</button>`;
-  body.innerHTML = html;
-
-  // Bind interactive controls
-  document.getElementById('pp-toggle') && document.getElementById('pp-toggle').addEventListener('click', function() {
-    gate.value = gate.value ? 0 : 1;
-    simulate();
-    STATE.propsDirty = true;
-  });
-  document.getElementById('pp-reset') && document.getElementById('pp-reset').addEventListener('click', function() {
-    gate.q = 0; gate.prevClk = 0; gate.fault = false;
-    simulate();
-    STATE.propsDirty = true;
-  });
-  document.getElementById('pp-dup') && document.getElementById('pp-dup').addEventListener('click', function() { duplicateGate(gate.id); });
-  document.getElementById('pp-del') && document.getElementById('pp-del').addEventListener('click', function() { deleteGate(gate.id); });
-
-  document.querySelectorAll('.freq-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      gate.freq = parseFloat(btn.dataset.f);
-      const freqLbl = document.getElementById('clkfreq-' + gate.id);
-      if (freqLbl) freqLbl.textContent = gate.freq + 'Hz';
-      document.querySelectorAll('.freq-btn').forEach(b => b.classList.toggle('active', b.dataset.f == gate.freq));
+  document.getElementById('pp-tog')&&document.getElementById('pp-tog').addEventListener('click',function(){gate.value=gate.value?0:1;simulate();S.dirty=true;S.pdirty=true;});
+  document.getElementById('pp-rst')&&document.getElementById('pp-rst').addEventListener('click',function(){gate.q=0;gate.prevClk=0;gate.fault=false;simulate();S.dirty=true;S.pdirty=true;});
+  document.getElementById('pp-dup')&&document.getElementById('pp-dup').addEventListener('click',function(){dupGate(gate.id);});
+  document.getElementById('pp-del')&&document.getElementById('pp-del').addEventListener('click',function(){delGate(gate.id);});
+  document.querySelectorAll('.fqb').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      gate.freq=parseFloat(btn.dataset.f);
+      gate.lastTog=Date.now(); // ← reset timing so change takes effect immediately
+      const fl=document.getElementById('cfl'+gate.id);if(fl)fl.textContent=gate.freq+'Hz';
+      document.querySelectorAll('.fqb').forEach(function(x){x.classList.toggle('on',x.dataset.f==gate.freq);});
+      S.dirty=true;
     });
   });
 }
 
-// ════════════════════════════════════════════════════════════
-// 16. CUSTOM GATE WIZARD
-// ════════════════════════════════════════════════════════════
-let cgState = { step:1, name:'', desc:'', ins:['A','B'], outs:['Y'], table:[] };
+// ═══════════════════════════════════════════════════════
+// CUSTOM GATE WIZARD
+// ═══════════════════════════════════════════════════════
+let CGW={step:1,name:'',desc:'',ins:['A','B'],outs:['Y'],table:[]};
 
-function openCustomModal() {
-  cgState = { step:1, name:'', desc:'', ins:['A','B'], outs:['Y'], table:[] };
-  renderCGStep1();
-  document.getElementById('modal-custom').classList.add('open');
+function openCGModal(){
+  CGW={step:1,name:'',desc:'',ins:['A','B'],outs:['Y'],table:[]};
+  renderCG1();document.getElementById('ov-cg').classList.add('open');
 }
-
-function renderCGStep1() {
-  cgState.step = 1;
-  document.getElementById('cg-step-lbl').textContent = 'Step 1 of 2';
-  document.getElementById('cg-back').style.display = 'none';
-  document.getElementById('cg-next').textContent = 'Next →';
-  document.getElementById('cg-content').innerHTML = `
-    <div class="mrow"><label>Gate Name</label>
-      <input class="minput" id="cg-name" value="${cgState.name}" maxlength="20"
-             placeholder="e.g. MYGATE" spellcheck="false"></div>
-    <div class="mrow"><label>Description</label>
-      <input class="minput" id="cg-desc" value="${cgState.desc}" placeholder="Optional description"></div>
-    <div class="mrow"><label># Inputs</label>
-      <select class="mselect" id="cg-ni">
-        ${[1,2,3,4].map(n => `<option${n === cgState.ins.length ? ' selected' : ''}>${n}</option>`).join('')}
-      </select></div>
-    <div class="mrow"><label># Outputs</label>
-      <select class="mselect" id="cg-no">
-        ${[1,2,3,4].map(n => `<option${n === cgState.outs.length ? ' selected' : ''}>${n}</option>`).join('')}
-      </select></div>
-    <div class="mrow" style="align-items:flex-start"><label>Input Names</label>
-      <div class="pin-name-inputs" id="cg-inames">
-        ${cgState.ins.map((n,i) => `<input class="pni" data-ii="${i}" value="${n}" maxlength="5" placeholder="I${i}">`).join('')}
-      </div></div>
-    <div class="mrow" style="align-items:flex-start"><label>Output Names</label>
-      <div class="pin-name-inputs" id="cg-onames">
-        ${cgState.outs.map((n,i) => `<input class="pni" data-oi="${i}" value="${n}" maxlength="5" placeholder="O${i}">`).join('')}
-      </div></div>`;
-
-  document.getElementById('cg-ni').addEventListener('change', function(e) {
-    const n = +e.target.value;
-    cgState.ins = Array.from({ length: n }, (_, i) => cgState.ins[i] || 'I' + i);
-    renderCGStep1();
-  });
-  document.getElementById('cg-no').addEventListener('change', function(e) {
-    const n = +e.target.value;
-    cgState.outs = Array.from({ length: n }, (_, i) => cgState.outs[i] || 'O' + i);
-    renderCGStep1();
-  });
+function renderCG1(){
+  CGW.step=1;document.getElementById('cg-sl').textContent='Step 1 of 2';
+  document.getElementById('cg-bk').style.display='none';document.getElementById('cg-nx').textContent='Next →';
+  document.getElementById('cg-body').innerHTML=
+    '<div class="mr"><label>Gate Name</label><input class="mi" id="cgn" value="'+CGW.name+'" maxlength="20" placeholder="MYGATE" spellcheck="false"></div>'+
+    '<div class="mr"><label>Description</label><input class="mi" id="cgd" value="'+CGW.desc+'" placeholder="Optional"></div>'+
+    '<div class="mr"><label># Inputs</label><select class="msel" id="cgni">'+[1,2,3,4].map(function(n){return'<option'+(n===CGW.ins.length?' selected':'')+'>'+n+'</option>';}).join('')+'</select></div>'+
+    '<div class="mr"><label># Outputs</label><select class="msel" id="cgno">'+[1,2,3,4].map(function(n){return'<option'+(n===CGW.outs.length?' selected':'')+'>'+n+'</option>';}).join('')+'</select></div>'+
+    '<div class="mr" style="align-items:flex-start"><label>Input Names</label><div class="pnw" id="cgins">'+CGW.ins.map(function(n,i){return'<input class="pni" data-ii="'+i+'" value="'+n+'" maxlength="5" placeholder="I'+i+'">';}).join('')+'</div></div>'+
+    '<div class="mr" style="align-items:flex-start"><label>Output Names</label><div class="pnw" id="cgouts">'+CGW.outs.map(function(n,i){return'<input class="pni" data-oi="'+i+'" value="'+n+'" maxlength="5" placeholder="O'+i+'">';}).join('')+'</div></div>';
+  document.getElementById('cgni').onchange=function(e){const n=+e.target.value;CGW.ins=Array.from({length:n},function(_,i){return CGW.ins[i]||'I'+i;});renderCG1();};
+  document.getElementById('cgno').onchange=function(e){const n=+e.target.value;CGW.outs=Array.from({length:n},function(_,i){return CGW.outs[i]||'O'+i;});renderCG1();};
 }
-
-function renderCGStep2() {
-  cgState.step = 2;
-  document.getElementById('cg-step-lbl').textContent = 'Step 2 of 2';
-  document.getElementById('cg-back').style.display = '';
-  document.getElementById('cg-next').textContent = '💾 Save Gate';
-
-  const rows = 1 << cgState.ins.length;
-  if (!cgState.table || cgState.table.length !== rows) {
-    cgState.table = Array.from({ length: rows }, () => cgState.outs.map(() => 0));
+function renderCG2(){
+  CGW.step=2;document.getElementById('cg-sl').textContent='Step 2 of 2';
+  document.getElementById('cg-bk').style.display='';document.getElementById('cg-nx').textContent='💾 Save Gate';
+  const rows=1<<CGW.ins.length;
+  if(!CGW.table||CGW.table.length!==rows)CGW.table=Array.from({length:rows},function(){return CGW.outs.map(function(){return 0;});});
+  let th='<tr><th colspan="'+CGW.ins.length+'" style="border-right:1px solid var(--b2)">Inputs</th><th colspan="'+CGW.outs.length+'" style="color:var(--acc)">Outputs</th></tr>';
+  th+='<tr>'+CGW.ins.map(function(n){return'<th>'+n+'</th>';}).join('')+CGW.outs.map(function(n){return'<th>'+n+'</th>';}).join('')+'</tr>';
+  let tb='';
+  for(let r=0;r<rows;r++){
+    const bits=CGW.ins.map(function(_,i){return(r>>(CGW.ins.length-1-i))&1;});
+    tb+='<tr>'+bits.map(function(b){return'<td style="color:var(--t3)">'+b+'</td>';}).join('');
+    tb+=CGW.outs.map(function(_,oi){const v=CGW.table[r][oi];return'<td><div class="ttc '+(v?'v1':'')+'" data-r="'+r+'" data-o="'+oi+'">'+v+'</div></td>';}).join('');
+    tb+='</tr>';
   }
-
-  const inputCols  = cgState.ins.length;
-  const outputCols = cgState.outs.length;
-  let thead = `<tr>
-    <th colspan="${inputCols}" style="border-right:1px solid var(--b2)">Inputs</th>
-    <th colspan="${outputCols}" style="color:var(--acc)">Outputs</th></tr>
-    <tr>${cgState.ins.map(n => `<th>${n}</th>`).join('')}
-        ${cgState.outs.map(n => `<th style="color:var(--acc)">${n}</th>`).join('')}</tr>`;
-
-  let tbody = '';
-  for (let r = 0; r < rows; r++) {
-    const bits = cgState.ins.map((_, i) => (r >> (inputCols - 1 - i)) & 1);
-    tbody += `<tr>${bits.map(b => `<td style="color:var(--t3)">${b}</td>`).join('')}`;
-    tbody += cgState.outs.map((_, oi) => {
-      const v = cgState.table[r][oi];
-      return `<td><div class="tt-cell ${v ? 'v1' : ''}" data-r="${r}" data-o="${oi}">${v}</div></td>`;
-    }).join('');
-    tbody += '</tr>';
-  }
-
-  document.getElementById('cg-content').innerHTML = `
-    <p style="font-size:11.5px;color:var(--t3);margin-bottom:8px">
-      Click the output cells to toggle between 0 and 1
-    </p>
-    <div class="tt-wrap"><table class="tt">
-      <thead>${thead}</thead>
-      <tbody id="tt-body">${tbody}</tbody>
-    </table></div>`;
-
-  document.getElementById('tt-body').addEventListener('click', function(e) {
-    const cell = e.target.closest('.tt-cell');
-    if (!cell) return;
-    const r = +cell.dataset.r, oi = +cell.dataset.o;
-    cgState.table[r][oi] = cgState.table[r][oi] ? 0 : 1;
-    cell.textContent = cgState.table[r][oi];
-    cell.className = 'tt-cell ' + (cgState.table[r][oi] ? 'v1' : '');
+  document.getElementById('cg-body').innerHTML='<p style="font-size:11px;color:var(--t3);margin-bottom:8px">Click output cells to toggle 0↔1</p><div class="ttw"><table class="tt"><thead>'+th+'</thead><tbody id="ttbd">'+tb+'</tbody></table></div>';
+  document.getElementById('ttbd').addEventListener('click',function(e){
+    const cc=e.target.closest('.ttc');if(!cc)return;
+    const r=+cc.dataset.r,o=+cc.dataset.o;CGW.table[r][o]=CGW.table[r][o]?0:1;
+    cc.textContent=CGW.table[r][o];cc.className='ttc '+(CGW.table[r][o]?'v1':'');
   });
 }
-
-document.getElementById('cg-next').addEventListener('click', function() {
-  if (cgState.step === 1) {
-    cgState.name = document.getElementById('cg-name').value.trim();
-    cgState.desc = document.getElementById('cg-desc').value.trim();
-    document.querySelectorAll('#cg-inames .pni').forEach((el, i) => { cgState.ins[i] = el.value.trim() || 'I' + i; });
-    document.querySelectorAll('#cg-onames .pni').forEach((el, i) => { cgState.outs[i] = el.value.trim() || 'O' + i; });
-    if (!cgState.name) { showMsg('Please enter a gate name', 'err'); return; }
-    if (!/^[a-zA-Z0-9_\-]{1,20}$/.test(cgState.name)) { showMsg('Name: letters, digits, _ - only', 'err'); return; }
-    renderCGStep2();
-  } else {
-    const nc = cgState.ins.length, np = cgState.outs.length;
-    const custDef = {
-      lbl: cgState.name,
-      w: Math.max(76, cgState.name.length * 8 + 18),
-      h: Math.max(60, Math.max(nc, np) * 22 + 20),
-      nc, np,
-      tip: cgState.desc || cgState.name,
-      sub: nc + '→' + np,
+document.getElementById('cg-nx').onclick=function(){
+  if(CGW.step===1){
+    CGW.name=document.getElementById('cgn').value.trim();
+    CGW.desc=document.getElementById('cgd').value.trim();
+    document.querySelectorAll('#cgins .pni').forEach(function(el,i){CGW.ins[i]=el.value.trim()||'I'+i;});
+    document.querySelectorAll('#cgouts .pni').forEach(function(el,i){CGW.outs[i]=el.value.trim()||'O'+i;});
+    if(!CGW.name){msg('Enter a gate name','er');return;}
+    if(!/^[a-zA-Z0-9_\-]{1,20}$/.test(CGW.name)){msg('Name: letters/digits/_/- only','er');return;}
+    renderCG2();
+  }else{
+    const nc=CGW.ins.length,np=CGW.outs.length;
+    S.custom[CGW.name]={
+      type:'truth',desc:CGW.desc,ins:CGW.ins,outs:CGW.outs,table:CGW.table,
+      _def:{lbl:CGW.name,w:Math.max(76,CGW.name.length*8+16),h:Math.max(60,Math.max(nc,np)*22+20),nc,np,cls:'tcu',tip:CGW.desc||CGW.name,sub:nc+'→'+np}
     };
-    STATE.custom[cgState.name] = {
-      type: 'truth',
-      desc: cgState.desc,
-      ins:  cgState.ins,
-      outs: cgState.outs,
-      table: cgState.table,
-      _def: custDef,
-    };
-    PIN_LABELS['custom:' + cgState.name] = { i: cgState.ins, o: cgState.outs };
-    saveCustomGates();
-    document.getElementById('modal-custom').classList.remove('open');
-    refreshCustomCategory();
-    showMsg('"' + cgState.name + '" saved — find it in Custom Gates', 'ok');
-    document.querySelector('.cat-header[data-cat-id="custom"]') && document.querySelector('.cat-header[data-cat-id="custom"]').classList.add('open');
-    document.querySelector('.cat-body[data-cat-id="custom"]') && document.querySelector('.cat-body[data-cat-id="custom"]').classList.add('open');
+    PLBL['custom:'+CGW.name]={i:CGW.ins,o:CGW.outs};
+    document.getElementById('ov-cg').classList.remove('open');
+    rebuildCustomCat();S.dirty=true;
+    msg('"'+CGW.name+'" saved — Custom Gates ↗','ok');
   }
-});
-document.getElementById('cg-back').addEventListener('click', function() { if (cgState.step === 2) renderCGStep1(); });
-document.getElementById('cg-cancel').addEventListener('click', function() { document.getElementById('modal-custom').classList.remove('open'); });
+};
+document.getElementById('cg-bk').onclick=function(){if(CGW.step===2)renderCG1();};
+document.getElementById('cg-x').onclick=function(){document.getElementById('ov-cg').classList.remove('open');};
 
-// ════════════════════════════════════════════════════════════
-// 17. PACKAGE SELECTION AS SUBCIRCUIT
-// ════════════════════════════════════════════════════════════
-function packageSelection() {
-  const ids = STATE.msel.size > 0 ? [...STATE.msel] : (STATE.sel !== null ? [STATE.sel] : []);
-  if (ids.length < 2) { showMsg('Select ≥2 gates to package', 'err'); return; }
-
-  const selGates  = ids.map(id => STATE.gates.find(g => g.id === id)).filter(Boolean);
-  const inputGates  = selGates.filter(g => g.type === 'input');
-  const outputGates = selGates.filter(g => g.type === 'output');
-
-  if (!inputGates.length || !outputGates.length) {
-    showMsg('Selection needs ≥1 INPUT gate and ≥1 OUTPUT gate', 'err');
-    return;
-  }
-
-  let name = 'Circuit' + Object.keys(STATE.custom).length;
-  try { const n = window.prompt('Name for this custom gate:', name); if (n && n.trim()) name = n.trim().replace(/[^a-zA-Z0-9_\-]/g, ''); } catch(e) {}
-  if (!name) name = 'Sub' + STATE.nextId;
-
-  const selIdSet  = new Set(ids);
-  const circGates = selGates.map(g => ({ id:g.id, type:g.type, x:g.x, y:g.y, value:g.value, q:g.q, prevClk:g.prevClk, freq:g.freq, cn:g.cn }));
-  const circWires = STATE.wires.filter(w => selIdSet.has(w.fg) && selIdSet.has(w.tg)).map(w => Object.assign({}, w));
-
-  const nc = inputGates.length, np = outputGates.length;
-  const custDef = {
-    lbl: name,
-    w: Math.max(76, name.length * 8 + 18),
-    h: Math.max(60, Math.max(nc, np) * 22 + 20),
-    nc, np,
-    tip: 'Subcircuit: ' + name,
-    sub: nc + '→' + np,
+// ═══════════════════════════════════════════════════════
+// PACKAGE SELECTION AS SUBCIRCUIT
+// ═══════════════════════════════════════════════════════
+function pkgSel(){
+  const ids=S.msel.size>0?[...S.msel]:(S.sel!==null?[S.sel]:[]);
+  if(ids.length<2){msg('Select ≥2 gates (needs ≥1 INPUT + ≥1 OUTPUT)','er');return;}
+  const sg=ids.map(function(id){return S.gates.find(function(g){return g.id===id;});}).filter(Boolean);
+  const inp=sg.filter(function(g){return g.type==='input';});
+  const out=sg.filter(function(g){return g.type==='output';});
+  if(!inp.length||!out.length){msg('Needs ≥1 INPUT gate and ≥1 OUTPUT gate','er');return;}
+  let name='Sub'+Object.keys(S.custom).length;
+  try{const n=window.prompt('Name for this custom gate:',name);if(n&&n.trim())name=n.trim().replace(/[^a-zA-Z0-9_\-]/g,'');}catch(e){}
+  if(!name)name='Sub'+S.nid;
+  const sid=new Set(ids);
+  const cg=JSON.parse(JSON.stringify(sg.map(function(g){return{id:g.id,type:g.type,x:g.x,y:g.y,value:g.value,q:g.q,prevClk:g.prevClk,freq:g.freq,cn:g.cn};})));
+  const cw=S.wires.filter(function(w){return sid.has(w.fg)&&sid.has(w.tg);}).map(function(w){return Object.assign({},w);});
+  const nc=inp.length,np=out.length;
+  S.custom[name]={
+    type:'sub',desc:'Subcircuit',
+    ins:inp.map(function(_,i){return'I'+i;}),outs:out.map(function(_,i){return'O'+i;}),
+    inputIds:inp.map(function(g){return g.id;}),outputIds:out.map(function(g){return g.id;}),
+    circuit:{gates:cg,wires:cw},
+    _def:{lbl:name,w:Math.max(76,name.length*8+16),h:Math.max(60,Math.max(nc,np)*22+20),nc,np,cls:'tcu',tip:'Subcircuit: '+name,sub:nc+'→'+np}
   };
-  STATE.custom[name] = {
-    type: 'sub',
-    desc: 'Subcircuit',
-    ins:  inputGates.map((_,i) => 'I' + i),
-    outs: outputGates.map((_,i) => 'O' + i),
-    inputIds:  inputGates.map(g => g.id),
-    outputIds: outputGates.map(g => g.id),
-    circuit: { gates: circGates, wires: circWires },
-    _def: custDef,
-  };
-  PIN_LABELS['custom:' + name] = { i: inputGates.map((_,i)=>'I'+i), o: outputGates.map((_,i)=>'O'+i) };
-  saveCustomGates();
-  refreshCustomCategory();
-  showMsg('"' + name + '" packaged — find it in Custom Gates', 'ok');
+  PLBL['custom:'+name]={i:inp.map(function(_,i){return'I'+i;}),o:out.map(function(_,i){return'O'+i;})};
+  rebuildCustomCat();S.dirty=true;
+  msg('"'+name+'" packaged — find in Custom Gates','ok');
 }
 
-// ════════════════════════════════════════════════════════════
-// 18. MANAGE MODAL
-// ════════════════════════════════════════════════════════════
-function openManageModal() {
-  const body = document.getElementById('manage-content');
-  const keys = Object.keys(STATE.custom);
-  if (!keys.length) {
-    body.innerHTML = '<p style="color:var(--t3);font-size:11.5px">No custom gates yet. Use the Truth Table editor to create one.</p>';
-  } else {
-    body.innerHTML = keys.map(name => {
-      const c = STATE.custom[name];
-      return `<div class="cg-row">
-        <div style="flex:1">
-          <div style="font-weight:600">${name}</div>
-          <div style="font-size:10.5px;color:var(--t3)">${c.type === 'truth' ? 'Truth Table' : 'Subcircuit'} · ${c.ins.length} in / ${c.outs.length} out${c.desc ? ' · ' + c.desc : ''}</div>
-        </div>
-        <button class="cg-del" data-name="${name}" title="Delete">✕</button>
-      </div>`;
+// ═══════════════════════════════════════════════════════
+// MANAGE MODAL
+// ═══════════════════════════════════════════════════════
+function openMgModal(){
+  const body=document.getElementById('mg-body');
+  const keys=Object.keys(S.custom);
+  if(!keys.length){body.innerHTML='<p style="color:var(--t3);font-size:11.5px">No custom gates yet.</p>';}
+  else{
+    body.innerHTML=keys.map(function(name){
+      const c=S.custom[name];
+      return '<div class="cgl"><div style="flex:1"><div style="font-weight:600">'+name+'</div><div style="font-size:10px;color:var(--t3)">'+(c.type==='truth'?'Truth Table':'Subcircuit')+' · '+c.ins.length+'in/'+c.outs.length+'out</div></div><button class="cgdel" data-n="'+name+'">✕</button></div>';
     }).join('');
-    body.querySelectorAll('.cg-del').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        const n = btn.dataset.name;
-        delete STATE.custom[n];
-        delete PIN_LABELS['custom:' + n];
-        saveCustomGates();
-        refreshCustomCategory();
-        openManageModal();
-        showMsg('"' + n + '" removed from library', '');
+    body.querySelectorAll('.cgdel').forEach(function(b){
+      b.addEventListener('click',function(){
+        const n=b.dataset.n;delete S.custom[n];delete PLBL['custom:'+n];
+        rebuildCustomCat();openMgModal();S.dirty=true;msg('"'+n+'" removed','');
       });
     });
   }
-  document.getElementById('modal-manage').classList.add('open');
+  document.getElementById('ov-mg').classList.add('open');
 }
-document.getElementById('manage-close').addEventListener('click', function() {
-  document.getElementById('modal-manage').classList.remove('open');
-});
+document.getElementById('mg-cl').onclick=function(){document.getElementById('ov-mg').classList.remove('open');};
 
-// ════════════════════════════════════════════════════════════
-// 19. PERSISTENCE
-// ════════════════════════════════════════════════════════════
-function saveCustomGates() {
-  try {
-    const toSave = {};
-    Object.keys(STATE.custom).forEach(function(k) {
-      const c = STATE.custom[k];
-      toSave[k] = { type:c.type, desc:c.desc, ins:c.ins, outs:c.outs,
-                    table:c.table, inputIds:c.inputIds, outputIds:c.outputIds, circuit:c.circuit };
-    });
-    localStorage.setItem('lgfpro3_custom', JSON.stringify(toSave));
-  } catch(e) {}
-}
-function loadCustomGates() {
-  try {
-    const raw = localStorage.getItem('lgfpro3_custom');
-    if (!raw) return;
-    const data = JSON.parse(raw);
-    Object.keys(data).forEach(function(name) {
-      const c = data[name];
-      const nc = c.ins.length, np = c.outs.length;
-      c._def = { lbl:name, w:Math.max(76,name.length*8+18), h:Math.max(60,Math.max(nc,np)*22+20), nc, np, tip:c.desc||name, sub:nc+'→'+np };
-      PIN_LABELS['custom:' + name] = { i: c.ins, o: c.outs };
-      STATE.custom[name] = c;
-    });
-  } catch(e) { STATE.custom = {}; }
+// ═══════════════════════════════════════════════════════
+// VERILOG EXPORT
+// ═══════════════════════════════════════════════════════
+let vMode='structural';
+
+function openVerilogModal(){
+  vMode='structural';
+  document.getElementById('ov-verilog').classList.add('open');
+  document.getElementById('v-export-area').style.display='';
+  document.getElementById('v-import-area').style.display='none';
+  document.getElementById('v-dl').style.display='flex';
+  updateVerilogTabs();
+  genVerilog();
 }
 
-// ════════════════════════════════════════════════════════════
-// 20. CONTEXT MENU
-// ════════════════════════════════════════════════════════════
-function hideCtxMenu() { ctxMenu.style.display = 'none'; }
-document.addEventListener('click', hideCtxMenu);
-document.getElementById('ctx-del').addEventListener('click', function() { if (ctxGateId !== null) deleteGate(ctxGateId); hideCtxMenu(); });
-document.getElementById('ctx-dup').addEventListener('click', function() { if (ctxGateId !== null) duplicateGate(ctxGateId); hideCtxMenu(); });
-document.getElementById('ctx-reset').addEventListener('click', function() {
-  const g = STATE.gates.find(g => g.id === ctxGateId);
-  if (g) { g.q = 0; g.prevClk = 0; g.fault = false; simulate(); }
-  hideCtxMenu();
-});
-document.getElementById('ctx-pkg').addEventListener('click', function() { packageSelection(); hideCtxMenu(); });
-
-// ════════════════════════════════════════════════════════════
-// 21. TOPBAR BUTTONS
-// ════════════════════════════════════════════════════════════
-let clearArmedTimer = null;
-function armClear(arm) {
-  STATE.clearArmed = arm;
-  const btn = document.getElementById('btn-clear');
-  if (arm) {
-    btn.classList.add('confirm');
-    btn.textContent = '⚠ Click again to clear';
-    clearArmedTimer = setTimeout(function() { armClear(false); }, 2500);
-  } else {
-    btn.classList.remove('confirm');
-    btn.textContent = '⊘ Clear';
-    clearTimeout(clearArmedTimer);
-  }
-}
-document.getElementById('btn-clear').addEventListener('click', function() {
-  if (!STATE.clearArmed) { armClear(true); showMsg('Click Clear again to confirm', 'warn'); return; }
-  armClear(false);
-  STATE.gates.forEach(g => g.el && g.el.remove());
-  STATE.gates = []; STATE.wires = [];
-  deselectAll();
-  simulate(); updateStatus();
-  showMsg('Canvas cleared', '');
-});
-
-document.getElementById('btn-package').addEventListener('click', packageSelection);
-document.getElementById('btn-help').addEventListener('click', function() { document.getElementById('modal-help').classList.add('open'); });
-document.getElementById('help-close').addEventListener('click', function() { document.getElementById('modal-help').classList.remove('open'); });
-document.getElementById('modal-help').addEventListener('click', function(e) { if (e.target === e.currentTarget) e.currentTarget.classList.remove('open'); });
-
-function doZoom(factor) {
-  const W = canvasArea.clientWidth, H = canvasArea.clientHeight;
-  const nz = Math.min(4, Math.max(0.18, STATE.zoom * factor));
-  STATE.panX = W/2 - (W/2 - STATE.panX) * (nz / STATE.zoom);
-  STATE.panY = H/2 - (H/2 - STATE.panY) * (nz / STATE.zoom);
-  STATE.zoom = nz;
-  document.getElementById('zoom-label').textContent = Math.round(nz * 100) + '%';
-  repositionAll(); drawGrid();
-}
-document.getElementById('btn-zi').addEventListener('click', function() { doZoom(1.2); });
-document.getElementById('btn-zo').addEventListener('click', function() { doZoom(1/1.2); });
-document.getElementById('btn-fit').addEventListener('click', function() {
-  if (!STATE.gates.length) return;
-  const W = canvasArea.clientWidth, H = canvasArea.clientHeight;
-  const xs = STATE.gates.map(g => g.x), ys = STATE.gates.map(g => g.y);
-  const xe = STATE.gates.map(g => g.x + getDef(g).w), ye = STATE.gates.map(g => g.y + getDef(g).h);
-  const x0 = Math.min(...xs) - 36, y0 = Math.min(...ys) - 36;
-  const x1 = Math.max(...xe) + 36, y1 = Math.max(...ye) + 36;
-  const nz = Math.min(W / (x1-x0), H / (y1-y0), 2.5);
-  STATE.zoom = nz;
-  STATE.panX = -x0*nz + (W - (x1-x0)*nz)/2;
-  STATE.panY = -y0*nz + (H - (y1-y0)*nz)/2;
-  document.getElementById('zoom-label').textContent = Math.round(nz * 100) + '%';
-  repositionAll(); drawGrid();
-});
-
-// ════════════════════════════════════════════════════════════
-// 22. STATUS BAR
-// ════════════════════════════════════════════════════════════
-function updateStatus() {
-  document.getElementById('sb-gates').textContent = STATE.gates.length;
-  document.getElementById('sb-wires').textContent = STATE.wires.length;
-  const selCount = STATE.msel.size || (STATE.sel !== null ? 1 : 0);
-  document.getElementById('sb-sel').textContent = selCount ? selCount + ' gate(s)' : '—';
-}
-
-let msgTimer;
-function showMsg(text, type) {
-  const el = document.getElementById('status-msg');
-  el.textContent = text;
-  el.className = type === 'ok' ? 'msg-ok' : type === 'err' ? 'msg-err' : type === 'warn' ? 'msg-warn' : '';
-  clearTimeout(msgTimer);
-  if (text) msgTimer = setTimeout(function() { el.textContent = 'Ready'; el.className = 'msg-ok'; }, 5000);
-}
-
-// ════════════════════════════════════════════════════════════
-// 23. RESIZE OBSERVER
-// ════════════════════════════════════════════════════════════
-new ResizeObserver(function() { drawGrid(); }).observe(canvasArea);
-
-// ════════════════════════════════════════════════════════════
-// 24. DEMO CIRCUIT
-// ════════════════════════════════════════════════════════════
-function buildDemo() {
-  function wire(fg, fp, tg, tp) {
-    STATE.wires.push({ id: STATE.nextId++, fg, fp, tg, tp, sig: 0 });
-  }
-
-  // ─── Half Adder (top-left)
-  const iA  = placeGate('input',  50,  50);  iA.value = 1;
-  const iB  = placeGate('input',  50, 110);  iB.value = 1;
-  const xg  = placeGate('xor',  200,  62);
-  const ag  = placeGate('and',  200, 122);
-  const oS  = placeGate('output',360,  62);
-  const oC  = placeGate('output',360, 122);
-  wire(iA.id,0, xg.id,0); wire(iA.id,0, ag.id,0);
-  wire(iB.id,0, xg.id,1); wire(iB.id,0, ag.id,1);
-  wire(xg.id,0, oS.id,0);
-  wire(ag.id,0, oC.id,0);
-
-  // ─── D Flip-Flop with clock (middle)
-  const clk = placeGate('clock',  50, 240);  clk.freq = 2;
-  const dff = placeGate('dff',   220, 232);
-  const oQ  = placeGate('output', 390, 232);
-  const oQb = placeGate('output', 390, 278);
-  wire(iA.id, 0, dff.id, 0);  // D = Input A
-  wire(clk.id, 0, dff.id, 1); // CLK
-  wire(dff.id, 0, oQ.id,  0); // Q
-  wire(dff.id, 1, oQb.id, 0); // Q̄
-
-  // ─── SR Latch (right side)
-  const iS  = placeGate('input',  50, 380);
-  const iR  = placeGate('input',  50, 430);
-  const srl = placeGate('sr',    200, 380);
-  const oQ2 = placeGate('output', 370, 380);
-  const oQ3 = placeGate('output', 370, 435);
-  wire(iS.id,0, srl.id,0); wire(iR.id,0, srl.id,1);
-  wire(srl.id,0, oQ2.id,0); wire(srl.id,1, oQ3.id,0);
-
-  // ─── MUX 2:1 demo (far right)
-  const mA  = placeGate('input',  50, 540);  mA.value = 1;
-  const mB  = placeGate('input',  50, 590);  mB.value = 0;
-  const mS  = placeGate('input',  50, 640);  mS.value = 0;
-  const mux = placeGate('mux2',  210, 553);
-  const oM  = placeGate('output', 380, 578);
-  wire(mA.id,0, mux.id,0); wire(mB.id,0, mux.id,1); wire(mS.id,0, mux.id,2);
-  wire(mux.id,0, oM.id,0);
-
-  simulate();
-  updateStatus();
-  showMsg('Demo: Half Adder + D Flip-Flop + SR Latch + MUX — toggle inputs to test!', 'ok');
-}
-
-// ════════════════════════════════════════════════════════════
-// 25. INIT
-// ════════════════════════════════════════════════════════════
-function init() {
-  loadCustomGates();
-  buildSidebar();
-  STATE.panX = 50;
-  STATE.panY = 30;
-  drawGrid();
-  // Wait for layout with double rAF
-  requestAnimationFrame(function() {
-    requestAnimationFrame(function() {
-      drawGrid();
-      buildDemo();
-    });
+function updateVerilogTabs(){
+  document.querySelectorAll('.vtab').forEach(function(t){
+    t.classList.toggle('on',t.id==='vt-'+vMode||(vMode==='import'&&t.id==='vt-import'));
   });
 }
 
-init();
+document.querySelectorAll('.vtab').forEach(function(tab){
+  tab.addEventListener('click',function(){
+    if(tab.id==='vt-import'){
+      vMode='import';
+      document.getElementById('v-export-area').style.display='none';
+      document.getElementById('v-import-area').style.display='';
+      document.getElementById('v-dl').style.display='none';
+    }else{
+      vMode=tab.dataset.mode;
+      document.getElementById('v-export-area').style.display='';
+      document.getElementById('v-import-area').style.display='none';
+      document.getElementById('v-dl').style.display='flex';
+      genVerilog();
+    }
+    updateVerilogTabs();
+  });
+});
+
+function genVerilog(){
+  const inputs=S.gates.filter(function(g){return g.type==='input';});
+  const outputs=S.gates.filter(function(g){return g.type==='output';});
+  const pName=PROJ?PROJ.name.replace(/\W/g,'_'):'circuit';
+
+  // Name inputs/outputs
+  function inName(g,i){return'in_'+String.fromCharCode(65+i);}
+  function outName(g,i){return'out_'+i;}
+  const inMap={};inputs.forEach(function(g,i){inMap[g.id]=inName(g,i);});
+  const outMap={};outputs.forEach(function(g,i){outMap[g.id]=outName(g,i);});
+
+  // Assign a net name to each output pin of each gate
+  const netMap={};// key: gid+'_'+fp → wire name
+  let wCount=0;
+  function netName(gid,fp){
+    const k=gid+'_'+fp;
+    if(!netMap[k]){
+      // Check if this gate is an input
+      const g=S.gates.find(function(g){return g.id===gid;});
+      if(g&&g.type==='input'){netMap[k]=inMap[g.id]||'w'+wCount++;}
+      else{netMap[k]='w'+wCount++;}
+    }
+    return netMap[k];
+  }
+
+  // Pre-populate input nets
+  inputs.forEach(function(g){netMap[g.id+'_0']=inMap[g.id];});
+
+  // Generate nets for all connected output pins
+  S.wires.forEach(function(w){
+    if(!netMap[w.fg+'_'+w.fp]){netName(w.fg,w.fp);}
+  });
+
+  // Gather all internal wire names
+  const internalNets=new Set();
+  S.wires.forEach(function(w){
+    const n=netMap[w.fg+'_'+w.fp];
+    if(n&&!Object.values(inMap).includes(n)&&!Object.values(outMap).includes(n))
+      internalNets.add(n);
+  });
+
+  const inPorts=inputs.map(function(g,i){return inMap[g.id];}).join(', ');
+  const outPorts=outputs.map(function(g,i){return outMap[g.id];}).join(', ');
+  const portList=[inPorts,outPorts].filter(Boolean).join(', ');
+
+  let code='// Generated by LogicForge Pro\n';
+  code+='// Mode: '+(vMode==='structural'?'Structural':'Behavioral')+'\n\n';
+
+  const modParts=[];
+  if(inPorts)modParts.push('input wire '+inPorts);
+  if(outPorts)modParts.push(vMode==='behavioral'?'output reg '+outPorts:'output wire '+outPorts);
+  if(internalNets.size)modParts.push('wire '+[...internalNets].join(', '));
+
+  code+='module '+pName+'(\n';
+  code+='  '+[...(inPorts?['input wire '+inPorts]:[]),...(outPorts?['output '+(vMode==='behavioral'?'reg':'wire')+' '+outPorts]:[])].join(',\n  ');
+  code+='\n);\n\n';
+  if(internalNets.size)code+='  wire '+[...internalNets].join(', ')+';\n\n';
+
+  if(vMode==='structural'){
+    // Output a primitive instantiation per gate
+    let gCount=0;
+    S.gates.forEach(function(gate){
+      if(['input','output','clock','const0','const1'].includes(gate.type))return;
+      const d=gdef(gate);
+      // Gather input nets
+      const ins=[];
+      for(let p=0;p<d.nc;p++){
+        const w=S.wires.find(function(w){return w.tg===gate.id&&w.tp===p;});
+        ins.push(w?netMap[w.fg+'_'+w.fp]||'1\'b0':'1\'b0');
+      }
+      // Gather output nets
+      const outs=[];
+      for(let p=0;p<d.np;p++){
+        outs.push(netMap[gate.id+'_'+p]||('_nc'+gCount));
+      }
+      const gn=gate.type.replace('ff','_ff').replace('dlatch','d_latch');
+      code+='  '+gn+' U'+gCount+'(';
+      const ports=ins.map(function(n,i){return'.i'+i+'('+n+')';});
+      outs.forEach(function(n,i){ports.push('.o'+i+'('+n+')');});
+      code+=ports.join(', ')+');\n';
+      gCount++;
+    });
+    // Output assignments
+    outputs.forEach(function(g,i){
+      const w=S.wires.find(function(w){return w.tg===g.id&&w.tp===0;});
+      if(w){const src=netMap[w.fg+'_'+w.fp];code+='  assign '+outMap[g.id]+' = '+(src||"1'b0")+';\n';}
+    });
+    // Primitive modules
+    if(gCount>0){
+      code+='\n// ─── Primitive definitions ───\n';
+      const seen=new Set();
+      S.gates.forEach(function(gate){
+        if(['input','output','clock','const0','const1'].includes(gate.type))return;
+        if(seen.has(gate.type))return;seen.add(gate.type);
+        const d=gdef(gate);
+        const iPorts=Array.from({length:d.nc},function(_,i){return'i'+i;});
+        const oPorts=Array.from({length:d.np},function(_,i){return'o'+i;});
+        const allPorts=[...iPorts,...oPorts];
+        const gn=gate.type.replace('ff','_ff').replace('dlatch','d_latch');
+        code+='\nmodule '+gn+'('+allPorts.join(', ')+');\n';
+        if(iPorts.length)code+='  input '+iPorts.join(', ')+';\n';
+        if(oPorts.length)code+='  output '+(isSeq(gate.type)?'reg':'wire')+' '+oPorts.join(', ')+';\n';
+        code+=verilogPrimBody(gate.type,iPorts,oPorts);
+        code+='endmodule\n';
+      });
+    }
+  }else{
+    // Behavioral
+    code+='  always @(*) begin\n';
+    S.gates.forEach(function(gate){
+      if(['input','output','clock','const0','const1'].includes(gate.type))return;
+      const d=gdef(gate);
+      const ins=[];
+      for(let p=0;p<d.nc;p++){
+        const w=S.wires.find(function(w){return w.tg===gate.id&&w.tp===p;});
+        ins.push(w?netMap[w.fg+'_'+w.fp]||"1'b0":"1'b0");
+      }
+      for(let p=0;p<d.np;p++){
+        const net=netMap[gate.id+'_'+p];
+        if(net){code+='    '+net+' = '+verilogExpr(gate.type,ins,p)+';\n';}
+      }
+    });
+    outputs.forEach(function(g,i){
+      const w=S.wires.find(function(w){return w.tg===g.id&&w.tp===0;});
+      if(w){const src=netMap[w.fg+'_'+w.fp];code+='    '+outMap[g.id]+' = '+(src||"1'b0")+';\n';}
+    });
+    code+='  end\n';
+  }
+
+  code+='\nendmodule\n';
+  document.getElementById('vcode').textContent=code;
+}
+
+function isSeq(type){return['sr','dlatch','dff','jkff','tff'].includes(type);}
+
+function verilogExpr(type,ins,outIdx){
+  const a=ins[0]||"1'b0",b=ins[1]||"1'b0",c=ins[2]||"1'b0";
+  switch(type){
+    case 'buffer':return a;
+    case 'and': return a+' & '+b;
+    case 'or':  return a+' | '+b;
+    case 'not': return '~'+a;
+    case 'nand':return '~('+a+' & '+b+')';
+    case 'nor': return '~('+a+' | '+b+')';
+    case 'xor': return a+' ^ '+b;
+    case 'xnor':return '~('+a+' ^ '+b+')';
+    case 'mux2':return c+'?'+b+':'+a;
+    default: return "1'b0";
+  }
+}
+
+function verilogPrimBody(type,iPorts,oPorts){
+  const a=iPorts[0]||"1'b0",b=iPorts[1]||"1'b0",c=iPorts[2]||"1'b0";
+  const o0=oPorts[0],o1=oPorts[1];
+  switch(type){
+    case 'buffer':return'  assign '+o0+' = '+a+';\n';
+    case 'and': return'  assign '+o0+' = '+a+' & '+b+';\n';
+    case 'or':  return'  assign '+o0+' = '+a+' | '+b+';\n';
+    case 'not': return'  assign '+o0+' = ~'+a+';\n';
+    case 'nand':return'  assign '+o0+' = ~('+a+' & '+b+');\n';
+    case 'nor': return'  assign '+o0+' = ~('+a+' | '+b+');\n';
+    case 'xor': return'  assign '+o0+' = '+a+' ^ '+b+';\n';
+    case 'xnor':return'  assign '+o0+' = ~('+a+' ^ '+b+');\n';
+    case 'ha':  return'  assign '+o0+' = '+a+' ^ '+b+';\n  assign '+o1+' = '+a+' & '+b+';\n';
+    case 'mux2':return'  assign '+o0+' = '+c+'?'+b+':'+a+';\n';
+    default: return'  // '+type+'\n';
+  }
+}
+
+document.getElementById('v-dl').addEventListener('click',function(){
+  const code=document.getElementById('vcode').textContent;
+  if(!code)return;
+  const pName=(PROJ?PROJ.name:'circuit').replace(/\W/g,'_');
+  const blob=new Blob([code],{type:'text/plain'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=pName+'.v';a.click();
+  URL.revokeObjectURL(url);
+  msg('Downloaded '+pName+'.v','ok');
+});
+document.getElementById('v-close').addEventListener('click',function(){document.getElementById('ov-verilog').classList.remove('open');});
+
+// ═══════════════════════════════════════════════════════
+// VERILOG IMPORT
+// ═══════════════════════════════════════════════════════
+function setupVerilogImport(){
+  const dz=document.getElementById('v-drop-zone');
+  const fi=document.getElementById('v-file-in');
+  dz.addEventListener('click',function(){fi.click();});
+  dz.addEventListener('dragover',function(e){e.preventDefault();dz.classList.add('drag-over');});
+  dz.addEventListener('dragleave',function(){dz.classList.remove('drag-over');});
+  dz.addEventListener('drop',function(e){
+    e.preventDefault();dz.classList.remove('drag-over');
+    const file=e.dataTransfer.files[0];if(file)readVFile(file);
+  });
+  fi.addEventListener('change',function(){if(fi.files[0])readVFile(fi.files[0]);});
+}
+function readVFile(file){
+  const reader=new FileReader();
+  reader.onload=function(e){parseVerilog(e.target.result);};
+  reader.readAsText(file);
+}
+function parseVerilog(src){
+  const res=document.getElementById('v-parse-result');
+  try{
+    // Extract module name and ports
+    const modM=src.match(/module\s+(\w+)\s*\(([^)]*)\)/);
+    if(!modM){res.style.color='var(--acr)';res.textContent='No module declaration found';return;}
+    const modName=modM[1];
+
+    // Extract input/output declarations
+    const inputNames=[];const outputNames=[];
+    [...src.matchAll(/\binput\s+(?:wire\s+)?(\w+(?:\s*,\s*\w+)*)/g)].forEach(function(m){
+      m[1].split(',').forEach(function(n){inputNames.push(n.trim());});
+    });
+    [...src.matchAll(/\boutput\s+(?:reg|wire)?\s+(\w+(?:\s*,\s*\w+)*)/g)].forEach(function(m){
+      m[1].split(',').forEach(function(n){outputNames.push(n.trim());});
+    });
+
+    // Parse assign statements
+    const assigns=[];
+    [...src.matchAll(/assign\s+(\w+)\s*=\s*([^;]+);/g)].forEach(function(m){
+      assigns.push({out:m[1].trim(),expr:m[2].trim()});
+    });
+
+    // Build circuit from assigns
+    clearCanvas();
+    let cx=60,cy=60;
+    const wireMap={};// name → {gid, fp}
+
+    // Place input gates
+    inputNames.forEach(function(name,i){
+      const g=place('input',cx,cy+i*60);
+      g._vname=name;
+      wireMap[name]={gid:g.id,fp:0};
+    });
+    cx+=160;
+
+    // Process assigns to build gates
+    assigns.forEach(function(asgn){
+      const expr=asgn.expr;
+      let type=null,operands=[];
+
+      if(expr.match(/^~\((.+)&(.+)\)$/)){type='nand';const m=expr.match(/^~\((.+)&(.+)\)$/);operands=[m[1].trim(),m[2].trim()];}
+      else if(expr.match(/^~\((.+)\|(.+)\)$/)){type='nor';const m=expr.match(/^~\((.+)\|(.+)\)$/);operands=[m[1].trim(),m[2].trim()];}
+      else if(expr.match(/^~\((.+)\^(.+)\)$/)){type='xnor';const m=expr.match(/^~\((.+)\^(.+)\)$/);operands=[m[1].trim(),m[2].trim()];}
+      else if(expr.includes('&')){type='and';operands=expr.split('&').map(function(x){return x.trim();});}
+      else if(expr.includes('|')){type='or';operands=expr.split('|').map(function(x){return x.trim();});}
+      else if(expr.includes('^')){type='xor';operands=expr.split('^').map(function(x){return x.trim();});}
+      else if(expr.includes('?')){type='mux2';const m=expr.match(/(\w+)\?(\w+):(\w+)/);if(m)operands=[m[3],m[2],m[1]];}
+      else if(expr.startsWith('~')){type='not';operands=[expr.slice(1).trim().replace(/[()]/g,'')];}
+      else{type='buffer';operands=[expr];}
+
+      if(type){
+        const g=place(type,cx,cy);
+        wireMap[asgn.out]={gid:g.id,fp:0};
+        operands.forEach(function(opName,pi){
+          const src=wireMap[opName.replace(/[()]/g,'')];
+          if(src)S.wires.push({id:S.nid++,fg:src.gid,fp:src.fp,tg:g.id,tp:pi,sig:0});
+        });
+        cy+=70;if(cy>600){cy=60;cx+=120;}
+      }
+    });
+
+    // Place output gates
+    cx+=160;cy=60;
+    outputNames.forEach(function(name,i){
+      const g=place('output',cx,cy+i*60);
+      const src=wireMap[name];
+      if(src)S.wires.push({id:S.nid++,fg:src.gid,fp:src.fp,tg:g.id,tp:0,sig:0});
+    });
+
+    simulate();
+    res.style.color='var(--acc)';
+    res.textContent='✓ Imported '+modName+' — '+inputNames.length+' inputs, '+outputNames.length+' outputs, '+assigns.length+' logic assignments';
+    document.getElementById('ov-verilog').classList.remove('open');
+    msg('Imported Verilog: '+modName,'ok');
+  }catch(err){
+    res.style.color='var(--acr)';res.textContent='Parse error: '+err.message;
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// CONTEXT MENU
+// ═══════════════════════════════════════════════════════
+function hideCM(){cmenu.style.display='none';}
+document.addEventListener('click',hideCM);
+document.getElementById('cm-del').onclick=function(){if(cmGid!==null)delGate(cmGid);hideCM();};
+document.getElementById('cm-dup').onclick=function(){if(cmGid!==null)dupGate(cmGid);hideCM();};
+document.getElementById('cm-rst').onclick=function(){
+  const g=S.gates.find(function(g){return g.id===cmGid;});
+  if(g){g.q=0;g.prevClk=0;g.fault=false;simulate();}hideCM();
+};
+document.getElementById('cm-pkg').onclick=function(){pkgSel();hideCM();};
+
+// ═══════════════════════════════════════════════════════
+// TOPBAR BUTTONS
+// ═══════════════════════════════════════════════════════
+let clearArmed=false,clearArmTimer=null;
+document.getElementById('btn-clr').addEventListener('click',function(){
+  const btn=document.getElementById('btn-clr');
+  if(!clearArmed){
+    clearArmed=true;btn.classList.add('confirm-btn');btn.textContent='⚠ Click again';
+    clearArmTimer=setTimeout(function(){clearArmed=false;btn.classList.remove('confirm-btn');btn.textContent='⊘ Clear';},2500);
+    msg('Click Clear again to confirm','wa');return;
+  }
+  clearArmed=false;clearTimeout(clearArmTimer);btn.classList.remove('confirm-btn');btn.textContent='⊘ Clear';
+  clearCanvas();
+});
+
+function clearCanvas(){
+  S.gates.forEach(function(g){if(g.el)g.el.remove();});
+  S.gates=[];S.wires=[];deselAll();simulate();stUpd();S.dirty=true;msg('Canvas cleared','');
+}
+
+document.getElementById('btn-pkg').addEventListener('click',pkgSel);
+document.getElementById('btn-verilog').addEventListener('click',openVerilogModal);
+document.getElementById('btn-hlp').addEventListener('click',function(){document.getElementById('ov-hlp').classList.add('open');});
+document.getElementById('hlp-cl').addEventListener('click',function(){document.getElementById('ov-hlp').classList.remove('open');});
+document.getElementById('ov-hlp').addEventListener('click',function(e){if(e.target===e.currentTarget)e.currentTarget.classList.remove('open');});
+
+// Zoom buttons
+function doZoom(f){
+  const W=cvwrap.clientWidth,H=cvwrap.clientHeight;
+  const nz=Math.min(4,Math.max(.18,S.zoom*f));
+  S.panX=W/2-(W/2-S.panX)*(nz/S.zoom);S.panY=H/2-(H/2-S.panY)*(nz/S.zoom);S.zoom=nz;
+  document.getElementById('zoom-lbl').textContent=Math.round(nz*100)+'%';
+  reposAll();drawGrid();
+}
+document.getElementById('btn-zi').addEventListener('click',function(){doZoom(1.2);});
+document.getElementById('btn-zo').addEventListener('click',function(){doZoom(1/1.2);});
+document.getElementById('btn-fit').addEventListener('click',function(){
+  if(!S.gates.length)return;
+  const W=cvwrap.clientWidth,H=cvwrap.clientHeight;
+  const xs=S.gates.map(function(g){return g.x;}),ys=S.gates.map(function(g){return g.y;});
+  const xe=S.gates.map(function(g){return g.x+gdef(g).w;}),ye=S.gates.map(function(g){return g.y+gdef(g).h;});
+  const x0=Math.min.apply(null,xs)-32,y0=Math.min.apply(null,ys)-32;
+  const x1=Math.max.apply(null,xe)+32,y1=Math.max.apply(null,ye)+32;
+  const nz=Math.min(W/(x1-x0),H/(y1-y0),2.5);
+  S.zoom=nz;S.panX=-x0*nz+(W-(x1-x0)*nz)/2;S.panY=-y0*nz+(H-(y1-y0)*nz)/2;
+  document.getElementById('zoom-lbl').textContent=Math.round(nz*100)+'%';
+  reposAll();drawGrid();
+});
+
+// Back to projects
+document.getElementById('ed-back').addEventListener('click',function(){
+  autoSave();showProjects();
+});
+
+// Rename project
+document.getElementById('ed-proj-name').addEventListener('click',function(){
+  const newName=window.prompt?window.prompt('Project name:',PROJ?PROJ.name:'Untitled'):null;
+  if(newName&&newName.trim()){
+    PROJ.name=newName.trim();
+    document.getElementById('ed-proj-name').textContent=PROJ.name;
+    autoSave();S.dirty=true;
+  }
+});
+
+// Share
+document.getElementById('btn-share').addEventListener('click',function(){
+  if(!PROJ)return;
+  autoSave();
+  shareProject(PROJ.id,projDataSnapshot());
+  document.getElementById('share-code').textContent=PROJ.id;
+  document.getElementById('share-copied').textContent='';
+  document.getElementById('ov-share').classList.add('open');
+});
+function copyShareCode(){
+  const code=document.getElementById('share-code').textContent;
+  try{navigator.clipboard.writeText(code);document.getElementById('share-copied').textContent='✓ Copied to clipboard';}
+  catch(e){document.getElementById('share-copied').textContent='Code: '+code;}
+}
+document.getElementById('share-close').addEventListener('click',function(){document.getElementById('ov-share').classList.remove('open');});
+document.getElementById('share-export').addEventListener('click',function(){
+  autoSave();
+  const snap=projDataSnapshot();
+  const blob=new Blob([JSON.stringify({name:PROJ.name,data:snap},null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=(PROJ.name||'project').replace(/\W/g,'_')+'.json';a.click();
+  URL.revokeObjectURL(url);msg('Project exported','ok');
+});
+
+// ═══════════════════════════════════════════════════════
+// STATUS
+// ═══════════════════════════════════════════════════════
+function stUpd(){
+  document.getElementById('st-g').textContent=S.gates.length;
+  document.getElementById('st-w').textContent=S.wires.length;
+  const sc=S.msel.size||(S.sel!==null?1:0);
+  document.getElementById('st-s').textContent=sc?sc+' gate(s)':'—';
+}
+let msgT;
+function msg(txt,cls){
+  const el=document.getElementById('stmsg');el.textContent=txt;
+  el.className=cls==='ok'?'s-ok':cls==='er'?'s-er':cls==='wa'?'s-wa':'';
+  clearTimeout(msgT);if(txt)msgT=setTimeout(function(){el.textContent='Ready';el.className='s-ok';},5000);
+}
+
+// ═══════════════════════════════════════════════════════
+// PERSISTENCE — project data
+// ═══════════════════════════════════════════════════════
+function projDataSnapshot(){
+  return{
+    gates:S.gates.map(function(g){return{id:g.id,type:g.type,cn:g.cn,x:g.x,y:g.y,value:g.value,q:g.q,prevClk:g.prevClk,freq:g.freq,fault:g.fault};}),
+    wires:S.wires.map(function(w){return Object.assign({},w);}),
+    custom:JSON.parse(JSON.stringify(S.custom)),
+    nid:S.nid,
+  };
+}
+function loadProjData(data){
+  if(!data)return;
+  // Clear
+  S.gates.forEach(function(g){if(g.el)g.el.remove();});
+  S.gates=[];S.wires=[];S.sel=null;S.msel.clear();
+  S.custom=data.custom||{};S.nid=data.nid||1;
+  // Restore PLBL for custom gates
+  Object.keys(S.custom).forEach(function(name){
+    const c=S.custom[name];
+    PLBL['custom:'+name]={i:c.ins,o:c.outs};
+    if(!c._def){
+      const nc=c.ins.length,np=c.outs.length;
+      c._def={lbl:name,w:Math.max(76,name.length*8+16),h:Math.max(60,Math.max(nc,np)*22+20),nc,np,cls:'tcu',tip:c.desc||name,sub:nc+'→'+np};
+    }
+  });
+  // Restore gates
+  (data.gates||[]).forEach(function(gd){
+    const gate=Object.assign({lastTog:Date.now()},gd);
+    const el=mkGateEl(gate);
+    gate.el=el;
+    gateLyr.appendChild(el);
+    S.gates.push(gate);
+    bindGate(gate);
+  });
+  S.wires=(data.wires||[]).map(function(w){return Object.assign({},w);});
+  simulate();stUpd();buildSidebar();
+}
+function autoSave(){
+  if(!PROJ||!CU)return;
+  const data=projDataSnapshot();
+  PROJ.data=data;
+  saveProject(PROJ.id,PROJ.name,data);
+}
+
+// ═══════════════════════════════════════════════════════
+// PAGE NAVIGATION
+// ═══════════════════════════════════════════════════════
+function showPage(id){
+  ['pg-login','pg-projects','pg-editor'].forEach(function(p){
+    const el=document.getElementById(p);
+    if(el)el.style.display=p===id?'flex':'none';
+  });
+}
+
+// ─── LOGIN PAGE ───
+document.getElementById('g-btn').addEventListener('click',function(){
+  document.getElementById('login-email').focus();
+  msg('Enter your Gmail address below','ok');
+});
+
+document.getElementById('login-btn').addEventListener('click',doLogin);
+document.getElementById('login-email').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
+document.getElementById('login-name').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
+
+function doLogin(){
+  const email=document.getElementById('login-email').value.trim().toLowerCase();
+  const name=document.getElementById('login-name').value.trim();
+  const err=document.getElementById('login-err');
+  if(!email){err.textContent='Please enter your Gmail address';return;}
+  if(!email.includes('@')||!email.includes('.')){err.textContent='Enter a valid email address';return;}
+  if(!name){err.textContent='Please enter your display name';return;}
+  err.textContent='';
+  CU={email,name};
+  authSave();
+  registerUser(email,name);
+  showProjects();
+}
+
+// ─── PROJECTS PAGE ───
+function showProjects(){
+  showPage('pg-projects');
+  const ud=getUserData(CU.email);
+  document.getElementById('pu-email').textContent=CU.email;
+  document.getElementById('pu-avatar').textContent=(CU.name||CU.email)[0].toUpperCase();
+  renderProjGrid(ud.projects||{});
+}
+
+function renderProjGrid(projects){
+  const grid=document.getElementById('proj-grid');
+  grid.innerHTML='';
+  // New project card
+  const nc=document.createElement('div');nc.className='proj-card new-card';nc.innerHTML='<span style="font-size:20px">＋</span>New Project';
+  nc.addEventListener('click',function(){createNewProject();});
+  grid.appendChild(nc);
+  // Existing projects
+  Object.values(projects).sort(function(a,b){return(b.updatedAt||0)-(a.updatedAt||0);}).forEach(function(p){
+    const card=document.createElement('div');card.className='proj-card';
+    const d=new Date(p.updatedAt||0);
+    card.innerHTML='<div class="proj-card-name">'+escHtml(p.name)+'</div>'+
+      '<div class="proj-card-meta">'+((p.data&&p.data.gates)?p.data.gates.length:0)+' gates · '+(p.updatedAt?d.toLocaleDateString():'Never')+'</div>'+
+      '<div class="proj-card-badge">'+p.id+'</div>';
+    card.addEventListener('click',function(){openProject(p);});
+    // Delete button
+    const del=document.createElement('button');del.textContent='×';
+    del.style.cssText='position:absolute;top:8px;right:8px;background:none;border:none;cursor:pointer;color:var(--t3);font-size:16px;line-height:1';
+    del.addEventListener('click',function(e){e.stopPropagation();deleteProject(p.id);showProjects();});
+    card.style.position='relative';card.appendChild(del);
+    grid.appendChild(card);
+  });
+}
+
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function createNewProject(){
+  const id=genId();
+  const name='Project '+Object.keys(getProjects()).length;
+  const data={gates:[],wires:[],custom:{},nid:1};
+  saveProject(id,name,data);
+  openProject({id,name,data});
+}
+
+function openProject(p){
+  PROJ={id:p.id,name:p.name,data:p.data};
+  showPage('pg-editor');
+  document.getElementById('ed-proj-name').textContent=p.name;
+  S.zoom=1;S.panX=50;S.panY=40;
+  document.getElementById('zoom-lbl').textContent='100%';
+  // Wait for layout
+  requestAnimationFrame(function(){requestAnimationFrame(function(){
+    drawGrid();loadProjData(p.data);buildSidebar();
+  });});
+}
+
+// Project page actions
+document.getElementById('btn-logout').addEventListener('click',function(){
+  if(PROJ)autoSave();
+  CU=null;authSave();showPage('pg-login');
+});
+
+document.getElementById('pa-import-v').addEventListener('click',function(){
+  // Create a temp project and open editor, then trigger verilog import
+  createNewProject();
+  setTimeout(function(){
+    openVerilogModal();
+    document.querySelector('.vtab#vt-import').click();
+  },200);
+});
+
+document.getElementById('pa-import-proj').addEventListener('click',function(){
+  document.getElementById('import-proj-file').click();
+});
+document.getElementById('import-proj-file').addEventListener('change',function(){
+  const file=this.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const proj=JSON.parse(e.target.result);
+      const id=genId();
+      saveProject(id,proj.name||'Imported',proj.data||{});
+      showProjects();msg('Project imported','ok');
+    }catch(err){alert('Invalid project file');}
+  };
+  reader.readAsText(file);
+  this.value='';
+});
+
+document.getElementById('pa-join').addEventListener('click',function(){
+  const code=window.prompt?window.prompt('Enter the share code from your collaborator:'):'';
+  if(!code)return;
+  const shared=joinSharedProject(code.trim());
+  if(!shared){alert('Share code not found. Make sure the code is correct and the project was shared on the same device.');return;}
+  const id=genId();
+  saveProject(id,shared.name+'(shared)',shared.data);
+  showProjects();msg('Joined shared project','ok');
+});
+
+// ═══════════════════════════════════════════════════════
+// RESIZE
+// ═══════════════════════════════════════════════════════
+new ResizeObserver(function(){drawGrid();}).observe(cvwrap);
+
+// Storage event for cross-tab sync
+window.addEventListener('storage',function(e){
+  if(e.key&&e.key.startsWith('lgf_shared_')&&PROJ){
+    // Someone updated the shared version
+    try{
+      const d=JSON.parse(e.newValue||'{}');
+      if(d.id===PROJ.id){msg('Project updated by collaborator — reload to sync','wa');}
+    }catch(e){}
+  }
+});
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+setupVerilogImport();
+authLoad();
+if(CU){showProjects();}else{showPage('pg-login');}
 </script>
 </body>
 </html>
